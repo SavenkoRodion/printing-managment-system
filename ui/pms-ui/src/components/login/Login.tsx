@@ -7,7 +7,7 @@ const Login = () => {
       sx={{
         maxWidth: "500px",
         "& .MuiTextField-root": {
-          mb: 2,
+          marginBottom: 2,
         },
       }}
     >
