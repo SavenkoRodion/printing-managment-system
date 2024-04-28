@@ -1,23 +1,29 @@
-import { Box, Button, Link, Stack, TextField } from "@mui/material";
+import { Box, Button, Link, TextField } from "@mui/material";
 
 const Login = () => {
   return (
-    <>
-      <Box>
-        <Stack>
-          Login: <TextField variant="outlined" />
-        </Stack>
-      </Box>
-      <Box>
-        <Stack>
-          Hasło: <TextField variant="outlined" />
-        </Stack>
-      </Box>
-      <Box>
-        <Link>Nie pamiętam hasła</Link>
-        <Button variant="outlined">Zaloguj</Button>
-      </Box>
-    </>
+    <Box
+      component="form"
+      sx={{
+        maxWidth: "500px",
+        "& .MuiTextField-root": {
+          mb: 2,
+        },
+      }}
+    >
+      <TextField label="Login" variant="outlined" fullWidth size="small" />
+      <TextField
+        label="Password"
+        type="password"
+        variant="outlined"
+        fullWidth
+        size="small"
+      />
+      <Button variant="contained" color="primary" fullWidth type="submit">
+        Login
+      </Button>
+      <Link>Password reset</Link>
+    </Box>
   );
 };
 
