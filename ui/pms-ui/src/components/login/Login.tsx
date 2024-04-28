@@ -1,18 +1,13 @@
 import { Box, Button, Link, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Login = () => {
-  const [lol, setLol] = useState("");
   useEffect(() => {
     console.log(
-      fetch("https://localhost:7017/WeatherForecast").then((e) => {
-        //console.log(e.body);
-        console.log("lol");
-        console.log(
-          e.json().then((ee) => {
-            console.log(ee);
-          })
-        );
+      fetch("https://localhost:7017/WeatherForecast").then((response) => {
+        response.json().then((data) => {
+          console.log(data);
+        });
       })
     );
   }, []);
@@ -29,16 +24,16 @@ const Login = () => {
     >
       <TextField label="Login" variant="outlined" fullWidth size="small" />
       <TextField
-        label="Password"
+        label="Hasło"
         type="password"
         variant="outlined"
         fullWidth
         size="small"
       />
       <Button variant="contained" color="primary" fullWidth type="submit">
-        Login
+        Zaloguj
       </Button>
-      <Link>Password reset</Link>
+      <Link>Nie pamiętam hasła</Link>
     </Box>
   );
 };
