@@ -1,8 +1,7 @@
-import { Box, Button, Link, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useEffect } from "react";
-import { Link as RouterLink } from "react-router-dom";
 
-const Login = () => {
+const PasswordReset = () => {
   useEffect(() => {
     console.log(
       fetch("https://localhost:7017/WeatherForecast").then((response) => {
@@ -23,20 +22,16 @@ const Login = () => {
         },
       }}
     >
-      <TextField label="Login" variant="outlined" fullWidth size="small" />
       <TextField
-        label="Hasło"
-        type="password"
+        label="Wprowadź E-Mail Twojego konta"
         variant="outlined"
         fullWidth
         size="small"
       />
       <Button variant="contained" color="primary" fullWidth type="submit">
-        Zaloguj
+        Wyślij
       </Button>
-      <Link component={RouterLink} to="/password">Nie pamiętam hasła</Link>
     </Box>
   );
 };
-
-export default Login;
+export default PasswordReset;
