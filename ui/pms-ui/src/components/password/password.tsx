@@ -1,7 +1,7 @@
-import { Box, Button, Link, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useEffect } from "react";
 
-const Login = () => {
+const PasswordReset = () => {
   useEffect(() => {
     console.log(
       fetch("https://localhost:7017/WeatherForecast").then((response) => {
@@ -16,26 +16,22 @@ const Login = () => {
     <Box
       component="form"
       sx={{
-        maxWidth: "500px",
-        "& .MuiTextField-root": { 
+        minWidth: "500px",
+        "& .MuiTextField-root": {
           marginBottom: 2,
         },
       }}
     >
-      <TextField label="Login" variant="outlined" fullWidth size="small" />
       <TextField
-        label="Hasło"
-        type="password"
+        label="Wprowadź E-Mail Twojego konta"
         variant="outlined"
         fullWidth
         size="small"
       />
       <Button variant="contained" color="primary" fullWidth type="submit">
-        Zaloguj
+        Wyślij
       </Button>
-      <Link href="/password">Nie pamiętam hasła</Link>
     </Box>
   );
 };
-
-export default Login;
+export default PasswordReset;
