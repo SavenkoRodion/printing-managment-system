@@ -16,8 +16,8 @@ const PasswordReset = () => {
     <Box
       component="form"
       sx={{
-        maxWidth: "500px",
-        "& .MuiTextField-root": { 
+        minWidth: "500px",
+        "& .MuiTextField-root": {
           marginBottom: 2,
         },
       }}

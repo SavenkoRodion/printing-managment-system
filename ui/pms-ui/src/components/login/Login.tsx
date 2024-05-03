@@ -1,6 +1,5 @@
 import { Box, Button, Link, TextField } from "@mui/material";
 import { useEffect } from "react";
-import { Link as RouterLink } from "react-router-dom";
 
 const Login = () => {
   useEffect(() => {
@@ -34,7 +33,7 @@ const Login = () => {
       <Button variant="contained" color="primary" fullWidth type="submit">
         Zaloguj
       </Button>
-      <Link component={RouterLink} to="/password">Nie pamiętam hasła</Link>
+      <Link href="/password">Nie pamiętam hasła</Link>
     </Box>
   );
 };
