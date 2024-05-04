@@ -1,4 +1,7 @@
-﻿var MyAllowSpecificOrigins = "devStageOrigins";
+﻿using Microsoft.EntityFrameworkCore;
+using PMS_Api.Model;
+
+var MyAllowSpecificOrigins = "devStageOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -13,6 +16,9 @@ builder.Services.AddCors(options =>
                           builder.WithOrigins("http://localhost:5173");
                       });
 });
+
+builder.Services.AddDbContext<VeraprintContext>(
+                options => options.UseSqlServer("connectionString"));
 
 // services.AddResponseCaching();
 
