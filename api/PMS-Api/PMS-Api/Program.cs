@@ -1,43 +1,78 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PMS_Api.Model;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 
 var MyAllowSpecificOrigins = "devStageOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
+var cookiePolicyOptions = new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+};
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Events = new CookieAuthenticationEvents {
+            OnRedirectToLogin = context =>
+            {
+                context.HttpContext.Response.StatusCode = 401;
+                return Task.CompletedTask;
+            }
+        };
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
+        options.AccessDeniedPath = "/Forbidden/";
+    });
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       builder =>
                       {
-                          builder.WithOrigins("http://localhost:5173");
+                          builder.WithOrigins("https://localhost:5173");
+                          builder.AllowAnyMethod();
+                          builder.AllowAnyHeader();
+                          builder.AllowCredentials();
                       });
 });
+IConfigurationRoot config = new ConfigurationBuilder()
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+string connectionString = config.GetConnectionString("VeraprintContext");
 
 builder.Services.AddDbContext<VeraprintContext>(
-                options => options.UseSqlServer("connectionString"));
-
-// services.AddResponseCaching();
+    options => options.UseMySQL(connectionString));
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
+app.UseCors(MyAllowSpecificOrigins);
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCookiePolicy(cookiePolicyOptions);
 
-app.UseCors(MyAllowSpecificOrigins);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 
+
+
+app.MapRazorPages();
+app.MapDefaultControllerRoute();
 
 app.MapControllers();
 

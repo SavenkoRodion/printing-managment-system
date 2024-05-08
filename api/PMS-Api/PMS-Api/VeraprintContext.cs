@@ -163,6 +163,8 @@ public partial class VeraprintContext : DbContext
 
     public virtual DbSet<Uzytkownicy> Uzytkownicies { get; set; }
 
+    public virtual DbSet<UzytkownicyNowa> UzytkownicyNowas { get; set; }
+
     public virtual DbSet<Uzytkownicysystemowi> Uzytkownicysystemowis { get; set; }
 
     public virtual DbSet<UzytkownikHasloTymczasowe> UzytkownikHasloTymczasowes { get; set; }
@@ -191,7 +193,7 @@ public partial class VeraprintContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySQL("Server=localhost;Port=3307;Database=veraprint;uid=root;pwd=root;");
+        => optionsBuilder.UseMySQL("Server=localhost;Port=3306;Database=veraprint;uid=root;pwd=admin;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -3458,6 +3460,29 @@ public partial class VeraprintContext : DbContext
                 .HasMaxLength(10)
                 .HasDefaultValueSql("'0'")
                 .HasColumnName("wewnetrzny_typ");
+        });
+
+        modelBuilder.Entity<UzytkownicyNowa>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("uzytkownicy_nowa");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.DataUtworzenia)
+                .HasMaxLength(20)
+                .HasColumnName("data_utworzenia");
+            entity.Property(e => e.Haslo)
+                .HasMaxLength(100)
+                .HasColumnName("haslo");
+            entity.Property(e => e.Imie)
+                .HasMaxLength(30)
+                .HasColumnName("imie");
+            entity.Property(e => e.Uid)
+                .HasMaxLength(255)
+                .HasColumnName("uid");
         });
 
         modelBuilder.Entity<Uzytkownicysystemowi>(entity =>
