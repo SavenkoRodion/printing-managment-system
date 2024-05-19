@@ -6,10 +6,10 @@ using PMS_Api.Services;
 namespace PMS_Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("User")]
 public class UserController(IUserService userService) : ControllerBase
 {
-    [HttpPost("authenticate")]
+    [HttpPost("Authenticate")]
     public IActionResult Authenticate(AuthenticateRequest model)
     {
         var response = userService.Authenticate(model);

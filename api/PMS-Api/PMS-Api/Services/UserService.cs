@@ -15,7 +15,7 @@ public interface IUserService
     User GetById(int id);
 }
 
-public class UserService(IOptions<AppSettings> appSettings) : IUserService
+public class UserService(IOptions<Secret> appSettings) : IUserService
 {
     private List<User> _users = new List<User>
     {
@@ -43,7 +43,7 @@ public class UserService(IOptions<AppSettings> appSettings) : IUserService
     private string GenerateJwtToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(appSettings.Value.Secret);
+        var key = Encoding.ASCII.GetBytes(appSettings.Value.Value);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
