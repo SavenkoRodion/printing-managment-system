@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PMS_Api.Model.Db;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
-namespace PMS_Api;
+namespace PMS_Api.Model.Db.Scaffold;
 
 public partial class PmsContext : DbContext
 {
@@ -28,10 +29,10 @@ public partial class PmsContext : DbContext
                 .HasNoKey()
                 .ToTable("admins");
 
-            entity.Property(e => e.AdminUuid).HasMaxLength(36);
             entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(255);
             entity.Property(e => e.Password).HasMaxLength(255);
+            entity.Property(e => e.Uuid).HasMaxLength(36);
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PMS_Api;
-using PMS_Api.Helpers;
+﻿using PMS_Api.Helpers;
 using PMS_Api.Interfaces;
-using PMS_Api.Model;
+using PMS_Api.Model.Db.Scaffold;
 using PMS_Api.Repository;
+using PMS_Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,17 +22,19 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.Configure<Secret>(builder.Configuration.GetSection("Authentication"));
 
     {
-        builder.Services.AddScoped<IUserRepository<PMS_Api.Interfaces.User>, UserRepository>();
+        builder.Services.AddScoped<IUserRepository<Admin>, AdminRepository>();
+        builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     }
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddDbContext<VeraprintContext>(
+    /*builder.Services.AddDbContext<VeraprintContext>(
                     options => options.UseSqlServer("connectionString"));
+    "VeraprintContext": "Server=localhost;Port=3307;Database=veraprint;uid=root;pwd=root;",
+     */
 
-    builder.Services.AddDbContext<PmsContext>(
-                    options => options.UseSqlServer());
+    builder.Services.AddDbContext<PmsContext>();
 }
 
 var app = builder.Build();

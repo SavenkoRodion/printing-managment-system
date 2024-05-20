@@ -2,9 +2,7 @@
 
 public interface IUser
 {
-    string Uuid { get; init; }
-    string Email { get; init; }
-    string Password { get; init; }
+    string Uuid { get; set; }
+    string Email { get; set; }
+    string Password { get; set; }
 }
-
-public record User(string Uuid, string Email, string Password) : IUser;
