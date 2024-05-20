@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PMS_Api.Helpers;
-using PMS_Api.Model;
-using PMS_Api.Services;
+using PMS_Api.Model.Requests;
 
 namespace PMS_Api.Controllers;
 
@@ -10,7 +9,7 @@ namespace PMS_Api.Controllers;
 public class UserController(IUserService userService) : ControllerBase
 {
     [HttpPost("Authenticate")]
-    public IActionResult Authenticate(AuthenticateRequest model)
+    public IActionResult Authenticate([FromBody] AuthenticateRequest model, CancellationToken cancellationToken)
     {
         var response = userService.Authenticate(model);
 

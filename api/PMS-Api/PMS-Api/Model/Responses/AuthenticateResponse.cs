@@ -1,4 +1,4 @@
-﻿namespace PMS_Api.Model;
+﻿namespace PMS_Api.Model.Responses;
 
 public class AuthenticateResponse
 {

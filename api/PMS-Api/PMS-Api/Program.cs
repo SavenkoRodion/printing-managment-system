@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PMS_Api;
 using PMS_Api.Helpers;
+using PMS_Api.Interfaces;
 using PMS_Api.Model;
-using PMS_Api.Services;
+using PMS_Api.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,13 +22,18 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.Configure<Secret>(builder.Configuration.GetSection("Authentication"));
 
-    builder.Services.AddScoped<IUserService, UserService>();
+    {
+        builder.Services.AddScoped<IUserRepository<PMS_Api.Interfaces.User>, UserRepository>();
+    }
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddDbContext<VeraprintContext>(
                     options => options.UseSqlServer("connectionString"));
+
+    builder.Services.AddDbContext<PmsContext>(
+                    options => options.UseSqlServer());
 }
 
 var app = builder.Build();

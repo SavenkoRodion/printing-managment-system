@@ -1,30 +1,21 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PMS_Api.Helpers;
-using PMS_Api.Model;
+using PMS_Api.Interfaces;
+using PMS_Api.Model.Requests;
+using PMS_Api.Model.Responses;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using User = PMS_Api.Interfaces.User;
 
 namespace PMS_Api.Services;
 
-public interface IUserService
+public class UserService(IOptions<Secret> appSettings, IUserRepository<User> adminRepository)
 {
-    AuthenticateResponse Authenticate(AuthenticateRequest model);
-    IEnumerable<User> GetAll();
-    User GetById(int id);
-}
-
-public class UserService(IOptions<Secret> appSettings) : IUserService
-{
-    private List<User> _users = new List<User>
+    public async Task<AuthenticateResponse?> Authenticate(AuthenticateRequest request, CancellationToken cancellationToken)
     {
-        new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Password = "test" }
-    };
-
-    public AuthenticateResponse Authenticate(AuthenticateRequest model)
-    {
-        var user = _users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
+        var user = adminRepository.GetByCredentials(request.Email, request.Password, cancellationToken);
 
         if (user == null) return null;
 
