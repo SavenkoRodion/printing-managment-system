@@ -19,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddControllers();
 
-    builder.Services.Configure<Secret>(builder.Configuration.GetSection("Authentication"));
+    builder.Services.Configure<Secret>(builder.Configuration.GetSection("Secret"));
 
     {
         builder.Services.AddScoped<IUserRepository<Admin>, AdminRepository>();
