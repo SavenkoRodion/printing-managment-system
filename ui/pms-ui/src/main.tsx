@@ -7,7 +7,7 @@ import Login from "./components/login/Login.tsx";
 import PasswordReset from "./components/password/password";
 import BaselineLayout from "./components/layouts/BaselineLayout.tsx";
 import { Provider } from "react-redux";
-import { store } from "./store/index.js";
+import { store } from "./store/store.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
