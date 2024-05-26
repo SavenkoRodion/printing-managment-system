@@ -8,8 +8,8 @@ using PMS_Api.Services;
 namespace PMS_Api.Controllers;
 
 [ApiController]
-[Route("User")]
-public class UserController(IAuthenticationService authenticationService, IUserRepository<Admin> userRepository) : ControllerBase
+[Route("Admin")]
+public class AdminController(IAuthenticationService authenticationService, IUserRepository<Admin> userRepository) : ControllerBase
 {
     [HttpPost("Authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] AuthenticateAdminRequest request, CancellationToken cancellationToken)

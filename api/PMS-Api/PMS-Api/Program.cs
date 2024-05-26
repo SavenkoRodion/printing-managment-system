@@ -12,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
         options.AddPolicy(name: "devStageOrigins",
                           builder =>
                           {
-                              builder.WithOrigins("http://localhost:5173");
+                              builder.WithOrigins("http://localhost:3000");
+                              builder.AllowAnyHeader();
                           });
     });
 
