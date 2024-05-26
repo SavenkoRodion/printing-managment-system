@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PMS_Api.Model;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using PMS_Api;
 
 var MyAllowSpecificOrigins = "devStageOrigins";
 
@@ -19,16 +17,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.Events = new CookieAuthenticationEvents {
+        options.Events = new CookieAuthenticationEvents
+        {
             OnRedirectToLogin = context =>
             {
                 context.HttpContext.Response.StatusCode = 401;
                 return Task.CompletedTask;
             }
         };
+        options.Cookie.Name = "lol";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         options.SlidingExpiration = true;
         options.AccessDeniedPath = "/Forbidden/";
+        options.Cookie.HttpOnly = false;
     });
 
 builder.Services.AddCors(options =>

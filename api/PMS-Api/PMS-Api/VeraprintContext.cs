@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using PMS_Api.Model;
 
-namespace PMS_Api.Model;
+namespace PMS_Api;
 
 public partial class VeraprintContext : DbContext
 {
@@ -193,7 +192,7 @@ public partial class VeraprintContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySQL("Server=localhost;Port=3306;Database=veraprint;uid=root;pwd=admin;");
+        => optionsBuilder.UseMySQL("Server=localhost;Port=3307;Database=veraprint;uid=root;pwd=root;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

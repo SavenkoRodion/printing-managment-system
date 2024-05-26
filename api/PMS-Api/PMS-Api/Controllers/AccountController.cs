@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PMS_Api.Model;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace PMS_Api.Controllers
 {
@@ -18,7 +15,7 @@ namespace PMS_Api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
-            var user = await _context.UzytkownicyNowas.FirstOrDefaultAsync(u => u.Imie == model.UserName);
+            UzytkownicyNowa user = new() { Haslo = "", DataUtworzenia = "", Imie = "", Id = 0, Uid = "" };
 
             if (user == null || user.Haslo != model.Password)
             {
