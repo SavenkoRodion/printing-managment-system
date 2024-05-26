@@ -12,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
         options.AddPolicy(name: "devStageOrigins",
                           builder =>
                           {
-                              builder.WithOrigins("http://localhost:5137");
+                              builder.WithOrigins("http://localhost:5173");
+                              builder.AllowAnyHeader();
                               builder.AllowAnyHeader();
                           });
     });
@@ -40,6 +41,8 @@ var builder = WebApplication.CreateBuilder(args);
     {
         options.Cookie.Name = "auth";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.Cookie.HttpOnly = false;
+        options.Cookie.SameSite = SameSiteMode.None;
         //options.Cookie.HttpOnly = true;
         //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     });

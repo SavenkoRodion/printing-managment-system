@@ -9,7 +9,7 @@ using System.Security.Claims;
 namespace PMS_Api.Controllers;
 
 [ApiController]
-[Route("Auth")]
+[Route("auth")]
 public class AuthController(ICookieAuthenticationService authenticationService, IUserRepository<Admin> userRepository) : ControllerBase
 {
 
@@ -36,7 +36,6 @@ public class AuthController(ICookieAuthenticationService authenticationService, 
         return await userRepository.GetByUuid(HttpContext.User.Claims.SingleOrDefault().Value, cancellationToken);
     }
 
-    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
     {
