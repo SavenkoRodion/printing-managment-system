@@ -31,6 +31,7 @@
   <ItemGroup>
     <Folder Include="Model\Db\Partial\" />
     <Folder Include="Model\Db\Scaffold\" />
+    <Folder Include="Model\Responses\" />
   </ItemGroup>
 
 </Project>

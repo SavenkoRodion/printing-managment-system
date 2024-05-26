@@ -1,4 +1,4 @@
-﻿using PMS_Api.Helpers;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using PMS_Api.Interfaces;
 using PMS_Api.Model.Db.Scaffold;
 using PMS_Api.Repository;
@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
         options.AddPolicy(name: "devStageOrigins",
                           builder =>
                           {
-                              builder.WithOrigins("http://localhost:3000");
+                              builder.WithOrigins("http://localhost:5137");
                               builder.AllowAnyHeader();
                           });
     });
@@ -20,11 +20,9 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddControllers();
 
-    builder.Services.Configure<Secret>(builder.Configuration.GetSection("Secret"));
-
     {
         builder.Services.AddScoped<IUserRepository<Admin>, AdminRepository>();
-        builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+        builder.Services.AddScoped<ICookieAuthenticationService, CookieAuthenticationService>();
     }
 
     builder.Services.AddEndpointsApiExplorer();
@@ -36,6 +34,17 @@ var builder = WebApplication.CreateBuilder(args);
      */
 
     builder.Services.AddDbContext<PmsContext>();
+
+    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "auth";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        //options.Cookie.HttpOnly = true;
+        //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    });
+
+
 }
 
 var app = builder.Build();
@@ -51,7 +60,8 @@ var app = builder.Build();
         app.UseSwaggerUI();
     }
 
-    app.UseMiddleware<JwtMiddleware>();
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.MapControllers();
 }
