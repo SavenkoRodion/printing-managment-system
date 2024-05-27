@@ -1,23 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using PMS_Api.Model;
+using PMS_Api.Interfaces;
+using PMS_Api.Model.Scaffold;
 using System.Security.Claims;
 
 namespace PMS_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
-    public class AccountController(PmsContext context) : ControllerBase
+    public class AuthController(IUserRepository<Admin> adminRepository) : ControllerBase
     {
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(AuthenticationRequest request)
+        public async Task<ActionResult> Login(AuthenticationRequest request, CancellationToken cancellationToken)
         {
-            var user = context.Admins.FirstOrDefault(x => x.Password == request.Password && x.Email == request.Email);
+            var user = await adminRepository.GetByCredentials(request.Email, request.Password, cancellationToken);
 
             if (user == null)
             {
+                await HttpContext.SignOutAsync();
                 return Unauthorized();
             }
 
@@ -40,6 +42,7 @@ namespace PMS_Api.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
+
             return Ok();
         }
     }

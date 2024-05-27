@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace PMS_Api.Model;
+namespace PMS_Api.Model.Scaffold;
 
 public partial class PmsContext : DbContext
 {

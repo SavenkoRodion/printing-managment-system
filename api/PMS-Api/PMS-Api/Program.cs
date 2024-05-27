@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using PMS_Api.Model;
+using PMS_Api.Interfaces;
+using PMS_Api.Model.Scaffold;
+using PMS_Api.Repository;
 
 var MyAllowSpecificOrigins = "devStageOrigins";
 
@@ -33,7 +35,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.HttpOnly = false;
     });
 
-
+builder.Services.AddScoped<IUserRepository<Admin>, AdminRepository>();
 
 builder.Services.AddCors(options =>
 {
