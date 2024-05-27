@@ -5,7 +5,7 @@ const LoggedPage: React.FC = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://localhost:7017/api/Test/", {
+      const response = await fetch("https://localhost:7017/api/auth/who-am-i", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -1,52 +1,39 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PMS_Api.Interfaces;
+using PMS_Api.Model.Requests;
 using PMS_Api.Model.Scaffold;
-using System.Security.Claims;
 
 namespace PMS_Api.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthController(IUserRepository<Admin> adminRepository) : ControllerBase
+    public class AuthController(IAuthService authService, IUserRepository<Admin> adminRepository) : ControllerBase
     {
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(AuthenticationRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult> LoginAsync([FromBody] AuthenticateAdminRequest request, CancellationToken cancellationToken)
         {
-            var user = await adminRepository.GetByCredentials(request.Email, request.Password, cancellationToken);
+            var result = await authService.AuthenticateAdmin(request, HttpContext, cancellationToken);
 
-            if (user == null)
-            {
-                await HttpContext.SignOutAsync();
-                return Unauthorized();
-            }
-
-            var claims = new List<Claim>
-            {
-                new("Uuid", user.Uuid),
-            };
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var authProperties = new AuthenticationProperties
-            {
-                AllowRefresh = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                IsPersistent = true,
-            };
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
+            if (!result) return BadRequest();
 
             return Ok();
         }
+
+        [HttpPost("logout")]
+        public async Task<ActionResult> LogoutAsync()
+        {
+            await authService.LogoutAdmin(HttpContext);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("who-am-i")]
+        public async Task<Admin?> WhoAmIAsync(CancellationToken cancellationToken)
+        {
+            return await adminRepository.GetByUuid(HttpContext.User.Claims.Where(x => x.Type == "Uuid").Single().Value, cancellationToken);
+        }
     }
-
-
-    public record AuthenticationRequest(string Email, string Password);
 }
