@@ -1,6 +1,6 @@
 import { Box, Button, Link, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,19 +18,18 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          UserName: username,
+          Email: username,
           Password: password,
         }),
-        credentials: "include"
+        credentials: "include",
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText); 
+        throw new Error(errorText);
       }
-navigate('/logged');
-
-    } catch (error: unknown) { 
+      navigate("/logged");
+    } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
       } else {

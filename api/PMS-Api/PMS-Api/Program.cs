@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using PMS_Api;
+using PMS_Api.Model;
 
 var MyAllowSpecificOrigins = "devStageOrigins";
 
@@ -33,6 +33,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.HttpOnly = false;
     });
 
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -44,37 +46,34 @@ builder.Services.AddCors(options =>
                           builder.AllowCredentials();
                       });
 });
+
 IConfigurationRoot config = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.json")
     .Build();
 
-string connectionString = config.GetConnectionString("VeraprintContext");
+var connectionString = config.GetConnectionString("PmsContext");
 
-builder.Services.AddDbContext<VeraprintContext>(
+builder.Services.AddDbContext<PmsContext>(
     options => options.UseMySQL(connectionString));
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
 app.UseCors(MyAllowSpecificOrigins);
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseCookiePolicy(cookiePolicyOptions);
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseAuthentication();
 app.UseAuthorization();
-
-
-
-app.MapRazorPages();
-app.MapDefaultControllerRoute();
 
 app.MapControllers();
 

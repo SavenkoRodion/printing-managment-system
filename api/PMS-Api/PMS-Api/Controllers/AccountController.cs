@@ -8,23 +8,22 @@ namespace PMS_Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController(VeraprintContext context) : ControllerBase
+    public class AccountController(PmsContext context) : ControllerBase
     {
-        private readonly VeraprintContext _context = context;
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public async Task<ActionResult> Login(AuthenticationRequest request)
         {
-            UzytkownicyNowa user = new() { Haslo = "", DataUtworzenia = "", Imie = "", Id = 0, Uid = "" };
+            var user = context.Admins.FirstOrDefault(x => x.Password == request.Password && x.Email == request.Email);
 
-            if (user == null || user.Haslo != model.Password)
+            if (user == null)
             {
                 return Unauthorized();
             }
 
             var claims = new List<Claim>
             {
-                new(ClaimTypes.Name, user.Imie),
+                new("Uuid", user.Uuid),
             };
 
             var claimsIdentity = new ClaimsIdentity(
@@ -46,9 +45,5 @@ namespace PMS_Api.Controllers
     }
 
 
-    public class LoginViewModel
-    {
-        public required string UserName { get; set; }
-        public required string Password { get; set; }
-    }
+    public record AuthenticationRequest(string Email, string Password);
 }
