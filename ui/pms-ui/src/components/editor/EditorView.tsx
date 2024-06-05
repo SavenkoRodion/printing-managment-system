@@ -1,42 +1,61 @@
-import React from 'react';
-import {
-  Box,
-  FormControl,
-  TextField,
-  Button,
-  Select,
-  MenuItem,
-  InputLabel,
-} from '@mui/material';
+import React, { useState } from 'react';
+import { Box, FormControl, TextField, Button, Select, MenuItem, InputLabel, IconButton } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 
 interface EditorViewProps {
-  productType: string;
-  setProductType: React.Dispatch<React.SetStateAction<string>>;
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  client: string;
-  setClient: React.Dispatch<React.SetStateAction<string>>;
-  rows: { id: number; type: string; zIndex: number; value: string }[];
-  columns: GridColDef[];
 }
 
-const EditorView: React.FC<EditorViewProps> = ({
-  productType,
-  setProductType,
-  name,
-  setName,
-  client,
-  setClient,
-  rows,
-  columns,
-}) => {
+const EditorView: React.FC<EditorViewProps> = () => {
+  const [productType, setProductType] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [client, setClient] = useState<string>('');
+
+  const rows = [
+    { id: 1, type: 'text', zIndex: 1, value: 'Cennik usług' },
+    { id: 2, type: 'text', zIndex: 2, value: 'dla domu' },
+  ];
+
+  const columns: GridColDef[] = [
+    {
+      field: 'select',
+      headerName: '',
+      flex: 1,
+      renderCell: () => <input type="checkbox" />,
+    },
+    { field: 'type', headerName: 'Typ', width: 100 },
+    { field: 'zIndex', headerName: 'Z-Index', width: 60 },
+    { field: 'value', headerName: 'Wartość', width: 150 },
+    {
+      field: 'actions',
+      headerName: '',
+      flex: 1,
+      renderCell: () => (
+        <Box>
+          <IconButton aria-label="edit">
+            <EditIcon />
+          </IconButton>
+          <IconButton aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+          <IconButton aria-label="add">
+            <AddIcon />
+          </IconButton>
+        </Box>
+      ),
+    },
+  ];
+
   return (
     <Box display="flex" flexDirection="row" flexWrap="nowrap" gap={2}>
-      <Box flex="1 1 50%" display="flex" flexDirection="column" gap={2}>
+      <Box width="600px" display="flex" flexDirection="column" gap={2}>
         <Box display="flex" gap={2}>
-          <FormControl fullWidth margin="normal" sx={{ minWidth: 200 }}>
-            <InputLabel id="select-label" sx={{ mb:1 }}>Wybór</InputLabel>
+          <FormControl fullWidth sx={{ minWidth: 200 }}>
+            <InputLabel id="select-label" sx={{ mb: 1 }}>
+              Wybór
+            </InputLabel>
             <Select
               labelId="select-label"
               value={productType}
@@ -47,7 +66,7 @@ const EditorView: React.FC<EditorViewProps> = ({
               <MenuItem value="option2">Opcja 2</MenuItem>
             </Select>
           </FormControl>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth>
             <TextField
               label="Tekst"
               value={name}
@@ -57,7 +76,7 @@ const EditorView: React.FC<EditorViewProps> = ({
           </FormControl>
         </Box>
 
-        <FormControl fullWidth margin="normal">
+        <FormControl fullWidth>
           <TextField
             label="Początkowa data oferty"
             type="date"
@@ -67,7 +86,7 @@ const EditorView: React.FC<EditorViewProps> = ({
           />
         </FormControl>
 
-        <FormControl fullWidth margin="normal">
+        <FormControl fullWidth>
           <TextField
             label="Końcowa data oferty"
             type="date"
@@ -77,7 +96,7 @@ const EditorView: React.FC<EditorViewProps> = ({
           />
         </FormControl>
 
-        <FormControl fullWidth margin="normal">
+        <FormControl fullWidth>
           <TextField
             label="Sklep"
             value={client}
@@ -85,7 +104,7 @@ const EditorView: React.FC<EditorViewProps> = ({
           />
         </FormControl>
 
-        <FormControl fullWidth margin="normal">
+        <FormControl fullWidth>
           <TextField
             label="Adres sklepu"
             value={client}
@@ -97,28 +116,24 @@ const EditorView: React.FC<EditorViewProps> = ({
           <Button variant="contained">Dodaj obrazek</Button>
         </Box>
 
-        <Box display="flex" flexWrap="wrap" gap={2} mt={2} mb={1}>
-          <Button variant="contained" sx={{ flex: '25%' }}>Dodaj pole tekstowe</Button>
-          <Button variant="contained" sx={{ flex: '25%' }}>Zapisz konfigurację</Button>
-          <Button variant="contained" sx={{ flex: '25%' }}>Dodaj QRCode</Button>
-          <Button variant="contained" sx={{ flex: '25%' }}>TSPANS</Button>
-          <Button variant="contained" sx={{ flex: '33%' }}>Pobierz</Button>
-          <Button variant="contained" sx={{ flex: '33%' }}>Grupuj</Button>
-          <Button variant="contained" sx={{ flex: '33%' }}>Grupuj teksty</Button>
+        <Box display="flex" flexWrap="wrap" gap={2}>
+          <Button variant="contained">Dodaj pole tekstowe</Button>
+          <Button variant="contained">Zapisz konfigurację</Button>
+          <Button variant="contained">Dodaj QRCode</Button>
+          <Button variant="contained">TSPANS</Button>
+          <Button variant="contained">Pobierz</Button>
+          <Button variant="contained">Grupuj</Button>
+          <Button variant="contained">Grupuj teksty</Button>
         </Box>
 
         <Box mt={2} sx={{ height: 300 }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pagination={true}
-          />
+          <DataGrid rows={rows} columns={columns} pagination={true} />
         </Box>
       </Box>
 
-      <Box flex="1 1 50%" display="flex" flexDirection="column" gap={2}>
+      <Box width="600px" display="flex" flexDirection="column" gap={2}>
         <Box mb={2} display="flex" justifyContent="space-between" alignItems="center" gap={2}>
-          <FormControl margin="normal" sx={{ flex: '1 1 auto' }}>
+          <FormControl>
             <TextField
               label="Coś 1"
               value={name}
@@ -126,7 +141,7 @@ const EditorView: React.FC<EditorViewProps> = ({
               sx={{ marginTop: 1 }}
             />
           </FormControl>
-          <FormControl margin="normal" sx={{ flex: '1 1 auto' }}>
+          <FormControl>
             <TextField
               label="Coś 2"
               value={client}
@@ -134,8 +149,8 @@ const EditorView: React.FC<EditorViewProps> = ({
               sx={{ marginTop: 1 }}
             />
           </FormControl>
-          <Button variant="contained" color="primary" sx={{ marginTop: 1 }}>
-            Rób
+          <Button variant="contained" color="primary">
+            Mały przycisk
           </Button>
         </Box>
       </Box>

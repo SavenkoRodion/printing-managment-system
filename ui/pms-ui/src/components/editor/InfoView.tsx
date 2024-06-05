@@ -1,53 +1,20 @@
-import React from 'react';
-import {
-  FormControl,
-  TextField,
-  Button,
-  Select,
-  MenuItem,
-  InputLabel,
-  Box,
-} from '@mui/material';
+import { useState } from 'react';
+import { FormControl, TextField, Button, Select, MenuItem, InputLabel, Box } from '@mui/material';
 
-interface InfoViewProps {
-  client: string;
-  setClient: React.Dispatch<React.SetStateAction<string>>;
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  productType: string;
-  setProductType: React.Dispatch<React.SetStateAction<string>>;
-  format: string;
-  setFormat: React.Dispatch<React.SetStateAction<string>>;
-  width: string;
-  setWidth: React.Dispatch<React.SetStateAction<string>>;
-  height: string;
-  setHeight: React.Dispatch<React.SetStateAction<string>>;
-  pdfWidth: string;
-  setPdfWidth: React.Dispatch<React.SetStateAction<string>>;
-  pdfHeight: string;
-  setPdfHeight: React.Dispatch<React.SetStateAction<string>>;
-  handleSave: () => void;
-}
+const InfoView = () => {
+  const [client, setClient] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [productType, setProductType] = useState<string>('');
+  const [format, setFormat] = useState<string>('');
+  const [width, setWidth] = useState<string>('');
+  const [height, setHeight] = useState<string>('');
+  const [pdfWidth, setPdfWidth] = useState<string>('');
+  const [pdfHeight, setPdfHeight] = useState<string>('');
 
-const InfoView: React.FC<InfoViewProps> = ({
-  client,
-  setClient,
-  name,
-  setName,
-  productType,
-  setProductType,
-  format,
-  setFormat,
-  width,
-  setWidth,
-  height,
-  setHeight,
-  pdfWidth,
-  setPdfWidth,
-  pdfHeight,
-  setPdfHeight,
-  handleSave,
-}) => {
+  const handleSave = () => {
+    console.log('Zapisałeś');
+  };
+
   return (
     <Box>
       <FormControl fullWidth margin="normal">
