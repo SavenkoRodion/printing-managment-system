@@ -1,7 +1,8 @@
+import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
-const AuthorizedComponent = ({ children }: { children: JSX.Element }) => {
+const AuthorizedComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ const AuthorizedComponent = ({ children }: { children: JSX.Element }) => {
       e.status === 200 ? setIsLoading(false) : navigate("/");
     });
   }, [navigate]);
-  return <>{isLoading ? "Loading..." : children}</>;
+  return <>{isLoading ? <Typography>Loading...</Typography> : <Outlet />}</>;
 };
 
 export default AuthorizedComponent;

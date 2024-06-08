@@ -6,10 +6,9 @@ import Login from "./components/login/Login.tsx";
 import PasswordReset from "./components/password/password";
 import BaselineLayout from "./components/layouts/BaselineLayout";
 import Editor from "./components/editor/Editor";
-import {
-  AuthorizedExampleOneWrapped,
-  AuthorizedExampleTwoWrapped,
-} from "./authorizationWrappers/AuthorizedComponents.tsx";
+import AuthorizedExampleOne from "./components/authorized-example/AuthorizedExampleOne.tsx";
+import AuthorizedExampleTwo from "./components/authorized-example/AuthorizedExampleTwo.tsx";
+import AuthorizedComponent from "./authorizationWrappers/AuthorizedComponent.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -17,19 +16,22 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route path="/" element={<BaselineLayout />}>
           <Route path="/" element={<LoginLayout />}>
-            <Route index element={<Login />} />
-            <Route path="/password" element={<PasswordReset />} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/authorized-example-one"
-              element={<AuthorizedExampleOneWrapped />}
-            />
-            <Route
-              path="/authorized-example-two"
-              element={<AuthorizedExampleTwoWrapped />}
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/editor" element={<Editor />} />
+            <Route element={<AuthorizedComponent />}>
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/authorized-example-one"
+                element={<AuthorizedExampleOne />}
+              />
+              <Route
+                path="/authorized-example-two"
+                element={<AuthorizedExampleTwo />}
+              />
+              <Route path="/editor" element={<Editor />} />
+            </Route>
+            <Route>
+              <Route index element={<Login />} />
+              <Route path="/password" element={<PasswordReset />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
