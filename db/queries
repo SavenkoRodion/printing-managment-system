@@ -1,0 +1,13 @@
+// Tworzenie tymczasowej tabeli na bazie, z przykładowymi danymi do testowania
+NIE JEST TO OSTATECZNA WERSJA TABELI - BĘDĄ ZMIANY
+
+CREATE TABLE uzytkownicy_nowa (
+    id int primary key auto_increment,
+    uid varchar(255),
+    imie varchar(30),
+    data_utworzenia varchar(20),
+    haslo varchar(100)
+);
+
+INSERT INTO uzytkownicy_nowa (id, uid, imie, data_utworzenia, haslo) 
+VALUES (1, '1', 'Adrian', '04.05.2024', 'Haslo');

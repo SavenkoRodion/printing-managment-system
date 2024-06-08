@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginLayout from "./components/layouts/LoginLayout.tsx";
 import Login from "./components/login/Login.tsx";
 import PasswordReset from "./components/password/password";
-import BaselineLayout from "./components/layouts/BaselineLayout.tsx";
+import BaselineLayout from "./components/layouts/BaselineLayout";
+import Editor from "./components/editor/Editor";
 import {
   AuthorizedExampleOneWrapped,
   AuthorizedExampleTwoWrapped,
@@ -27,6 +28,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               path="/authorized-example-two"
               element={<AuthorizedExampleTwoWrapped />}
             />
+            <Route path="/login" element={<Login />} />
+            <Route path="/editor" element={<Editor />} />
           </Route>
         </Route>
       </Routes>

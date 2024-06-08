@@ -12,8 +12,9 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.15",
-    "js-cookie": "^3.0.5",
+    "@mui/x-data-grid": "^6.20.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0"
@@ -29,6 +30,6 @@
     "eslint-plugin-react-refresh": "^0.4.6",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
-    "vite-plugin-mkcert": "^1.10.1"
+    "vite-plugin-mkcert": "^1.17.5"
   }
 }
