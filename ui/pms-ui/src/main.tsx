@@ -2,13 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginLayout from "./components/layouts/LoginLayout.tsx";
-import Login from "./components/login/Login.tsx";
-import PasswordReset from "./components/password/password";
+import Login from "./pages/login/Login.tsx";
 import BaselineLayout from "./components/layouts/BaselineLayout";
-import Editor from "./components/editor/Editor";
 import AuthorizedExampleOne from "./components/authorized-example/AuthorizedExampleOne.tsx";
 import AuthorizedExampleTwo from "./components/authorized-example/AuthorizedExampleTwo.tsx";
 import AuthorizedComponent from "./authorizationWrappers/AuthorizedComponent.tsx";
+import Editor from "./pages/editor/Editor.tsx";
+import PasswordReset from "./pages/password/Password.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

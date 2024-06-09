@@ -1,4 +1,6 @@
-const wrapper: React.CSSProperties = {
+import { SxProps } from "@mui/material";
+
+const wrapper: SxProps = {
   padding: "45px 15px 0",
   display: "flex",
   justifyContent: "center",
@@ -7,18 +9,18 @@ const wrapper: React.CSSProperties = {
   gap: "15px",
 };
 
-const headerTextLine1: React.CSSProperties = {
+const headerTextLine1: SxProps = {
   fontSize: "24px",
   fontWeight: "100",
   margin: "0 auto",
 };
-const headerTextLine2: React.CSSProperties = {
+const headerTextLine2: SxProps = {
   fontSize: "21px",
   fontWeight: "300",
   margin: "0 auto",
 };
 
-const loginImage: React.CSSProperties = {
+const loginImage: SxProps = {
   height: "84px",
   width: "92px",
   margin: "0 auto",

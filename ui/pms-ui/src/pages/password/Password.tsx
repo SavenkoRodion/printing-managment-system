@@ -1,17 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
-import { useEffect } from "react";
 
 const PasswordReset = () => {
-  useEffect(() => {
-    console.log(
-      fetch("https://localhost:7017/WeatherForecast").then((response) => {
-        response.json().then((data) => {
-          console.log(data);
-        });
-      })
-    );
-  }, []);
-
   return (
     <Box
       component="form"
