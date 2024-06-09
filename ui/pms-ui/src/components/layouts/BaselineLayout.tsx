@@ -3,13 +3,7 @@ import { Outlet } from "react-router-dom";
 
 const BaselineLayout = () => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        fontFamily: "'Open Sans', sans-serif",
-      }}
-    >
+    <Box>
       <CssBaseline />
       <>
         <Outlet />

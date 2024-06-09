@@ -26,7 +26,7 @@ public class CookieAuthService(IUserRepository<Admin> adminRepository) : IAuthSe
 
         var authProperties = new AuthenticationProperties
         {
-            ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(30),
+            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(300),
             IsPersistent = true,
         };
 
