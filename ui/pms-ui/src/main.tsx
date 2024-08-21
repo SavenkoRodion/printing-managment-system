@@ -9,6 +9,7 @@ import Editor from "./components/editor/Editor";
 import AuthorizedExampleOne from "./components/authorized-example/AuthorizedExampleOne.tsx";
 import AuthorizedExampleTwo from "./components/authorized-example/AuthorizedExampleTwo.tsx";
 import AuthorizedComponent from "./authorizationWrappers/AuthorizedComponent.tsx";
+import Product from "./components/products/Products.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -26,6 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 path="/authorized-example-two"
                 element={<AuthorizedExampleTwo />}
               />
+              <Route path="/produkty" element={<Product />} />
               <Route path="/editor" element={<Editor />} />
             </Route>
             <Route>

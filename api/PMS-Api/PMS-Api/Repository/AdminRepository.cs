@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PMS_Api.Interfaces;
 using PMS_Api.Model.Scaffold;
+using Admin = PMS_Api.Model.Entities.Admin;
 
 namespace PMS_Api.Repository;
 

@@ -1,8 +1,9 @@
-﻿using PMS_Api.Interfaces;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PMS_Api.Model.Scaffold;
 
-public partial class Admin : IUser
+public partial class Admin
 {
     public string Uuid { get; set; } = null!;
 

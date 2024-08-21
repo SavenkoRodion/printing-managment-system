@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PMS_Api.Interfaces;
+using PMS_Api.Model.Entities;
 using PMS_Api.Model.Requests;
-using PMS_Api.Model.Scaffold;
 
 namespace PMS_Api.Controllers
 {

@@ -13,3 +13,6 @@ CREATE TABLE `admins` (
 /*3 - stwórz testowego admina, hasło póki nie szyfrowane */
 
 INSERT INTO `admins` VALUE (UUID(), 'Test User', 'testemail@gmail.com', 'password')
+
+/*4 - stwórz tabele z produktami*/
+CREATE TABLE products (id int , name varchar(255), dateOfCreation datetime)
