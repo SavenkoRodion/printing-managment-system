@@ -1,8 +1,8 @@
 ﻿using PMS_Api.Interfaces;
 
-namespace PMS_Api.Model.Entities;
+namespace PMS_Api.Model.Scaffold;
 
-public class Admin : Scaffold.Admin, IUser
+public partial class Admin : IUser
 {
 
 };
