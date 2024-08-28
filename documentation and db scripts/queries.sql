@@ -15,4 +15,4 @@ CREATE TABLE `admins` (
 INSERT INTO `admins` VALUE (UUID(), 'Test User', 'testemail@gmail.com', 'password')
 
 /*4 - stwórz tabele z produktami*/
-CREATE TABLE products (id int , name varchar(255), dateOfCreation datetime)
+CREATE TABLE products (id int NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, dateOfCreation datetime NOT NULL, primary key (id))

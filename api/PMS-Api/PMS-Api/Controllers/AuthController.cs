@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PMS_Api.Interfaces;
-using PMS_Api.Model.Entities;
 using PMS_Api.Model.Requests;
+using PMS_Api.Model.Scaffold;
 
 namespace PMS_Api.Controllers
 {
+    [Authorize]
     [Route("api/auth")]
     [ApiController]
     public class AuthController(IAuthService authService, IUserRepository<Admin> adminRepository) : ControllerBase
     {
-
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult> LoginAsync([FromBody] AuthenticateAdminRequest request, CancellationToken cancellationToken)
         {
@@ -21,6 +22,7 @@ namespace PMS_Api.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost("logout")]
         public async Task<ActionResult> LogoutAsync()
         {
@@ -29,7 +31,7 @@ namespace PMS_Api.Controllers
             return Ok();
         }
 
-        [Authorize]
+
         [HttpGet("who-am-i")]
         public async Task<Admin?> WhoAmIAsync(CancellationToken cancellationToken)
         {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using PMS_Api.Interfaces;
-using PMS_Api.Model.Entities;
 using PMS_Api.Model.Requests;
+using PMS_Api.Model.Scaffold;
 using System.Security.Claims;
 
 namespace PMS_Api.Service;
@@ -26,7 +26,7 @@ public class CookieAuthService(IUserRepository<Admin> adminRepository) : IAuthSe
 
         var authProperties = new AuthenticationProperties
         {
-            ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(30),
+            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
             IsPersistent = true,
         };
 

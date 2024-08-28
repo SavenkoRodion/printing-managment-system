@@ -39,14 +39,14 @@ public partial class PmsContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("products");
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
 
+            entity.ToTable("products");
+
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DateOfCreation)
                 .HasColumnType("datetime")
                 .HasColumnName("dateOfCreation");
-            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
