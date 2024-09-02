@@ -11,7 +11,7 @@ namespace PMS_Api.Controllers;
 [ApiController]
 public class ProductController(IProductRepository repository)
 {
-    [HttpGet("/")]
+    [HttpGet]
     public async Task<IReadOnlyList<Product>> GetAsync(CancellationToken cancellationToken)
     {
         return await repository.GetAllAsync(cancellationToken);
