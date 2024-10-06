@@ -4,7 +4,7 @@ import getAxiosClient from "../../utility/getAxiosClient";
 import { useEffect, useState } from "react";
 import Product from "../../model/Product";
 import styles from "./Products.style";
-import CreateProductModal from "./CreateProductDialog";
+import CreateProductModal from "./Dialogs/CreateProductDialog/CreateProductDialog";
 
 const ProductPage = () => {
   const [products, setProducts] = useState<Product[]>([]);

@@ -56,7 +56,7 @@ const ProductList = ({ rows }: ProductListProps) => {
         checkboxSelection={false}
         disableColumnMenu
         pageSizeOptions={[]}
-      ></DataGrid>
+      />
     </Box>
   );
 };
