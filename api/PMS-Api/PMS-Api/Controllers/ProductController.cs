@@ -11,13 +11,13 @@ namespace PMS_Api.Controllers;
 [ApiController]
 public class ProductController(IProductRepository repository)
 {
-    [HttpGet("/")]
+    [HttpGet]
     public async Task<IReadOnlyList<Product>> GetAsync(CancellationToken cancellationToken)
     {
         return await repository.GetAllAsync(cancellationToken);
     }
 
-    [HttpPost("/")]
+    [HttpPost]
     public async Task<bool> CreateAsync([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
     {
         return await repository.CreateAsync(request.ProductName, cancellationToken);
