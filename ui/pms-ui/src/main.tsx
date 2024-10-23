@@ -9,7 +9,9 @@ import Editor from "./components/editor/Editor";
 import AuthorizedExampleOne from "./components/authorized-example/AuthorizedExampleOne.tsx";
 import AuthorizedExampleTwo from "./components/authorized-example/AuthorizedExampleTwo.tsx";
 import AuthorizedComponent from "./authorizationWrappers/AuthorizedComponent.tsx";
+import AuthorizedMenu from "./components/layouts/AuthorizedMenuLayout.tsx";
 import ProductPage from "./components/products/Products.tsx";
+import ProjectList from "./components/products/ProjectList.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -27,17 +29,17 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 path="/authorized-example-two"
                 element={<AuthorizedExampleTwo />}
               />
-
               <Route path="/editor" element={<Editor />} />
             </Route>
+
             <Route>
               <Route index element={<Login />} />
               <Route path="/password" element={<PasswordReset />} />
             </Route>
           </Route>
-          <Route element={<AuthorizedComponent />}>
-            <Route path="/produkty" element={<ProductPage />} />
-          </Route>
+        </Route>
+        <Route element={<AuthorizedMenu />}>
+          <Route path="/projects" element={<ProjectList />} />
         </Route>
       </Routes>
     </BrowserRouter>
