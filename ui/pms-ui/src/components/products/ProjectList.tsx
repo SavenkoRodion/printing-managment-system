@@ -127,38 +127,6 @@ const ProjectSelector = () => {
     },
   ];
 
-  const ActionButtons = ({ rowId }: { rowId: number }) => (
-    <Box display="flex" justifyContent="center" width="100%">
-      <Button
-        size="small"
-        variant="contained"
-        color="primary"
-        onClick={() => handleEdit(rowId)}
-        style={{ margin: "0 5px" }}
-      >
-        Edytuj
-      </Button>
-      <Button
-        size="small"
-        variant="contained"
-        color="secondary"
-        onClick={() => handleCopy(rowId)}
-        style={{ margin: "0 5px" }}
-      >
-        Kopiuj
-      </Button>
-      <Button
-        size="small"
-        variant="contained"
-        color="error"
-        onClick={() => handleDelete(rowId)}
-        style={{ margin: "0 5px" }}
-      >
-        Usuń
-      </Button>
-    </Box>
-  );
-
   const handleEdit = useCallback((id: number) => {
     console.log(`Edit product with id: ${id}`);
   }, []);
