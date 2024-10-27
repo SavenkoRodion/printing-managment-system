@@ -38,14 +38,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="/password" element={<PasswordReset />} />
             </Route>
           </Route>
-        </Route>
-        <Route element={<AuthorizedMenu />}>
-          <Route path="/projects" element={<ProjectList />} />
 
-          <Route element={<AuthorizedComponent />}>
-            <Route path="/produkty" element={<ProductPage />} />
+          <Route element={<AuthorizedMenu />}>
+            <Route element={<AuthorizedComponent />}>
+              <Route path="/produkty" element={<ProductPage />} />
+            </Route>
+            <Route path="/projects" element={<ProjectList />} />
+
+            <Route path="/parametry" element={<Params />} />
           </Route>
-          <Route path="/parametry" element={<Params />} />
         </Route>
       </Routes>
     </BrowserRouter>

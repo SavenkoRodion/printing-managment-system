@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PMS_Api.Model.Scaffold;
+using PMS_Api.Model.DbModel;
 
 namespace PMS_Api.Repository;
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using PMS_Api.Interfaces;
+using PMS_Api.Model.DbModel;
 using PMS_Api.Model.Requests;
-using PMS_Api.Model.Scaffold;
 using System.Security.Claims;
 
 namespace PMS_Api.Service;
@@ -19,7 +19,7 @@ public class CookieAuthService(IUserRepository<Admin> adminRepository) : IAuthSe
             return false;
         }
 
-        var claims = new List<Claim> { new("Uuid", user.Uuid) };
+        var claims = new List<Claim> { new("Uuid", user.Uuid.ToString()) };
 
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme);
