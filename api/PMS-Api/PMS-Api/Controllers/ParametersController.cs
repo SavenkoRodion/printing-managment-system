@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PMS_Api.Model.Scaffold;
+using PMS_Api.Model.DbModel;
 
 namespace PMS_Api.Controllers;
 

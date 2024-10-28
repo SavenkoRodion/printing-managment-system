@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using PMS_Api.Interfaces;
-using PMS_Api.Model.Scaffold;
 using PMS_Api.Repository;
 using PMS_Api.Service;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using PMS_Api.Model.DbModel;
 
 var MyAllowSpecificOrigins = "devStageOrigins";
 
@@ -38,7 +40,8 @@ builder.Services.AddCors(options =>
                       });
 });
 
-builder.Services.AddDbContext<PmsContext>();
+builder.Services.AddDbContext<PmsContext>(
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("PmsContext")));
 
 builder.Services.AddControllers();
 

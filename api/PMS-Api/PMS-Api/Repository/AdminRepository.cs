@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PMS_Api.Interfaces;
-using PMS_Api.Model.Scaffold;
+using PMS_Api.Model.DbModel;
 
 namespace PMS_Api.Repository;
 
@@ -13,5 +13,5 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
         => await context.Admins.FirstOrDefaultAsync(x => x.Email == email && x.Password == password, cancellationToken);
 
     public async Task<Admin?> GetByUuid(string uuid, CancellationToken cancellationToken)
-        => await context.Admins.FirstOrDefaultAsync(x => x.Uuid == uuid, cancellationToken);
+        => await context.Admins.FirstOrDefaultAsync(x => x.Uuid == Guid.Parse(uuid), cancellationToken);
 }

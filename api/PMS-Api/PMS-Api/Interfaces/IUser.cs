@@ -2,7 +2,7 @@
 
 public interface IUser
 {
-    string Uuid { get; set; }
-    string Email { get; set; }
-    string Password { get; set; }
+    Guid Uuid { get; init; }
+    string Email { get; init; }
+    string Password { get; init; }
 }
