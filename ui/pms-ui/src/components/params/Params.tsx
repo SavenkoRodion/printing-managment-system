@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 
@@ -32,7 +32,6 @@ const Params = () => {
         setLoading(false);
       }
     };
-    
     fetchParameters();
   }, []);
 
@@ -52,7 +51,6 @@ const Params = () => {
       flex: 1,
     },
   ];
-
   if (loading) {
     return <div>Ładowanie danych</div>;
   }
@@ -60,10 +58,27 @@ const Params = () => {
   if (error) {
     return <div>Błąd {error}</div>;
   }
-
   return (
-    <Box>
-      <h1>Lista parametrów</h1>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
+        gap: 2,
+        padding: 2,
+        border: "1px solid #ddd",
+        borderRadius: 1,
+        boxShadow: 1,
+      }}
+    >
+      <Box
+        sx={{
+          paddingBottom: 2,
+          borderBottom: "1px solid #ddd",
+        }}
+      >
+        <Typography variant="h6" component="div">Lista parametrów</Typography>
+      </Box>
       <DataGrid
         rows={parameters}
         columns={columns}
@@ -72,9 +87,12 @@ const Params = () => {
         disableColumnMenu
         pageSizeOptions={[]}
         autoHeight
+        sx={{
+          width: "100%",
+          border: "none",
+        }}
       />
     </Box>
   );
 };
-
 export default Params;

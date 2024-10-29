@@ -13,6 +13,7 @@ import AuthorizedMenu from "./components/layouts/AuthorizedMenuLayout.tsx";
 import ProductPage from "./components/products/Products.tsx";
 import ProjectList from "./components/products/ProjectList.tsx";
 import Params from "./components/params/Params.tsx";
+import Users from "./components/users/users.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -24,28 +25,24 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="/login" element={<Login />} />
               <Route
                 path="/authorized-example-one"
-                element={<AuthorizedExampleOne />}
-              />
+                element={<AuthorizedExampleOne />}/>
               <Route
                 path="/authorized-example-two"
-                element={<AuthorizedExampleTwo />}
-              />
-              <Route path="/editor" element={<Editor />} />
+                element={<AuthorizedExampleTwo />}/>
             </Route>
-
             <Route>
               <Route index element={<Login />} />
               <Route path="/password" element={<PasswordReset />} />
             </Route>
           </Route>
-
-          <Route element={<AuthorizedMenu />}>
-            <Route element={<AuthorizedComponent />}>
-              <Route path="/produkty" element={<ProductPage />} />
-            </Route>
-            <Route path="/projects" element={<ProjectList />} />
-
-            <Route path="/parametry" element={<Params />} />
+        </Route>
+        <Route element={<AuthorizedComponent />}>
+        <Route element={<AuthorizedMenu />}>
+               <Route path="/projects" element={<ProjectList />} />
+               <Route path="/editor" element={<Editor />} />
+               <Route path="/produkty" element={<ProductPage />} />
+               <Route path="/parametry" element={<Params />} />
+               <Route path="/users" element={<Users />} />
           </Route>
         </Route>
       </Routes>
