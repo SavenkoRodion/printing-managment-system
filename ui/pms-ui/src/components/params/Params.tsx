@@ -77,7 +77,7 @@ const Params = () => {
           borderBottom: "1px solid #ddd",
         }}
       >
-        <Typography variant="h6" component="div">Lista parametrów</Typography>
+        <Typography variant="h6" >Lista parametrów</Typography>
       </Box>
       <DataGrid
         rows={parameters}
@@ -88,7 +88,6 @@ const Params = () => {
         pageSizeOptions={[]}
         autoHeight
         sx={{
-          width: "100%",
           border: "none",
         }}
       />

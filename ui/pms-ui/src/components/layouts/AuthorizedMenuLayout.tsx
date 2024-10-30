@@ -98,7 +98,7 @@ const AuthorizedMenuLayout = () => {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ width: "100%", maxWidth: "1200px", paddingTop: "100px", paddingX: 2 }}>
+      <Box sx={{ width: "100%", maxWidth: "1200px", paddingTop: "100px"}}>
         <Outlet />
       </Box>
     </Box>
