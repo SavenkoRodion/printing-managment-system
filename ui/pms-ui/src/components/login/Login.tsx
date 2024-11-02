@@ -28,7 +28,7 @@ const Login = () => {
         const errorText = await response.text();
         throw new Error(errorText);
       }
-      navigate("/authorized-example-one");
+      navigate("/users");
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);

@@ -23,7 +23,7 @@ const PasswordReset = () => {
       }}
     >
       <TextField
-        label="Wprowadź E-Mail Twojego konta"
+        label="Wprowadź e-mail Twojego konta w celu resetu hasła"
         variant="outlined"
         fullWidth
         size="small"

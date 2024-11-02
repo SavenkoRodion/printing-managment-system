@@ -59,7 +59,7 @@ const AuthorizedMenuLayout = () => {
             <Link component={RouterLink} to="/pomoc" underline="none" color="inherit">
               Pomoc
             </Link>
-            <Link component={RouterLink} to="/dashboard" underline="none" color="inherit">
+            <Link component={RouterLink} to="/users" underline="none" color="inherit">
               Dashboard
             </Link>
           </Box>
@@ -98,7 +98,7 @@ const AuthorizedMenuLayout = () => {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ paddingTop: "100px" }}>
+      <Box sx={{ width: "100%", maxWidth: "1200px", paddingTop: "100px"}}>
         <Outlet />
       </Box>
     </Box>
