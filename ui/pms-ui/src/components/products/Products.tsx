@@ -6,6 +6,7 @@ import Product from "../../model/Product";
 import styles from "./Products.style";
 import CreateProductDialog from "./Dialogs/CreateProductDialog/CreateProductDialog";
 import DeleteProductDialog from "./Dialogs/DeleteProductDialog/DeleteProductDialog";
+import EditProductDialog from "./Dialogs/EditProductDialog/EditProductDialog";
 
 const ProductPage = () => {
   const client = getAxiosClient();
@@ -13,21 +14,46 @@ const ProductPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [dialogProductName, setDialogProductName] = useState<string>("");
-  const [dialogProductId, setDialogProductId] = useState<number | undefined>(
-    undefined
-  );
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const [deleteDialogProductName, setDeleteDialogProductName] =
+    useState<string>("");
+  const [deleteDialogProductId, setDeleteDialogProductId] = useState<
+    number | undefined
+  >(undefined);
+
+  const [editDialogProductId, setEditDialogProductId] = useState<
+    number | undefined
+  >(undefined);
+  const [editDialogProductName, setEditDialogProductName] = useState("");
 
   const handleDeleteDialogOpen = (productId: number, productName: string) => {
-    setDialogProductId(productId);
-    setDialogProductName(productName);
+    setDeleteDialogProductId(productId);
+    setDeleteDialogProductName(productName);
     setIsDeleteDialogOpen(true);
   };
 
+  const handleEditDialogOpen = (productId: number, productName: string) => {
+    setEditDialogProductId(productId);
+    setEditDialogProductName(productName);
+    setIsEditDialogOpen(true);
+  };
+
   const handleDelete = () => {
-    client.delete<boolean>(`product/${dialogProductId}`).then((res) => {
+    client.delete<boolean>(`product/${deleteDialogProductId}`).then((res) => {
       res.data ? window.location.reload() : alert("fail");
     });
+  };
+
+  const handleUpdate = () => {
+    client
+      .put<boolean>("product", {
+        Id: editDialogProductId,
+        Name: editDialogProductName,
+      })
+      .then((res) => {
+        res.data ? window.location.reload() : alert("fail");
+      });
   };
 
   useEffect(() => {
@@ -39,6 +65,7 @@ const ProductPage = () => {
       <ProductList
         rows={products}
         handleDeleteDialogOpen={handleDeleteDialogOpen}
+        handleEditDialogOpen={handleEditDialogOpen}
       />
       <Button
         variant={"contained"}
@@ -54,9 +81,16 @@ const ProductPage = () => {
       <DeleteProductDialog
         isOpen={isDeleteDialogOpen}
         handleClose={() => setIsDeleteDialogOpen(false)}
-        productName={dialogProductName}
+        productName={deleteDialogProductName}
         handleDelete={handleDelete}
       ></DeleteProductDialog>
+      <EditProductDialog
+        isOpen={isEditDialogOpen}
+        handleClose={() => setIsEditDialogOpen(false)}
+        handleEdit={handleUpdate}
+        productName={editDialogProductName}
+        setProductName={setEditDialogProductName}
+      ></EditProductDialog>
     </Box>
   );
 };

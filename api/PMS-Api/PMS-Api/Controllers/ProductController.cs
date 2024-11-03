@@ -29,10 +29,10 @@ public class ProductController(IProductRepository repository)
         return await repository.DeleteAsync(productId, cancellationToken);
     }
 
-    [HttpPut("replace")]
+    [HttpPut]
     public async Task<bool> PutAsync(ReplaceProductRequest request, CancellationToken cancellationToken)
     {
         var originalProduct = await repository.GetFirstOrDefaultAsync(request.Id, cancellationToken);
-        return originalProduct is not null && await repository.ReplaceAsync(originalProduct, cancellationToken);
+        return originalProduct is not null && await repository.ReplaceAsync(originalProduct with { Id = request.Id, Name = request.Name }, cancellationToken);
     }
 }
