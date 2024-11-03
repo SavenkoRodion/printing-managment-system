@@ -14,7 +14,7 @@ type CreateProductModalProps = {
   handleClose: () => void;
 };
 
-const CreateProductModal = ({
+const CreateProductDialog = ({
   isOpen,
   handleClose,
 }: CreateProductModalProps) => {
@@ -34,7 +34,7 @@ const CreateProductModal = ({
       <DialogContent sx={styles.dialogContent}>
         <TextField
           size="small"
-          label="nazwa produktu"
+          label="Nazwa produktu"
           sx={styles.dialogElement}
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
@@ -52,4 +52,4 @@ const CreateProductModal = ({
   );
 };
 
-export default CreateProductModal;
+export default CreateProductDialog;

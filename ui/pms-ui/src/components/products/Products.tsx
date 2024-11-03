@@ -1,24 +1,45 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import ProductList from "./ProductList";
 import getAxiosClient from "../../utility/getAxiosClient";
 import { useEffect, useState } from "react";
 import Product from "../../model/Product";
 import styles from "./Products.style";
-import CreateProductModal from "./Dialogs/CreateProductDialog/CreateProductDialog";
+import CreateProductDialog from "./Dialogs/CreateProductDialog/CreateProductDialog";
+import DeleteProductDialog from "./Dialogs/DeleteProductDialog/DeleteProductDialog";
 
 const ProductPage = () => {
+  const client = getAxiosClient();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [dialogProductName, setDialogProductName] = useState<string>("");
+  const [dialogProductId, setDialogProductId] = useState<number | undefined>(
+    undefined
+  );
+
+  const handleDeleteDialogOpen = (productId: number, productName: string) => {
+    setDialogProductId(productId);
+    setDialogProductName(productName);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDelete = () => {
+    client.delete<boolean>(`product/${dialogProductId}`).then((res) => {
+      res.data ? window.location.reload() : alert("fail");
+    });
+  };
 
   useEffect(() => {
-    const client = getAxiosClient();
-    client.get<Product[]>("product").then((e) => setProducts(e.data));
+    client.get<Product[]>("product").then((res) => setProducts(res.data));
   }, []);
 
   return (
     <Box width={"100%"} padding={"10px 50px 0 50px"}>
-      <Typography>Product Page</Typography>
-      <ProductList rows={products} />
+      <ProductList
+        rows={products}
+        handleDeleteDialogOpen={handleDeleteDialogOpen}
+      />
       <Button
         variant={"contained"}
         sx={styles.createButton}
@@ -26,10 +47,16 @@ const ProductPage = () => {
       >
         Dodaj nowy produkt
       </Button>
-      <CreateProductModal
+      <CreateProductDialog
         isOpen={isCreateModalOpen}
         handleClose={() => setIsCreateModalOpen(false)}
-      ></CreateProductModal>
+      ></CreateProductDialog>
+      <DeleteProductDialog
+        isOpen={isDeleteDialogOpen}
+        handleClose={() => setIsDeleteDialogOpen(false)}
+        productName={dialogProductName}
+        handleDelete={handleDelete}
+      ></DeleteProductDialog>
     </Box>
   );
 };
