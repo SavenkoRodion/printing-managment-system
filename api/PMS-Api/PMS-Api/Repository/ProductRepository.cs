@@ -56,7 +56,7 @@ public class ProductRepository(PmsContext context) : IProductRepository
         try
         {
             var entity = await context.Products.FirstAsync(x => x.Id == productToBePlaced.Id, cancellationToken);
-            entity = productToBePlaced;
+            entity.Name = productToBePlaced.Name;
             await context.SaveChangesAsync(cancellationToken);
             return true;
         }

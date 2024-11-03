@@ -8,6 +8,6 @@ public record Product
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int? Id { get; init; }
-    public required string Name { get; init; }
+    public required string Name { get; set; }
     public required DateTime DateOfCreation { get; init; }
 }
