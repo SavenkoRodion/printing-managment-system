@@ -17,9 +17,22 @@ public class ProductController(IProductRepository repository)
         return await repository.GetAllAsync(cancellationToken);
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<bool> CreateAsync([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
     {
         return await repository.CreateAsync(request.ProductName, cancellationToken);
+    }
+
+    [HttpDelete("{productId}")]
+    public async Task<bool> DeleteAsync([FromRoute] int productId, CancellationToken cancellationToken)
+    {
+        return await repository.DeleteAsync(productId, cancellationToken);
+    }
+
+    [HttpPut("replace")]
+    public async Task<bool> PutAsync(ReplaceProductRequest request, CancellationToken cancellationToken)
+    {
+        var originalProduct = await repository.GetFirstOrDefaultAsync(request.Id, cancellationToken);
+        return originalProduct is not null && await repository.ReplaceAsync(originalProduct, cancellationToken);
     }
 }
