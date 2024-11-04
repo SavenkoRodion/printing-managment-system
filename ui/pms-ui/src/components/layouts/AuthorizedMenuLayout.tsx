@@ -34,7 +34,7 @@ const AuthorizedMenuLayout = () => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
             <Typography variant="h6" component="div" sx={{ marginRight: 4 }}>
               <Link component={RouterLink} to="/" underline="none" color="inherit">
-                VeraPrint
+                PrintingHouseManager
               </Link>
             </Typography>
 
@@ -44,23 +44,8 @@ const AuthorizedMenuLayout = () => {
             <Link component={RouterLink} to="/produkty-konfiguracja" underline="none" color="inherit">
               Produkty konfiguracja
             </Link>
-            <Link component={RouterLink} to="/produkty-klientow" underline="none" color="inherit">
-              Produkty klientów
-            </Link>
-            <Link component={RouterLink} to="/zamowienia" underline="none" color="inherit">
-              Zamówienia
-            </Link>
-            <Link component={RouterLink} to="/faktury" underline="none" color="inherit">
-              Faktury
-            </Link>
-            <Link component={RouterLink} to="/ustawienia" underline="none" color="inherit">
-              Ustawienia
-            </Link>
-            <Link component={RouterLink} to="/pomoc" underline="none" color="inherit">
-              Pomoc
-            </Link>
             <Link component={RouterLink} to="/users" underline="none" color="inherit">
-              Dashboard
+              Administratorzy
             </Link>
           </Box>
 
@@ -98,7 +83,7 @@ const AuthorizedMenuLayout = () => {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ width: "100%", maxWidth: "1200px", paddingTop: "100px"}}>
+      <Box sx={{ width: "100%", maxWidth: "1450px", paddingTop: "100px"}}>
         <Outlet />
       </Box>
     </Box>

@@ -13,7 +13,8 @@ public class PmsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<Admin>().HasData(new { Uuid = Guid.NewGuid(), Name="Admin", Email="testemail@test.com", Password="1234" });
+        builder.Entity<Admin>().HasData(new { Uuid = Guid.NewGuid(), Name="Admin", Email="testemail@test.com", Password="1234", createdAt="18.08.2024" });
+        builder.Entity<Admin>().HasData(new { Uuid = Guid.NewGuid(), Name="Administrator", Email="admin@test.com", Password="1234", createdAt="04.11.2024" });
     }
 
     public virtual DbSet<Admin> Admins { get; set; }
