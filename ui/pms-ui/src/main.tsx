@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </Route>
         <Route element={<AuthorizedComponent />}>
           <Route element={<AuthorizedMenu />}>
-            <Route path="/projects" element={<ProjectList />} />
+            <Route path="/produkty-klientow" element={<ProjectList />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/produkty" element={<ProductPage />} />
             <Route path="/parametry" element={<Params />} />
