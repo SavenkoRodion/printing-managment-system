@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PMS_Api.Interfaces;
 using PMS_Api.Model.DbModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PMS_Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/admin")]
     public class AdminController : ControllerBase
