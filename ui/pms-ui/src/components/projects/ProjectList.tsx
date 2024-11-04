@@ -4,13 +4,13 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { initialData, ProjectData } from "./initialData_front";
 import {
   DataGrid,
   GridCellParams,
   GridColDef,
   GridRenderCellParams,
 } from "@mui/x-data-grid";
+import { initialData, ProjectData } from "./initialData_front";
 
 const ProjectSelector = () => {
   const keys = Object.keys(initialData);

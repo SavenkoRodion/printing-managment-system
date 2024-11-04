@@ -9,9 +9,9 @@ import Editor from "./components/editor/Editor";
 import AuthorizedComponent from "./authorizationWrappers/AuthorizedComponent.tsx";
 import AuthorizedMenu from "./components/layouts/AuthorizedMenuLayout.tsx";
 import ProductPage from "./components/products/Products.tsx";
-import ProjectList from "./components/products/ProjectList.tsx";
 import Params from "./components/params/Params.tsx";
 import Users from "./components/users/Users.tsx";
+import ProjectList from "./components/projects/ProjectList.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
