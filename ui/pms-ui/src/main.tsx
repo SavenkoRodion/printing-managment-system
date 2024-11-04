@@ -9,9 +9,9 @@ import Editor from "./components/editor/Editor";
 import AuthorizedComponent from "./authorizationWrappers/AuthorizedComponent.tsx";
 import AuthorizedMenu from "./components/layouts/AuthorizedMenuLayout.tsx";
 import ProductPage from "./components/products/Products.tsx";
-import ProjectList from "./components/products/ProjectList.tsx";
 import Params from "./components/params/Params.tsx";
 import Users from "./components/users/Users.tsx";
+import ProjectList from "./components/projects/ProjectList.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -29,12 +29,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           </Route>
         </Route>
         <Route element={<AuthorizedComponent />}>
-        <Route element={<AuthorizedMenu />}>
-               <Route path="/projects" element={<ProjectList />} />
-               <Route path="/editor" element={<Editor />} />
-               <Route path="/produkty" element={<ProductPage />} />
-               <Route path="/parametry" element={<Params />} />
-               <Route path="/users" element={<Users />} />
+          <Route element={<AuthorizedMenu />}>
+            <Route path="/projects" element={<ProjectList />} />
+            <Route path="/editor" element={<Editor />} />
+            <Route path="/produkty" element={<ProductPage />} />
+            <Route path="/parametry" element={<Params />} />
+            <Route path="/users" element={<Users />} />
           </Route>
         </Route>
       </Routes>

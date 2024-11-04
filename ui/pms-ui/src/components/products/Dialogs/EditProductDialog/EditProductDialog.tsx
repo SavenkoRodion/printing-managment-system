@@ -5,32 +5,26 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import styles from "./CreateProductDialog.style";
-import { useState } from "react";
-import getAxiosClient from "../../../../utility/getAxiosClient";
+import styles from "./EditProductDialog.style";
 
-type CreateProductModalProps = {
+type EditProductDialogProps = {
   isOpen: boolean;
   handleClose: () => void;
+  handleEdit: () => void;
+  productName: string;
+  setProductName: (productName: string) => void;
 };
 
-const CreateProductDialog = ({
+const EditProductDialog = ({
   isOpen,
   handleClose,
-}: CreateProductModalProps) => {
-  const [productName, setProductName] = useState("");
-
-  const client = getAxiosClient();
-
-  const createProduct = () => {
-    client
-      .post<boolean>("product", { ProductName: productName })
-      .then(() => window.location.reload());
-  };
-
+  handleEdit,
+  productName,
+  setProductName,
+}: EditProductDialogProps) => {
   return (
     <Dialog open={isOpen} onClose={handleClose}>
-      <DialogTitle>Stwórz nowy produkt</DialogTitle>
+      <DialogTitle>Edycja produktu</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         <TextField
           size="small"
@@ -43,13 +37,13 @@ const CreateProductDialog = ({
           size="small"
           variant="contained"
           sx={styles.dialogElement}
-          onClick={createProduct}
+          onClick={handleEdit}
         >
-          Stwórz
+          Edytuj
         </Button>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default CreateProductDialog;
+export default EditProductDialog;

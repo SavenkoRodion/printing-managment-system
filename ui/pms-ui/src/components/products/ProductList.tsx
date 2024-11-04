@@ -4,9 +4,15 @@ import Product from "../../model/Product";
 
 type ProductListProps = {
   rows: Product[];
+  handleDeleteDialogOpen: (productId: number, productName: string) => void;
+  handleEditDialogOpen: (productId: number, productName: string) => void;
 };
 
-const ProductList = ({ rows }: ProductListProps) => {
+const ProductList = ({
+  rows,
+  handleDeleteDialogOpen,
+  handleEditDialogOpen,
+}: ProductListProps) => {
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -39,10 +45,24 @@ const ProductList = ({ rows }: ProductListProps) => {
       disableColumnMenu: true,
       disableExport: true,
       disableReorder: true,
-      renderCell: () => (
+      renderCell: (params) => (
         <Box>
-          <Button>Edytuj</Button>
-          <Button>Usun</Button>
+          <Button
+            onClick={() => {
+              const product = rows[(params.rowNode.id as number) - 1];
+              handleEditDialogOpen(product.id, product.name);
+            }}
+          >
+            Edytuj
+          </Button>
+          <Button
+            onClick={() => {
+              const product = rows[(params.rowNode.id as number) - 1];
+              handleDeleteDialogOpen(product.id, product.name);
+            }}
+          >
+            Usun
+          </Button>
         </Box>
       ),
     },
@@ -55,7 +75,7 @@ const ProductList = ({ rows }: ProductListProps) => {
         rowSelection={false}
         checkboxSelection={false}
         disableColumnMenu
-        pageSizeOptions={[]}
+        pageSizeOptions={[10]}
       />
     </Box>
   );
