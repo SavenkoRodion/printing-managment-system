@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PMS_Api.Model.DbModel;
 
@@ -11,9 +12,11 @@ using PMS_Api.Model.DbModel;
 namespace PMS_Api.Migrations
 {
     [DbContext(typeof(PmsContext))]
-    partial class PmsContextModelSnapshot : ModelSnapshot
+    [Migration("20241104223238_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,16 +53,16 @@ namespace PMS_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Uuid = new Guid("a86e8efd-ebf7-43a4-950c-3398d232de1b"),
-                            CreatedAt = new DateOnly(2024, 11, 4),
+                            Uuid = new Guid("6b9957e6-6465-4cc4-a481-b699bbbe331e"),
+                            CreatedAt = new DateOnly(2024, 8, 18),
                             Email = "testemail@test.com",
                             Name = "Admin",
                             Password = "1234"
                         },
                         new
                         {
-                            Uuid = new Guid("6b9957e6-6465-4cc4-a481-b699bbbe331e"),
-                            CreatedAt = new DateOnly(2024, 7, 4),
+                            Uuid = new Guid("40abfad9-6365-43c1-a7a6-66c933fb0018"),
+                            CreatedAt = new DateOnly(2024, 11, 4),
                             Email = "admin@test.com",
                             Name = "Administrator",
                             Password = "1234"

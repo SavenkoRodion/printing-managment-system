@@ -22,7 +22,6 @@ const Params = () => {
         const data = await response.json();
         setParameters(data);
       } catch (err) {
-
         if (err instanceof Error) {
           setError(err.message);
         } else {
@@ -77,7 +76,7 @@ const Params = () => {
           borderBottom: "1px solid #ddd",
         }}
       >
-        <Typography variant="h6" >Lista parametrów</Typography>
+        <Typography variant="h6">Lista parametrów</Typography>
       </Box>
       <DataGrid
         rows={parameters}

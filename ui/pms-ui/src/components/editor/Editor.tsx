@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Container, Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import InfoView from './InfoView';
-import EditorView from './EditorView';
-import { View } from './views';
+import React, { useState } from "react";
+import { Container, Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import InfoView from "./InfoView";
+import EditorView from "./EditorView";
+import { View } from "./views";
 
 const App = () => {
   const [view, setView] = useState<View>(View.Info);
