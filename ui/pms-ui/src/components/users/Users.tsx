@@ -2,24 +2,33 @@ import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import getAxiosClient from "../../utility/getAxiosClient";
+import Admin from "../../model/Admin";
 
-interface Admin {
-  id: number;
-  email: string;
-  createdAt: string;
-}
 const Users = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
 
   useEffect(() => {
     const client = getAxiosClient();
-    client.get<Admin[]>("admin").then((response) => {setAdmins(response.data); 
-      })
+    client.get<Admin[]>("admin").then((response) => {
+      setAdmins(response.data);
+    });
   }, []);
 
   const columns: GridColDef[] = [
-    { field: "email", headerName: "Email", flex: 0.6, align: "center", headerAlign: "center" },
-    { field: "createdAt", headerName: "Data utworzenia", flex: 0.5, align: "center", headerAlign: "center" },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 0.6,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "createdAt",
+      headerName: "Data utworzenia",
+      flex: 0.5,
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "actions",
       headerName: "Edycja",
@@ -28,10 +37,18 @@ const Users = () => {
       headerAlign: "center",
       renderCell: () => (
         <Box sx={{ display: "flex", gap: 1 }}>
-          <Button variant="outlined" size="small">Edytuj</Button>
-          <Button variant="outlined" size="small">Uprawnienia</Button>
-          <Button variant="outlined" size="small">Zmień hasło</Button>
-          <Button variant="outlined" size="small" color="error">Usuń</Button>
+          <Button variant="outlined" size="small">
+            Edytuj
+          </Button>
+          <Button variant="outlined" size="small">
+            Uprawnienia
+          </Button>
+          <Button variant="outlined" size="small">
+            Zmień hasło
+          </Button>
+          <Button variant="outlined" size="small" color="error">
+            Usuń
+          </Button>
         </Box>
       ),
     },
@@ -60,7 +77,9 @@ const Users = () => {
         }}
       >
         <Typography variant="h6">Lista użytkowników</Typography>
-        <Button variant="contained" color="primary">Nowy użytkownik</Button>
+        <Button variant="contained" color="primary">
+          Nowy użytkownik
+        </Button>
       </Box>
 
       <DataGrid

@@ -29,12 +29,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           </Route>
         </Route>
         <Route element={<AuthorizedComponent />}>
-        <Route element={<AuthorizedMenu />}>
-               <Route path="/projects" element={<ProjectList />} />
-               <Route path="/editor" element={<Editor />} />
-               <Route path="/produkty" element={<ProductPage />} />
-               <Route path="/parametry" element={<Params />} />
-               <Route path="/users" element={<Users />} />
+          <Route element={<AuthorizedMenu />}>
+            <Route path="/projects" element={<ProjectList />} />
+            <Route path="/editor" element={<Editor />} />
+            <Route path="/produkty" element={<ProductPage />} />
+            <Route path="/parametry" element={<Params />} />
+            <Route path="/users" element={<Users />} />
           </Route>
         </Route>
       </Routes>

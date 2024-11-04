@@ -12,7 +12,7 @@ using PMS_Api.Model.DbModel;
 namespace PMS_Api.Migrations
 {
     [DbContext(typeof(PmsContext))]
-    [Migration("20241104182446_test")]
+    [Migration("20241104223238_test")]
     partial class test
     {
         /// <inheritdoc />
@@ -31,6 +31,9 @@ namespace PMS_Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateOnly>("CreatedAt")
+                        .HasColumnType("date");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -43,10 +46,6 @@ namespace PMS_Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("createdAt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Uuid");
 
                     b.ToTable("Admins");
@@ -54,19 +53,19 @@ namespace PMS_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Uuid = new Guid("6162e909-a5ca-40b9-a4fe-e9bac2607891"),
+                            Uuid = new Guid("6b9957e6-6465-4cc4-a481-b699bbbe331e"),
+                            CreatedAt = new DateOnly(2024, 8, 18),
                             Email = "testemail@test.com",
                             Name = "Admin",
-                            Password = "1234",
-                            createdAt = "18.08.2024"
+                            Password = "1234"
                         },
                         new
                         {
-                            Uuid = new Guid("ed2e192a-2e42-471f-af8f-41c9c09ddf29"),
+                            Uuid = new Guid("40abfad9-6365-43c1-a7a6-66c933fb0018"),
+                            CreatedAt = new DateOnly(2024, 11, 4),
                             Email = "admin@test.com",
                             Name = "Administrator",
-                            Password = "1234",
-                            createdAt = "04.11.2024"
+                            Password = "1234"
                         });
                 });
 

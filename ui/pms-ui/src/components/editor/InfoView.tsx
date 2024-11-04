@@ -1,18 +1,26 @@
-import { useState } from 'react';
-import { FormControl, TextField, Button, Select, MenuItem, InputLabel, Box } from '@mui/material';
+import { useState } from "react";
+import {
+  FormControl,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  Box,
+} from "@mui/material";
 
 const InfoView = () => {
-  const [client, setClient] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [productType, setProductType] = useState<string>('');
-  const [format, setFormat] = useState<string>('');
-  const [width, setWidth] = useState<string>('');
-  const [height, setHeight] = useState<string>('');
-  const [pdfWidth, setPdfWidth] = useState<string>('');
-  const [pdfHeight, setPdfHeight] = useState<string>('');
+  const [client, setClient] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [productType, setProductType] = useState<string>("");
+  const [format, setFormat] = useState<string>("");
+  const [width, setWidth] = useState<string>("");
+  const [height, setHeight] = useState<string>("");
+  const [pdfWidth, setPdfWidth] = useState<string>("");
+  const [pdfHeight, setPdfHeight] = useState<string>("");
 
   const handleSave = () => {
-    console.log('Zapisałeś');
+    console.log("Zapisałeś");
   };
 
   return (
@@ -34,7 +42,9 @@ const InfoView = () => {
       </FormControl>
 
       <FormControl fullWidth margin="normal" sx={{ minWidth: 200 }}>
-        <InputLabel id="product-type-label" sx={{ marginBottom: 1 }}>Rodzaj produktu</InputLabel>
+        <InputLabel id="product-type-label" sx={{ marginBottom: 1 }}>
+          Rodzaj produktu
+        </InputLabel>
         <Select
           labelId="product-type-label"
           value={productType}
@@ -48,7 +58,9 @@ const InfoView = () => {
       </FormControl>
 
       <FormControl fullWidth margin="normal" sx={{ minWidth: 200 }}>
-        <InputLabel id="format-label" sx={{ marginBottom: 1 }}>Format</InputLabel>
+        <InputLabel id="format-label" sx={{ marginBottom: 1 }}>
+          Format
+        </InputLabel>
         <Select
           labelId="format-label"
           value={format}
