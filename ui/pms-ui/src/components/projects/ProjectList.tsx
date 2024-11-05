@@ -1,26 +1,40 @@
 import { useState, useCallback } from "react";
-import { Box, Button, Checkbox } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { initialData, ProjectData } from "./initialData_front";
 import {
-  DataGrid,
-  GridCellParams,
-  GridColDef,
-  GridRenderCellParams,
-} from "@mui/x-data-grid";
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Tabs,
+  Tab,
+} from "@mui/material";
+import { DataGrid, GridColDef, GridCellParams } from "@mui/x-data-grid";
+import { initialData, ProjectData } from "./initialData_front";
+import RenderCheckBox from "./RenderCheckBox";
+import { a11yProps } from "./utils";
 
 const ProjectSelector = () => {
   const keys = Object.keys(initialData);
   const [currentProject, setCurrentProject] = useState<string>("");
   const [dataGridRows, setDataGridRows] = useState<ProjectData[]>([]);
+  const [tabData, setTabData] = useState<{ [key: number]: ProjectData[] }>({
+    0: [], // Data Wzorce firmowe
+    1: [], // Data Projekty zapisane
+  });
+  const [value, setValue] = useState(0);
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = (event: SelectChangeEvent<string>) => {
     const selectedProject = event.target.value as string;
     setCurrentProject(selectedProject);
+
     setDataGridRows(initialData[selectedProject] || []);
+  };
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+    setDataGridRows(tabData[newValue] || []);
   };
 
   const columns: GridColDef[] = [
@@ -53,24 +67,12 @@ const ProjectSelector = () => {
       headerAlign: "center",
     },
     {
-      field: "aktywnyUpload",
-      headerName: "Aktywny upload",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params: GridRenderCellParams) => (
-        <RenderCheckBox {...params} />
-      ),
-    },
-    {
       field: "czyEdytowalny",
       headerName: "Czy edytowalny",
       width: 150,
       align: "center",
       headerAlign: "center",
-      renderCell: (params: GridRenderCellParams) => (
-        <RenderCheckBox {...params} />
-      ),
+      renderCell: RenderCheckBox,
     },
     {
       field: "przezKogoStworzony",
@@ -139,42 +141,37 @@ const ProjectSelector = () => {
     console.log(`Delete product with id: ${id}`);
   }, []);
 
-  const handleCheckboxChange = (
-    params: GridRenderCellParams,
-    checked: boolean
-  ) => {
-    console.log(
-      `Checkbox change for ${params.field} with id ${params.row.id}: ${checked}`
-    );
-  };
-
-  const RenderCheckBox = (props: GridRenderCellParams) => (
-    <Checkbox
-      size="medium"
-      checked={props.value}
-      onChange={(e) => handleCheckboxChange(props, e.target.checked)}
-      style={{ margin: "0 auto", display: "block" }}
-    />
-  );
-
   return (
-    <Box sx={{ minWidth: 300, marginBottom: 5 }}>
-      <FormControl sx={{ m: 1, minWidth: 300 }}>
-        <InputLabel id="select-label">Projects</InputLabel>
-        <Select
-          labelId="select-label"
-          id="project-select"
-          value={currentProject}
-          label="Project"
-          onChange={handleChange}
+    <Box sx={{ minWidth: 300, marginBottom: "10px" }}>
+      <Box sx={{ marginBottom: "20px" }}>
+        <FormControl sx={{ minWidth: 300 }}>
+          <InputLabel id="select-label">Klienci</InputLabel>
+          <Select
+            labelId="select-label"
+            id="project-select"
+            value={currentProject}
+            label="Klienci"
+            onChange={handleChange}
+          >
+            {keys.map((key) => (
+              <MenuItem key={key} value={key}>
+                {key}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <Box sx={{ marginBottom: "20px" }}>
+        <Tabs
+          value={value}
+          onChange={handleTabChange}
+          aria-label="basic tabs example"
         >
-          {keys.map((key) => (
-            <MenuItem key={key} value={key}>
-              {key}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <Tab label="Wzorce firmowe" {...a11yProps(0)} />
+          <Tab label="Projekty zapisane" {...a11yProps(1)} />
+        </Tabs>
+      </Box>
+
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid rows={dataGridRows} columns={columns} checkboxSelection />
       </Box>
