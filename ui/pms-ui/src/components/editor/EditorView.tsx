@@ -1,36 +1,44 @@
-import React, { useState } from 'react';
-import { Box, FormControl, TextField, Button, Select, MenuItem, InputLabel, IconButton } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
+import React, { useState } from "react";
+import {
+  Box,
+  FormControl,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  IconButton,
+} from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
 
-interface EditorViewProps {
-}
+interface EditorViewProps {}
 
 const EditorView: React.FC<EditorViewProps> = () => {
-  const [productType, setProductType] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [client, setClient] = useState<string>('');
+  const [productType, setProductType] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [client, setClient] = useState<string>("");
 
   const rows = [
-    { id: 1, type: 'text', zIndex: 1, value: 'Cennik usług' },
-    { id: 2, type: 'text', zIndex: 2, value: 'dla domu' },
+    { id: 1, type: "text", zIndex: 1, value: "Cennik usług" },
+    { id: 2, type: "text", zIndex: 2, value: "dla domu" },
   ];
 
   const columns: GridColDef[] = [
     {
-      field: 'select',
-      headerName: '',
+      field: "select",
+      headerName: "",
       flex: 1,
       renderCell: () => <input type="checkbox" />,
     },
-    { field: 'type', headerName: 'Typ', width: 100 },
-    { field: 'zIndex', headerName: 'Z-Index', width: 60 },
-    { field: 'value', headerName: 'Wartość', width: 150 },
+    { field: "type", headerName: "Typ", width: 100 },
+    { field: "zIndex", headerName: "Z-Index", width: 60 },
+    { field: "value", headerName: "Wartość", width: 150 },
     {
-      field: 'actions',
-      headerName: '',
+      field: "actions",
+      headerName: "",
       flex: 1,
       renderCell: () => (
         <Box>
@@ -132,7 +140,13 @@ const EditorView: React.FC<EditorViewProps> = () => {
       </Box>
 
       <Box width="600px" display="flex" flexDirection="column" gap={2}>
-        <Box mb={2} display="flex" justifyContent="space-between" alignItems="center" gap={2}>
+        <Box
+          mb={2}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap={2}
+        >
           <FormControl>
             <TextField
               label="Coś 1"

@@ -12,4 +12,6 @@ public class Admin : IUser
     public required string Name { get; init; }
     public required string Email { get; init; }
     public required string Password { get; init; }
+    public required DateOnly CreatedAt { get; init; }
+
 }

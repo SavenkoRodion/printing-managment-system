@@ -51,7 +51,7 @@ const AuthorizedMenuLayout = () => {
                 underline="none"
                 color="inherit"
               >
-                VeraPrint
+                PrintingHouseManager
               </Link>
             </Typography>
 
@@ -81,43 +81,11 @@ const AuthorizedMenuLayout = () => {
             </Link>
             <Link
               component={RouterLink}
-              to="/zamowienia"
-              underline="none"
-              color="inherit"
-            >
-              Zamówienia
-            </Link>
-            <Link
-              component={RouterLink}
-              to="/faktury"
-              underline="none"
-              color="inherit"
-            >
-              Faktury
-            </Link>
-            <Link
-              component={RouterLink}
-              to="/ustawienia"
-              underline="none"
-              color="inherit"
-            >
-              Ustawienia
-            </Link>
-            <Link
-              component={RouterLink}
-              to="/pomoc"
-              underline="none"
-              color="inherit"
-            >
-              Pomoc
-            </Link>
-            <Link
-              component={RouterLink}
               to="/users"
               underline="none"
               color="inherit"
             >
-              Dashboard
+              Administratorzy
             </Link>
           </Box>
 
@@ -158,7 +126,7 @@ const AuthorizedMenuLayout = () => {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ width: "100%", maxWidth: "1300px", paddingTop: "100px" }}>
+      <Box sx={{ width: "100%", maxWidth: "1450px", paddingTop: "100px" }}>
         <Outlet />
       </Box>
     </Box>
