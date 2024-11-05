@@ -17,6 +17,7 @@ namespace PMS_Api.Controllers
             _adminRepository = adminRepository;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<Admin>> GetAllAdmins(CancellationToken cancellationToken)
         {
