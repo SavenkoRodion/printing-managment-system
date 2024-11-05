@@ -9,9 +9,9 @@ import Editor from "./components/editor/Editor";
 import AuthorizedComponent from "./authorizationWrappers/AuthorizedComponent.tsx";
 import AuthorizedMenu from "./components/layouts/AuthorizedMenuLayout.tsx";
 import ProductPage from "./components/products/Products.tsx";
+import ProjectList from "./components/projects/ProjectList.tsx";
 import Params from "./components/params/Params.tsx";
 import Users from "./components/users/Users.tsx";
-import ProjectList from "./components/projects/ProjectList.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -22,6 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route element={<AuthorizedComponent />}>
               <Route path="/login" element={<Login />} />
             </Route>
+
             <Route>
               <Route index element={<Login />} />
               <Route path="/password" element={<PasswordReset />} />
@@ -30,7 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </Route>
         <Route element={<AuthorizedComponent />}>
           <Route element={<AuthorizedMenu />}>
-            <Route path="/projects" element={<ProjectList />} />
+            <Route path="/projekty-klientow" element={<ProjectList />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/produkty" element={<ProductPage />} />
             <Route path="/parametry" element={<Params />} />
