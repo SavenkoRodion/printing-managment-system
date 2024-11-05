@@ -73,11 +73,11 @@ const AuthorizedMenuLayout = () => {
             </Link>
             <Link
               component={RouterLink}
-              to="/produkty-klientow"
+              to="/projekty-klientow"
               underline="none"
               color="inherit"
             >
-              Produkty klientów
+              Projekty klientów
             </Link>
             <Link
               component={RouterLink}
@@ -158,7 +158,7 @@ const AuthorizedMenuLayout = () => {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ width: "100%", maxWidth: "1450px", paddingTop: "100px" }}>
+      <Box sx={{ width: "100%", maxWidth: "1300px", paddingTop: "100px" }}>
         <Outlet />
       </Box>
     </Box>
