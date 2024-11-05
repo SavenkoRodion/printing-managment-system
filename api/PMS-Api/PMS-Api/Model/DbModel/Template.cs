@@ -12,7 +12,7 @@ namespace PMS_Api.Model.DbModel
         public required string Name { get; set; }
         
         [ForeignKey("Client")]
-        public int ClientId { get; init; }
+        public Guid ClientId { get; init; }
         public Client Client { get; set; }
 
         [ForeignKey("Product")]

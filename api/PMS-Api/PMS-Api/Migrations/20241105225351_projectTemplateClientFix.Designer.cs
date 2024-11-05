@@ -12,8 +12,8 @@ using PMS_Api.Model.DbModel;
 namespace PMS_Api.Migrations
 {
     [DbContext(typeof(PmsContext))]
-    [Migration("20241105222543_projectTemplateClient")]
-    partial class projectTemplateClient
+    [Migration("20241105225351_projectTemplateClientFix")]
+    partial class projectTemplateClientFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,17 +71,15 @@ namespace PMS_Api.Migrations
 
             modelBuilder.Entity("PMS_Api.Model.DbModel.Client", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<Guid>("Uuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Uuid");
 
                     b.ToTable("Clients");
                 });
@@ -137,8 +135,8 @@ namespace PMS_Api.Migrations
                     b.Property<Guid>("AuthorUuid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2");
@@ -182,8 +180,8 @@ namespace PMS_Api.Migrations
                     b.Property<Guid>("AuthorUuid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime2");
@@ -222,7 +220,7 @@ namespace PMS_Api.Migrations
                         .IsRequired();
 
                     b.HasOne("PMS_Api.Model.DbModel.Client", "Client")
-                        .WithMany("Projects")
+                        .WithMany()
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -249,7 +247,7 @@ namespace PMS_Api.Migrations
                         .IsRequired();
 
                     b.HasOne("PMS_Api.Model.DbModel.Client", "Client")
-                        .WithMany("Templates")
+                        .WithMany()
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -265,13 +263,6 @@ namespace PMS_Api.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("PMS_Api.Model.DbModel.Client", b =>
-                {
-                    b.Navigation("Projects");
-
-                    b.Navigation("Templates");
                 });
 #pragma warning restore 612, 618
         }
