@@ -12,8 +12,8 @@ using PMS_Api.Model.DbModel;
 namespace PMS_Api.Migrations
 {
     [DbContext(typeof(PmsContext))]
-    [Migration("20241104225311_test2")]
-    partial class test2
+    [Migration("20241105221410_nullableCreatedAt")]
+    partial class nullableCreatedAt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace PMS_Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("CreatedAt")
+                    b.Property<DateOnly?>("CreatedAt")
                         .HasColumnType("date");
 
                     b.Property<string>("Email")
