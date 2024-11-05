@@ -8,21 +8,21 @@ using PMS_Api.Repository;
 namespace PMS_Api.Controllers;
 
 [Authorize]
-[Route("api/pattern")]
+[Route("api/template")]
 [ApiController]
-public class PatternController(IPatternRepository repository) : ControllerBase
+public class TemplateController(ITemplateRepository repository) : ControllerBase
 {
     [HttpGet]
-    public async Task<IReadOnlyList<Pattern>> GetAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<Template>> GetAsync(CancellationToken cancellationToken)
     {
         return await repository.GetAllAsync(cancellationToken);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Pattern>> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Template>> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        var pattern = await repository.GetByIdAsync(id, cancellationToken);
-        if (pattern == null)
+        var template = await repository.GetByIdAsync(id, cancellationToken);
+        if (template == null)
         {
             return NotFound();
         }

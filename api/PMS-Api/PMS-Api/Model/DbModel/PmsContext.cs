@@ -17,7 +17,7 @@ public class PmsContext : DbContext
     public virtual DbSet<Admin> Admins { get; set; }
     public virtual DbSet<Product> Products { get; set; }
     public virtual DbSet<Project> Projects { get; set; }
-    public virtual DbSet<Pattern> Patterns { get; set; }
+    public virtual DbSet<Template> Templates { get; set; }
     public virtual DbSet<Client> Clients { get; set; }
     public virtual DbSet<Parameter> Parameters { get; set; }
 

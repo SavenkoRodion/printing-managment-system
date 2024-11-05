@@ -13,6 +13,6 @@ namespace PMS_Api.Model.DbModel
         public required string Name { get; set; }
 
         public ICollection<Project> Projects { get; set; } = new List<Project>();
-        public ICollection<Pattern> Patterns { get; set; } = new List<Pattern>();
+        public ICollection<Template> Templates { get; set; } = new List<Template>();
     }
 }

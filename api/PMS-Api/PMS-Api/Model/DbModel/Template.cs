@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PMS_Api.Model.DbModel
 {
-    public class Pattern
+    public class Template
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
