@@ -28,7 +28,7 @@ namespace PMS_Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("CreatedAt")
+                    b.Property<DateOnly?>("CreatedAt")
                         .HasColumnType("date");
 
                     b.Property<string>("Email")
