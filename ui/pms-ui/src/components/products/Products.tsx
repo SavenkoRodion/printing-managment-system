@@ -1,12 +1,12 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import ProductList from "./ProductList";
 import getAxiosClient from "../../utility/getAxiosClient";
 import { useEffect, useState } from "react";
 import Product from "../../model/Product";
-import styles from "./Products.style";
 import CreateProductDialog from "./Dialogs/CreateProductDialog/CreateProductDialog";
 import DeleteProductDialog from "./Dialogs/DeleteProductDialog/DeleteProductDialog";
 import EditProductDialog from "./Dialogs/EditProductDialog/EditProductDialog";
+import PageHeader from "../reusable/PageHeader";
 
 const ProductPage = () => {
   const client = getAxiosClient();
@@ -61,19 +61,18 @@ const ProductPage = () => {
   }, []);
 
   return (
-    <Box width={"100%"} padding={"10px 50px 0 50px"}>
+    <Box>
+      <PageHeader
+        pageTitle="Lista produktów"
+        handleCreate={() => setIsCreateModalOpen(true)}
+        createButtonText="Dodaj nowy produkt"
+      />
       <ProductList
         rows={products}
         handleDeleteDialogOpen={handleDeleteDialogOpen}
         handleEditDialogOpen={handleEditDialogOpen}
       />
-      <Button
-        variant={"contained"}
-        sx={styles.createButton}
-        onClick={() => setIsCreateModalOpen(true)}
-      >
-        Dodaj nowy produkt
-      </Button>
+
       <CreateProductDialog
         isOpen={isCreateModalOpen}
         handleClose={() => setIsCreateModalOpen(false)}
