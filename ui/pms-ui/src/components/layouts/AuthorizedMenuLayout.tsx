@@ -11,11 +11,13 @@ import {
 } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { Outlet, Link as RouterLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import getAxiosClient from "../../utility/getAxiosClient";
 
 const AuthorizedMenuLayout = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   const handleMenuToggle = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(isMenuOpen ? null : event.currentTarget);
@@ -24,8 +26,14 @@ const AuthorizedMenuLayout = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    const email = getAxiosClient();
 
-  const userEmail = "user@example.com";
+    email.get("/auth/who-am-i").then((response) => {
+      setUserEmail(response.data.email);
+    });
+  }, []);
+
   const primary = {
     main: "#19247C",
   };
