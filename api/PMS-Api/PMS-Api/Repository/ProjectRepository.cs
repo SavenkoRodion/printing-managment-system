@@ -14,7 +14,7 @@ public class ProjectRepository(PmsContext context) : IProjectRepository
 {
     public async Task<IReadOnlyList<Project>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await context.Projects.AsNoTracking().ToListAsync(cancellationToken);
+        return await context.Projects.Include(x=>x.Author).Include(x=>x.Client).Include(x=>x.Product).ToListAsync(cancellationToken);
     }
  public async Task<Project?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {

@@ -14,7 +14,7 @@ public class TemplateRepository(PmsContext context) : ITemplateRepository
 {
     public async Task<IReadOnlyList<Template>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await context.Templates.AsNoTracking().ToListAsync(cancellationToken);
+        return await context.Templates.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).ToListAsync(cancellationToken);
     }
 
     public async Task<Template?> GetByIdAsync(int id, CancellationToken cancellationToken)

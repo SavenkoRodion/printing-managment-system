@@ -23,10 +23,10 @@ namespace PMS_Api.Model.DbModel
 
         public int LiczbaStron { get; set; }
 
-        public DateTime DateOfCreation { get; set; }
+        public DateTime DateModified { get; set; }
 
         [ForeignKey("Admin")]
-        public int AdminId { get; set; }
+        public Guid AdminId { get; set; }
         public Admin Author { get; set; }
     }
 }

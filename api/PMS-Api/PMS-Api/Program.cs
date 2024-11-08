@@ -25,6 +25,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     builder.Services.AddScoped<IUserRepository<Admin>, AdminRepository>();
     builder.Services.AddScoped<IAuthService, CookieAuthService>();
     builder.Services.AddScoped<IProductRepository, ProductRepository>();
+    builder.Services.AddScoped<IClientRepository, ClientRepository>();
+    builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+    builder.Services.AddScoped<ITemplateRepository, TemplateRepository>();
+
+
 }
 
 

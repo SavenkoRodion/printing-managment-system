@@ -12,8 +12,8 @@ using PMS_Api.Model.DbModel;
 namespace PMS_Api.Migrations
 {
     [DbContext(typeof(PmsContext))]
-    [Migration("20241105225351_projectTemplateClientFix")]
-    partial class projectTemplateClientFix
+    [Migration("20241108184132_AddingTestData")]
+    partial class AddingTestData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,18 @@ namespace PMS_Api.Migrations
                     b.HasKey("Uuid");
 
                     b.ToTable("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            Uuid = new Guid("71e2244b-3f26-4344-a9d6-93a00b8fd83f"),
+                            Name = "Client A"
+                        },
+                        new
+                        {
+                            Uuid = new Guid("599a628a-a3ea-40d9-9494-0ff27debf95d"),
+                            Name = "Client B"
+                        });
                 });
 
             modelBuilder.Entity("PMS_Api.Model.DbModel.Parameter", b =>
@@ -119,6 +131,20 @@ namespace PMS_Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateOfCreation = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4899),
+                            Name = "Product 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateOfCreation = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4936),
+                            Name = "Product 2"
+                        });
                 });
 
             modelBuilder.Entity("PMS_Api.Model.DbModel.Project", b =>
@@ -129,55 +155,7 @@ namespace PMS_Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("AuthorUuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Format")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LiczbaStron")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorUuid");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("PMS_Api.Model.DbModel.Template", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
-
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("AuthorUuid")
+                    b.Property<Guid>("AdminId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClientId")
@@ -202,20 +180,110 @@ namespace PMS_Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorUuid");
+                    b.HasIndex("AdminId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AdminId = new Guid("a86e8efd-ebf7-43a4-950c-3398d232de1b"),
+                            ClientId = new Guid("71e2244b-3f26-4344-a9d6-93a00b8fd83f"),
+                            DateModified = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4955),
+                            Format = "A4",
+                            LiczbaStron = 100,
+                            Name = "Project 1",
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AdminId = new Guid("6b9957e6-6465-4cc4-a481-b699bbbe331e"),
+                            ClientId = new Guid("599a628a-a3ea-40d9-9494-0ff27debf95d"),
+                            DateModified = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4959),
+                            Format = "A3",
+                            LiczbaStron = 200,
+                            Name = "Project 2",
+                            ProductId = 2
+                        });
+                });
+
+            modelBuilder.Entity("PMS_Api.Model.DbModel.Template", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<Guid>("AdminId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LiczbaStron")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
 
                     b.HasIndex("ClientId");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("Templates");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AdminId = new Guid("a86e8efd-ebf7-43a4-950c-3398d232de1b"),
+                            ClientId = new Guid("71e2244b-3f26-4344-a9d6-93a00b8fd83f"),
+                            DateModified = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4974),
+                            Format = "A4",
+                            LiczbaStron = 100,
+                            Name = "Template 1",
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AdminId = new Guid("6b9957e6-6465-4cc4-a481-b699bbbe331e"),
+                            ClientId = new Guid("599a628a-a3ea-40d9-9494-0ff27debf95d"),
+                            DateModified = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4978),
+                            Format = "A3",
+                            LiczbaStron = 200,
+                            Name = "Template 2",
+                            ProductId = 2
+                        });
                 });
 
             modelBuilder.Entity("PMS_Api.Model.DbModel.Project", b =>
                 {
                     b.HasOne("PMS_Api.Model.DbModel.Admin", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorUuid")
+                        .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -242,7 +310,7 @@ namespace PMS_Api.Migrations
                 {
                     b.HasOne("PMS_Api.Model.DbModel.Admin", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorUuid")
+                        .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
