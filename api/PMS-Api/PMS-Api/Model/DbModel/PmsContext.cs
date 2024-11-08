@@ -27,7 +27,8 @@ public class PmsContext : DbContext
 
         builder.Entity<Product>().HasData(
             new Product { Id = 1, Name = "Product 1", DateOfCreation = DateTime.Now },
-            new Product { Id = 2, Name = "Product 2", DateOfCreation = DateTime.Now }
+            new Product { Id = 2, Name = "Product 2", DateOfCreation = DateTime.Now },
+            new Product { Id = 3, Name = "Product 3", DateOfCreation = DateTime.Now }
         );
 
 
@@ -54,7 +55,30 @@ public class PmsContext : DbContext
                 LiczbaStron = 200,
                 DateModified = DateTime.Now,
                 AdminId = adminBId
+            },
+            new Project
+            {
+                Id = 3,
+                Name = "Project 3",
+                ClientId = clientAId,
+                ProductId = 3,
+                Format = "A5",
+                LiczbaStron = 300,
+                DateModified = DateTime.Now,
+                AdminId = adminAId
+            },
+            new Project
+            {
+                Id = 4,
+                Name = "Project 4",
+                ClientId = clientAId,
+                ProductId = 1,
+                Format = "A6",
+                LiczbaStron = 400,
+                DateModified = DateTime.Now,
+                AdminId = adminBId
             }
+
         );
         builder.Entity<Template>().HasData(
             new Template
@@ -78,6 +102,17 @@ public class PmsContext : DbContext
                 LiczbaStron = 200,
                 DateModified = DateTime.Now,
                 AdminId = adminBId
+            },
+            new Template
+            {
+                Id = 3,
+                Name = "Template 3",
+                ClientId = clientBId,
+                ProductId = 3,
+                Format = "A5",
+                LiczbaStron = 300,
+                DateModified = DateTime.Now,
+                AdminId = adminAId
             }
         ); 
     }
