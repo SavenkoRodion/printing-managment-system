@@ -20,7 +20,7 @@ const ProjectSelector = () => {
   const [currentProject, setCurrentProject] = useState<string>("");
   const [dataGridRows, setDataGridRows] = useState<ProjectData[]>([]);
   const [tabData, setTabData] = useState<{ [key: number]: ProjectData[] }>({
-    0: [], // Data Wzorce firmowe
+    0: [], // Data Szablony firmowe
     1: [], // Data Projekty zapisane
   });
   const [value, setValue] = useState(0);
@@ -167,7 +167,7 @@ const ProjectSelector = () => {
           onChange={handleTabChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Wzorce firmowe" {...a11yProps(0)} />
+          <Tab label="Szablony firmowe" {...a11yProps(0)} />
           <Tab label="Projekty zapisane" {...a11yProps(1)} />
         </Tabs>
       </Box>
