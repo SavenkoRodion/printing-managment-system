@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import getAxiosClient from "../../utility/getAxiosClient";
 import { useState } from "react";
+import { isStatusCodeSuccessfull } from "../../utility/util";
 
 type ResetPasswordDialogProps = {
   isOpen: boolean;
@@ -27,11 +28,16 @@ const ResetPasswordDialog = ({
   const [newPassword, setNewPassword] = useState("");
 
   const handlePasswordChange = () => {
-    client.put("admin/change-password", {
-      UserId: userId,
-      NewPassword: newPassword,
-    });
-    window.location.reload();
+    client
+      .put("admin/change-password", {
+        UserId: userId,
+        NewPassword: newPassword,
+      })
+      .then((res) => {
+        isStatusCodeSuccessfull(res.status)
+          ? window.location.reload()
+          : alert("fail");
+      });
   };
 
   return (
