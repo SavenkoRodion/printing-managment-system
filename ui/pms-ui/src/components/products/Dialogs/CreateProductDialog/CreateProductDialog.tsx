@@ -29,7 +29,7 @@ const CreateProductDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth={"xl"}>
+    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs">
       <DialogTitle>Stwórz nowy produkt</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         <TextField
@@ -40,7 +40,6 @@ const CreateProductDialog = ({
           onChange={(e) => setProductName(e.target.value)}
         />
         <Button
-          size="small"
           variant="contained"
           sx={styles.dialogElement}
           onClick={createProduct}

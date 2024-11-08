@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import ProductList from "./ProductList";
 import getAxiosClient from "../../utility/getAxiosClient";
 import { useEffect, useState } from "react";
@@ -47,7 +47,7 @@ const ProductPage = () => {
 
   const handleUpdate = () => {
     client
-      .put<boolean>("product", {
+      .put<boolean>("product/rename", {
         Id: editDialogProductId,
         Name: editDialogProductName,
       })

@@ -13,14 +13,14 @@ namespace PMS_Api.Controllers
     {
 
         [HttpGet]
-        public async Task<IEnumerable<Admin>> GetAllAdmins(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Admin>> GetAllAdminsAsync(CancellationToken cancellationToken)
         {
             var admins = await adminRepository.GetAllAsync(cancellationToken);
             return admins;
         }
 
         [HttpPut("change-password")]
-        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordRequest request, CancellationToken cancellationToken)
         {
             return await adminRepository.ChangePasswordAsync(request.UserId, request.NewPassword, cancellationToken) ? Ok() : Problem();
         }

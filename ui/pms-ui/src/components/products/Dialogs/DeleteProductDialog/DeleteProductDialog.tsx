@@ -14,7 +14,7 @@ const DeleteProductDialog = ({
   productName,
 }: DeleteProductDialogProps) => {
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
+    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs">
       <DialogTitle>Napewno chcesz usunąć produkt "{productName}"?</DialogTitle>
       <DialogActions sx={{ padding: "0 15px 10px" }}>
         <Button
