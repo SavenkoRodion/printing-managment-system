@@ -35,7 +35,7 @@ namespace PMS_Api.Controllers
         [HttpGet("who-am-i")]
         public async Task<Admin?> WhoAmIAsync(CancellationToken cancellationToken)
         {
-            return await adminRepository.GetByUuid(HttpContext.User.Claims.Where(x => x.Type == "Uuid").Single().Value, cancellationToken);
+            return await adminRepository.GetByUuidAsync(HttpContext.User.Claims.Where(x => x.Type == "Uuid").Single().Value, cancellationToken);
         }
     }
 }

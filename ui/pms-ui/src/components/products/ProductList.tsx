@@ -50,16 +50,14 @@ const ProductList = ({
         <Box>
           <Button
             onClick={() => {
-              const product = rows[(params.rowNode.id as number) - 1];
-              handleEditDialogOpen(product.id, product.name);
+              handleEditDialogOpen(params.row.id, params.row.name);
             }}
           >
             Edytuj
           </Button>
           <Button
             onClick={() => {
-              const product = rows[(params.rowNode.id as number) - 1];
-              handleDeleteDialogOpen(product.id, product.name);
+              handleDeleteDialogOpen(params.row.id, params.row.name);
             }}
           >
             Usun

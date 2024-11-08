@@ -23,7 +23,7 @@ const EditProductDialog = ({
   setProductName,
 }: EditProductDialogProps) => {
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
+    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
       <DialogTitle>Edycja produktu</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         <TextField
@@ -34,7 +34,6 @@ const EditProductDialog = ({
           onChange={(e) => setProductName(e.target.value)}
         />
         <Button
-          size="small"
           variant="contained"
           sx={styles.dialogElement}
           onClick={handleEdit}

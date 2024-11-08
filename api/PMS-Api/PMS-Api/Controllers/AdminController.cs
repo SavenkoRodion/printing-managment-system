@@ -1,27 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PMS_Api.Interfaces;
 using PMS_Api.Model.DbModel;
-using Microsoft.AspNetCore.Authorization;
+using PMS_Api.Model.Requests;
 
 namespace PMS_Api.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("api/admin")]
-    public class AdminController : ControllerBase
+    public class AdminController(IUserRepository<Admin> adminRepository) : ControllerBase
     {
-        private readonly IUserRepository<Admin> _adminRepository;
-
-        public AdminController(IUserRepository<Admin> adminRepository)
-        {
-            _adminRepository = adminRepository;
-        }
 
         [HttpGet]
-        public async Task<IEnumerable<Admin>> GetAllAdmins(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Admin>> GetAllAdminsAsync(CancellationToken cancellationToken)
         {
-            var admins = await _adminRepository.GetAll(cancellationToken);
+            var admins = await adminRepository.GetAllAsync(cancellationToken);
             return admins;
+        }
+
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordRequest request, CancellationToken cancellationToken)
+        {
+            return await adminRepository.ChangePasswordAsync(request.UserId, request.NewPassword, cancellationToken) ? Ok() : Problem();
         }
     }
 }

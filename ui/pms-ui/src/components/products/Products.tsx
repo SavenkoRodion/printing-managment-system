@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import ProductList from "./ProductList";
 import getAxiosClient from "../../utility/getAxiosClient";
 import { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import CreateProductDialog from "./Dialogs/CreateProductDialog/CreateProductDial
 import DeleteProductDialog from "./Dialogs/DeleteProductDialog/DeleteProductDialog";
 import EditProductDialog from "./Dialogs/EditProductDialog/EditProductDialog";
 import PageHeader from "../reusable/PageHeader";
+import { isStatusCodeSuccessfull } from "../../utility/util";
 
 const ProductPage = () => {
   const client = getAxiosClient();
@@ -28,6 +29,7 @@ const ProductPage = () => {
   const [editDialogProductName, setEditDialogProductName] = useState("");
 
   const handleDeleteDialogOpen = (productId: number, productName: string) => {
+    console.log(productId, productName);
     setDeleteDialogProductId(productId);
     setDeleteDialogProductName(productName);
     setIsDeleteDialogOpen(true);
@@ -41,18 +43,24 @@ const ProductPage = () => {
 
   const handleDelete = () => {
     client.delete<boolean>(`product/${deleteDialogProductId}`).then((res) => {
-      res.data ? window.location.reload() : alert("fail");
+      if (!isStatusCodeSuccessfull(res.status)) {
+        alert("Nie udało się usunąć product");
+      }
+      window.location.reload();
     });
   };
 
   const handleUpdate = () => {
     client
-      .put<boolean>("product", {
+      .put<boolean>("product/rename", {
         Id: editDialogProductId,
         Name: editDialogProductName,
       })
       .then((res) => {
-        res.data ? window.location.reload() : alert("fail");
+        if (!isStatusCodeSuccessfull(res.status)) {
+          alert("Nie udało się zmienić nazwy produktu");
+        }
+        window.location.reload();
       });
   };
 

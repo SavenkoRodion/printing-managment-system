@@ -9,7 +9,7 @@ namespace PMS_Api.Controllers;
 [Authorize]
 [Route("api/product")]
 [ApiController]
-public class ProductController(IProductRepository repository)
+public class ProductController(IProductRepository repository) : ControllerBase
 {
     [HttpGet]
     public async Task<IReadOnlyList<Product>> GetAsync(CancellationToken cancellationToken)
@@ -29,10 +29,9 @@ public class ProductController(IProductRepository repository)
         return await repository.DeleteAsync(productId, cancellationToken);
     }
 
-    [HttpPut]
-    public async Task<bool> PutAsync(ReplaceProductRequest request, CancellationToken cancellationToken)
+    [HttpPut("rename")]
+    public async Task<IActionResult> RenameAsync([FromBody] ReplaceProductRequest request, CancellationToken cancellationToken)
     {
-        var originalProduct = await repository.GetFirstOrDefaultAsync(request.Id, cancellationToken);
-        return originalProduct is not null && await repository.ReplaceAsync(originalProduct with { Id = request.Id, Name = request.Name }, cancellationToken);
+        return await repository.RenameAsync(request.Name, request.Id, cancellationToken) ? Ok() : Problem();
     }
 }

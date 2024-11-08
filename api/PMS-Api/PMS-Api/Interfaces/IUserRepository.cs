@@ -2,7 +2,8 @@
 
 public interface IUserRepository<User> where User : IUser
 {
-    Task<IReadOnlyList<User>> GetAll(CancellationToken cancellationToken);
-    Task<User?> GetByCredentials(string email, string password, CancellationToken cancellationToken);
-    Task<User?> GetByUuid(string uuid, CancellationToken cancellationToken);
+    Task<IReadOnlyList<User>> GetAllAsync(CancellationToken cancellationToken);
+    Task<User?> GetByCredentialsAsync(string email, string password, CancellationToken cancellationToken);
+    Task<User?> GetByUuidAsync(string uuid, CancellationToken cancellationToken);
+    Task<bool> ChangePasswordAsync(Guid adminId, string password, CancellationToken cancellationToken);
 }
