@@ -18,13 +18,18 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
     public async Task<bool> ChangePasswordAsync(Guid adminId, string password, CancellationToken cancellationToken)
     {
         var admin = await context.Admins.FirstOrDefaultAsync(x => x.Uuid == adminId, cancellationToken);
-
         if (admin is null)
             return false;
 
         admin.Password = password;
-
-        await context.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await context.SaveChangesAsync(cancellationToken);
+        }
+        catch
+        {
+            return false;
+        }
 
         return true;
     }

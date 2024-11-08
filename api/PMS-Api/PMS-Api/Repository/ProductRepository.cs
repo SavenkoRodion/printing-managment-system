@@ -9,7 +9,7 @@ public interface IProductRepository
     Task<Product?> GetFirstOrDefaultAsync(int productId, CancellationToken cancellationToken);
     Task<bool> CreateAsync(string productName, CancellationToken cancellationToken);
     Task<bool> DeleteAsync(int productId, CancellationToken cancellationToken);
-    Task<bool> ReplaceAsync(Product productToBePlaced, CancellationToken cancellationToken);
+    Task<bool> RenameAsync(string newProductName, int productId, CancellationToken cancellationToken);
 }
 
 public class ProductRepository(PmsContext context) : IProductRepository
@@ -51,18 +51,23 @@ public class ProductRepository(PmsContext context) : IProductRepository
         }
     }
 
-    public async Task<bool> ReplaceAsync(Product productToBePlaced, CancellationToken cancellationToken)
+    public async Task<bool> RenameAsync(string newProductName, int productId, CancellationToken cancellationToken)
     {
+        var product = await context.Products.FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
+        if (product is null)
+            return false;
+
+        product.Name = newProductName;
+
         try
         {
-            var entity = await context.Products.FirstAsync(x => x.Id == productToBePlaced.Id, cancellationToken);
-            entity.Name = productToBePlaced.Name;
             await context.SaveChangesAsync(cancellationToken);
-            return true;
         }
         catch
         {
             return false;
         }
+
+        return true;
     }
 }
