@@ -11,7 +11,7 @@ public class CookieAuthService(IUserRepository<Admin> adminRepository) : IAuthSe
 {
     public async Task<bool> AuthenticateAdmin(AuthenticateAdminRequest request, HttpContext context, CancellationToken cancellationToken)
     {
-        var user = await adminRepository.GetByCredentials(request.Email, request.Password, cancellationToken);
+        var user = await adminRepository.GetByCredentialsAsync(request.Email, request.Password, cancellationToken);
 
         if (user == null)
         {

@@ -1,12 +1,19 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import getAxiosClient from "../../utility/getAxiosClient";
 import Admin from "../../model/Admin";
 import PageHeader from "../reusable/PageHeader";
+import ChangePasswordDialog from "./ChangePasswordDialog";
 
 const Users = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
+  const [isOpenChangePasswordDialog, setIsOpenChangePasswordDialog] =
+    useState(false);
+  const [changePasswordDialogUserEmail, setChangePasswordDialogUserEmail] =
+    useState("");
+  const [changePasswordDialogUserId, setChangePasswordDialogUserId] =
+    useState("");
 
   useEffect(() => {
     const client = getAxiosClient();
@@ -14,6 +21,12 @@ const Users = () => {
       setAdmins(response.data);
     });
   }, []);
+
+  const onChangePasswordDialogOpen = (userEmail: string, userId: string) => {
+    setChangePasswordDialogUserId(userId);
+    setChangePasswordDialogUserEmail(userEmail);
+    setIsOpenChangePasswordDialog(true);
+  };
 
   const columns: GridColDef[] = [
     {
@@ -36,7 +49,7 @@ const Users = () => {
       flex: 0.75,
       align: "center",
       headerAlign: "center",
-      renderCell: () => (
+      renderCell: (props) => (
         <Box sx={{ display: "flex", gap: 1 }}>
           <Button variant="outlined" size="small">
             Edytuj
@@ -44,7 +57,13 @@ const Users = () => {
           <Button variant="outlined" size="small">
             Uprawnienia
           </Button>
-          <Button variant="outlined" size="small">
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() =>
+              onChangePasswordDialogOpen(props.row.email, props.row.userId)
+            }
+          >
             Zmień hasło
           </Button>
           <Button variant="outlined" size="small" color="error">
@@ -79,6 +98,12 @@ const Users = () => {
           }}
         />
       </Box>
+      <ChangePasswordDialog
+        onClose={() => setIsOpenChangePasswordDialog(false)}
+        isOpen={isOpenChangePasswordDialog}
+        userEmail={changePasswordDialogUserEmail}
+        userId={changePasswordDialogUserId}
+      />
     </Box>
   );
 };

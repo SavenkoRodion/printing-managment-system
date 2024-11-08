@@ -14,9 +14,11 @@ const AuthorizedComponent = () => {
         "Content-Type": "application/json",
       },
       credentials: "include",
-    }).then((e) => {
-      e.status === 200 ? setIsLoading(false) : navigate("/");
-    });
+    })
+      .then((e) => {
+        e.status === 200 ? setIsLoading(false) : navigate("/");
+      })
+      .catch(() => navigate("/"));
   }, [navigate]);
   return <>{isLoading ? <Typography>Loading...</Typography> : <Outlet />}</>;
 };

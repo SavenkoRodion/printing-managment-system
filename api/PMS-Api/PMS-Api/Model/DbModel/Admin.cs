@@ -11,7 +11,7 @@ public class Admin : IUser
     public required Guid Uuid { get; init; }
     public required string Name { get; init; }
     public required string Email { get; init; }
-    public required string Password { get; init; }
+    public required string Password { get; set; }
     public DateOnly? CreatedAt { get; init; }
 
 }
