@@ -41,35 +41,35 @@ const ProjectSelector = () => {
     {
       field: "nazwa",
       headerName: "Nazwa",
-      width: 150,
+      flex: 0.6,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "nazwaProduktu",
       headerName: "Nazwa produktu",
-      width: 150,
+      flex: 0.6,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "format",
       headerName: "Format",
-      width: 100,
+      flex: 0.4,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "liczbaStron",
       headerName: "Liczba stron",
-      width: 100,
+      flex: 0.4,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "czyEdytowalny",
       headerName: "Czy edytowalny",
-      width: 150,
+      flex: 0.6,
       align: "center",
       headerAlign: "center",
       renderCell: RenderCheckBox,
@@ -77,14 +77,14 @@ const ProjectSelector = () => {
     {
       field: "przezKogoStworzony",
       headerName: "Przez kogo stworzony",
-      width: 170,
+      flex: 0.6,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "ostatniaModyfikacja",
       headerName: "Ostatnia modyfikacja",
-      width: 150,
+      flex: 0.6,
       align: "center",
       headerAlign: "center",
     },
@@ -92,7 +92,7 @@ const ProjectSelector = () => {
       field: "actions",
       headerName: "Akcje",
       sortable: false,
-      width: 250,
+      flex: 1,
       align: "center",
       headerAlign: "center",
       renderCell: (params: GridCellParams) => (
@@ -142,7 +142,7 @@ const ProjectSelector = () => {
   }, []);
 
   return (
-    <Box sx={{ minWidth: 300, marginBottom: "10px" }}>
+    <Box>
       <Box sx={{ marginBottom: "20px" }}>
         <FormControl sx={{ minWidth: 300 }}>
           <InputLabel id="select-label">Klienci</InputLabel>

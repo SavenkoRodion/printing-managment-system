@@ -3,6 +3,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import getAxiosClient from "../../utility/getAxiosClient";
 import Admin from "../../model/Admin";
+import PageHeader from "../reusable/PageHeader";
 
 const Users = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
@@ -55,48 +56,29 @@ const Users = () => {
   ];
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
-        gap: 2,
-        padding: 2,
-        border: "1px solid grey",
-        borderRadius: 1,
-        boxShadow: 1,
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingBottom: 2,
-          borderBottom: "1px solid grey",
+    <Box>
+      <PageHeader
+        pageTitle="Lista użytkowników"
+        handleCreate={() => {
+          console.log("tmp");
         }}
-      >
-        <Typography variant="h6">Lista użytkowników</Typography>
-        <Button variant="contained" color="primary">
-          Nowy użytkownik
-        </Button>
-      </Box>
-
-      <DataGrid
-        rows={admins}
-        columns={columns}
-        disableRowSelectionOnClick
-        autoHeight
-        checkboxSelection={false}
-        disableColumnMenu
-        pageSizeOptions={[5, 10]}
-        getRowId={(row) => row.uuid}
-        sx={{
-          width: "100%",
-          marginTop: 2,
-          border: "none",
-        }}
+        createButtonText="Nowy użytkownik"
       />
+      <Box sx={{ paddingTop: "16px" }}>
+        <DataGrid
+          rows={admins}
+          columns={columns}
+          disableRowSelectionOnClick
+          autoHeight
+          checkboxSelection={false}
+          disableColumnMenu
+          pageSizeOptions={[5, 10]}
+          getRowId={(row) => row.uuid}
+          sx={{
+            border: "none",
+          }}
+        />
+      </Box>
     </Box>
   );
 };

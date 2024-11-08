@@ -1,6 +1,7 @@
 import { Box, Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Product from "../../model/Product";
+import styles from "./Products.style";
 
 type ProductListProps = {
   rows: Product[];
@@ -68,7 +69,7 @@ const ProductList = ({
     },
   ];
   return (
-    <Box>
+    <Box sx={styles.tablePadding}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -76,6 +77,7 @@ const ProductList = ({
         checkboxSelection={false}
         disableColumnMenu
         pageSizeOptions={[10]}
+        sx={styles.borderNone}
       />
     </Box>
   );
