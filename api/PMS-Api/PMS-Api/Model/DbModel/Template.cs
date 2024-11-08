@@ -26,7 +26,7 @@ namespace PMS_Api.Model.DbModel
         public DateTime DateModified { get; set; }
 
         [ForeignKey("Admin")]
-        public int AdminId { get; set; }
+        public Guid AdminId { get; set; }
         public Admin Author { get; set; }
     }
 }

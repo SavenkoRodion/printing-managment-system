@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PMS_Api.Model.DbModel;
 
@@ -11,9 +12,11 @@ using PMS_Api.Model.DbModel;
 namespace PMS_Api.Migrations
 {
     [DbContext(typeof(PmsContext))]
-    partial class PmsContextModelSnapshot : ModelSnapshot
+    [Migration("20241108184132_AddingTestData")]
+    partial class AddingTestData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,13 +136,13 @@ namespace PMS_Api.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfCreation = new DateTime(2024, 11, 8, 19, 50, 54, 214, DateTimeKind.Local).AddTicks(5479),
+                            DateOfCreation = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4899),
                             Name = "Product 1"
                         },
                         new
                         {
                             Id = 2,
-                            DateOfCreation = new DateTime(2024, 11, 8, 19, 50, 54, 214, DateTimeKind.Local).AddTicks(5533),
+                            DateOfCreation = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4936),
                             Name = "Product 2"
                         });
                 });
@@ -191,7 +194,7 @@ namespace PMS_Api.Migrations
                             Id = 1,
                             AdminId = new Guid("a86e8efd-ebf7-43a4-950c-3398d232de1b"),
                             ClientId = new Guid("71e2244b-3f26-4344-a9d6-93a00b8fd83f"),
-                            DateModified = new DateTime(2024, 11, 8, 19, 50, 54, 214, DateTimeKind.Local).AddTicks(5573),
+                            DateModified = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4955),
                             Format = "A4",
                             LiczbaStron = 100,
                             Name = "Project 1",
@@ -202,7 +205,7 @@ namespace PMS_Api.Migrations
                             Id = 2,
                             AdminId = new Guid("6b9957e6-6465-4cc4-a481-b699bbbe331e"),
                             ClientId = new Guid("599a628a-a3ea-40d9-9494-0ff27debf95d"),
-                            DateModified = new DateTime(2024, 11, 8, 19, 50, 54, 214, DateTimeKind.Local).AddTicks(5639),
+                            DateModified = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4959),
                             Format = "A3",
                             LiczbaStron = 200,
                             Name = "Project 2",
@@ -257,7 +260,7 @@ namespace PMS_Api.Migrations
                             Id = 1,
                             AdminId = new Guid("a86e8efd-ebf7-43a4-950c-3398d232de1b"),
                             ClientId = new Guid("71e2244b-3f26-4344-a9d6-93a00b8fd83f"),
-                            DateModified = new DateTime(2024, 11, 8, 19, 50, 54, 214, DateTimeKind.Local).AddTicks(5679),
+                            DateModified = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4974),
                             Format = "A4",
                             LiczbaStron = 100,
                             Name = "Template 1",
@@ -268,7 +271,7 @@ namespace PMS_Api.Migrations
                             Id = 2,
                             AdminId = new Guid("6b9957e6-6465-4cc4-a481-b699bbbe331e"),
                             ClientId = new Guid("599a628a-a3ea-40d9-9494-0ff27debf95d"),
-                            DateModified = new DateTime(2024, 11, 8, 19, 50, 54, 214, DateTimeKind.Local).AddTicks(5684),
+                            DateModified = new DateTime(2024, 11, 8, 19, 41, 32, 464, DateTimeKind.Local).AddTicks(4978),
                             Format = "A3",
                             LiczbaStron = 200,
                             Name = "Template 2",
