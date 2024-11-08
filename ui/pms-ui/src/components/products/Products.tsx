@@ -7,6 +7,7 @@ import CreateProductDialog from "./Dialogs/CreateProductDialog/CreateProductDial
 import DeleteProductDialog from "./Dialogs/DeleteProductDialog/DeleteProductDialog";
 import EditProductDialog from "./Dialogs/EditProductDialog/EditProductDialog";
 import PageHeader from "../reusable/PageHeader";
+import { isStatusCodeSuccessfull } from "../../utility/util";
 
 const ProductPage = () => {
   const client = getAxiosClient();
@@ -28,6 +29,7 @@ const ProductPage = () => {
   const [editDialogProductName, setEditDialogProductName] = useState("");
 
   const handleDeleteDialogOpen = (productId: number, productName: string) => {
+    console.log(productId, productName);
     setDeleteDialogProductId(productId);
     setDeleteDialogProductName(productName);
     setIsDeleteDialogOpen(true);
@@ -41,7 +43,9 @@ const ProductPage = () => {
 
   const handleDelete = () => {
     client.delete<boolean>(`product/${deleteDialogProductId}`).then((res) => {
-      res.data ? window.location.reload() : alert("fail");
+      isStatusCodeSuccessfull(res.status)
+        ? window.location.reload()
+        : alert("fail");
     });
   };
 
@@ -52,7 +56,9 @@ const ProductPage = () => {
         Name: editDialogProductName,
       })
       .then((res) => {
-        res.data ? window.location.reload() : alert("fail");
+        isStatusCodeSuccessfull(res.status)
+          ? window.location.reload()
+          : alert("fail");
       });
   };
 
