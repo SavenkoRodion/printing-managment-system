@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef, GridCellParams } from "@mui/x-data-grid";
 import { Template, Client, Admin, Project, Product } from "../../utility/types"; // Import types
-import RenderCheckBox from "./RenderCheckBox";
 import { a11yProps } from "./utils";
 import getAxiosClient from "../../utility/getAxiosClient";
 import CustomTabPanel from "./CustomTabPanel";
@@ -21,9 +20,7 @@ const ProjectSelector = () => {
   const client = getAxiosClient();
   const [templates, setTemplates] = useState<Template[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
-  const [admins, setAdmins] = useState<Admin[]>([]);
   const [currentTab, setCurrentTab] = useState(0);
   const [currentClient, setCurrentClient] = useState<string>("");
   const [dataTemplates, setDataTemplates] = useState<Template[]>([]);
@@ -43,16 +40,6 @@ const ProjectSelector = () => {
       .get("/client")
       .then((response) => setClients(response.data))
       .catch((error) => console.error("Error fetching clients:", error));
-
-    client
-      .get("/admin")
-      .then((response) => setAdmins(response.data))
-      .catch((error) => console.error("Error fetching admins:", error));
-
-    client
-      .get("/product")
-      .then((response) => setProducts(response.data))
-      .catch((error) => console.error("Error fetching products:", error));
   }, []);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
@@ -80,19 +67,15 @@ const ProjectSelector = () => {
       headerAlign: "center",
     },
     {
-      field: "productId",
+      field: "product",
       headerName: "Nazwa produktu",
       flex: 0.6,
       align: "center",
       headerAlign: "center",
-      renderCell: (params: GridCellParams): React.ReactNode => (
-        <Box display="flex" justifyContent="center" width="100%">
-          {
-            (products.find((product) => product.id === params.value)?.name ||
-              params.value) as React.ReactNode
-          }
-        </Box>
-      ),
+      valueGetter: (params) => {
+        const product = params.row.product as Product;
+        return product.name ?? "";
+      },
     },
     {
       field: "format",
@@ -109,19 +92,16 @@ const ProjectSelector = () => {
       headerAlign: "center",
     },
     {
-      field: "adminId",
+      field: "admin",
       headerName: "Przez kogo stworzony",
       flex: 0.6,
       align: "center",
       headerAlign: "center",
-      renderCell: (params: GridCellParams): React.ReactNode => (
-        <Box display="flex" justifyContent="center" width="100%">
-          {
-            (admins.find((admin) => admin.uuid === params.value)?.name ||
-              params.value) as React.ReactNode
-          }
-        </Box>
-      ),
+      valueGetter: (params) => {
+        console.log(params);
+        const product = params.row.author as Admin;
+        return product.name ?? "";
+      },
     },
     {
       field: "dateModified",
