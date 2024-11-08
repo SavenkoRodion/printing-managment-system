@@ -1,4 +1,4 @@
-import { Box, Button, Link, TextField } from "@mui/material";
+import { Box, Button, Link, TextField, Alert } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,9 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<
+    "auth" | "server" | "connection" | null
+  >(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,17 +27,18 @@ const Login = () => {
         credentials: "include",
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
-      }
-      navigate("/users");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
+      if (response.status === 400) {
+        setError("Błędny login lub hasło");
+        setErrorType("auth");
+      } else if (!response.ok) {
+        setError("Błąd serwera. Spróbuj ponownie później.");
+        setErrorType("server");
       } else {
-        setError("An unknown error occurred");
+        navigate("/users");
       }
+    } catch (error) {
+      setError("Błąd połączenia z serwerem.");
+      setErrorType("connection");
     }
   };
 
@@ -49,6 +53,20 @@ const Login = () => {
         },
       }}
     >
+      {error && (
+        <Alert
+          severity={errorType === "auth" ? "warning" : "error"}
+          sx={{
+            mb: 2,
+            height: "44px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {error}
+        </Alert>
+      )}
       <TextField
         label="Login"
         variant="outlined"
@@ -66,7 +84,7 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      {error && <div style={{ color: "red" }}>{error}</div>}
+
       <Button variant="contained" color="primary" fullWidth type="submit">
         Zaloguj
       </Button>

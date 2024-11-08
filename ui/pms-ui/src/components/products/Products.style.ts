@@ -1,11 +1,12 @@
 import { SxProps } from "@mui/material";
 
-const createButton: SxProps = {
-  marginTop: "10px",
-};
+const borderNone: SxProps = { border: "none" };
+
+const tablePadding: SxProps = { paddingTop: "16px" };
 
 const styles = {
-  createButton,
+  borderNone,
+  tablePadding,
 };
 
 export default styles;

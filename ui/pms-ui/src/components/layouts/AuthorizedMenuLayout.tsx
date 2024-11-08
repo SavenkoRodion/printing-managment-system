@@ -11,11 +11,14 @@ import {
 } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { Outlet, Link as RouterLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import getAxiosClient from "../../utility/getAxiosClient";
+import styles from "./AuthorizedMenuLayout.style";
 
 const AuthorizedMenuLayout = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   const handleMenuToggle = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(isMenuOpen ? null : event.currentTarget);
@@ -24,8 +27,14 @@ const AuthorizedMenuLayout = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    const email = getAxiosClient();
 
-  const userEmail = "user@example.com";
+    email.get("/auth/who-am-i").then((response) => {
+      setUserEmail(response.data.email);
+    });
+  }, []);
+
   const primary = {
     main: "#19247C",
   };
@@ -65,11 +74,11 @@ const AuthorizedMenuLayout = () => {
             </Link>
             <Link
               component={RouterLink}
-              to="/produkty-konfiguracja"
+              to="/produkty"
               underline="none"
               color="inherit"
             >
-              Produkty konfiguracja
+              Produkty
             </Link>
             <Link
               component={RouterLink}
@@ -126,8 +135,10 @@ const AuthorizedMenuLayout = () => {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ width: "100%", maxWidth: "1300px", paddingTop: "100px" }}>
-        <Outlet />
+      <Box sx={styles.outletWrapper}>
+        <Box sx={styles.el}>
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );
