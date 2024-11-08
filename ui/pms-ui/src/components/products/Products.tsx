@@ -43,9 +43,10 @@ const ProductPage = () => {
 
   const handleDelete = () => {
     client.delete<boolean>(`product/${deleteDialogProductId}`).then((res) => {
-      isStatusCodeSuccessfull(res.status)
-        ? window.location.reload()
-        : alert("fail");
+      if (!isStatusCodeSuccessfull(res.status)) {
+        alert("Nie udało się usunąć product");
+      }
+      window.location.reload();
     });
   };
 
@@ -56,9 +57,10 @@ const ProductPage = () => {
         Name: editDialogProductName,
       })
       .then((res) => {
-        isStatusCodeSuccessfull(res.status)
-          ? window.location.reload()
-          : alert("fail");
+        if (!isStatusCodeSuccessfull(res.status)) {
+          alert("Nie udało się zmienić nazwy produktu");
+        }
+        window.location.reload();
       });
   };
 
