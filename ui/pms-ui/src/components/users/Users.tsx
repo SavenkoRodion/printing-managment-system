@@ -60,9 +60,9 @@ const Users = () => {
           <Button
             variant="outlined"
             size="small"
-            onClick={() =>
-              onChangePasswordDialogOpen(props.row.email, props.row.userId)
-            }
+            onClick={() => {
+              onChangePasswordDialogOpen(props.row.email, props.row.uuid);
+            }}
           >
             Zmień hasło
           </Button>
