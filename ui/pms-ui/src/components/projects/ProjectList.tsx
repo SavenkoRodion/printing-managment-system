@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   Box,
   Button,
@@ -11,46 +11,88 @@ import {
   Tab,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridCellParams } from "@mui/x-data-grid";
-import { initialData, ProjectData } from "./initialData_front";
+import { Template, Client, Admin, Project, Product } from "../../utility/types"; // Import types
 import RenderCheckBox from "./RenderCheckBox";
 import { a11yProps } from "./utils";
+import getAxiosClient from "../../utility/getAxiosClient";
+import CustomTabPanel from "./CustomTabPanel";
 
 const ProjectSelector = () => {
-  const keys = Object.keys(initialData);
-  const [currentProject, setCurrentProject] = useState<string>("");
-  const [dataGridRows, setDataGridRows] = useState<ProjectData[]>([]);
-  const [tabData, setTabData] = useState<{ [key: number]: ProjectData[] }>({
-    0: [], // Data Szablony firmowe
-    1: [], // Data Projekty zapisane
-  });
-  const [value, setValue] = useState(0);
+  const client = getAxiosClient();
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [admins, setAdmins] = useState<Admin[]>([]);
+  const [currentTab, setCurrentTab] = useState(0);
+  const [currentClient, setCurrentClient] = useState<string>("");
+  const [dataTemplates, setDataTemplates] = useState<Template[]>([]);
+  const [dataProjects, setDataProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    client
+      .get("/template")
+      .then((response) => setTemplates(response.data))
+      .catch((error) => console.error("Error fetching templates:", error));
+    client
+      .get("/project")
+      .then((response) => setProjects(response.data))
+      .catch((error) => console.error("Error fetching projects:", error));
+
+    client
+      .get("/client")
+      .then((response) => setClients(response.data))
+      .catch((error) => console.error("Error fetching clients:", error));
+
+    client
+      .get("/admin")
+      .then((response) => setAdmins(response.data))
+      .catch((error) => console.error("Error fetching admins:", error));
+
+    client
+      .get("/product")
+      .then((response) => setProducts(response.data))
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
-    const selectedProject = event.target.value as string;
-    setCurrentProject(selectedProject);
-
-    setDataGridRows(initialData[selectedProject] || []);
+    const selectedClient = event.target.value;
+    setCurrentClient(selectedClient);
+    const templatesForClient = templates.filter(
+      (template) => template.clientId === selectedClient
+    );
+    const projectsForClient = projects.filter(
+      (project) => project.clientId === selectedClient
+    );
+    setDataTemplates(templatesForClient);
+    setDataProjects(projectsForClient);
   };
-
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-    setDataGridRows(tabData[newValue] || []);
+    setCurrentTab(newValue);
   };
 
   const columns: GridColDef[] = [
     {
-      field: "nazwa",
+      field: "name",
       headerName: "Nazwa",
       flex: 0.6,
       align: "center",
       headerAlign: "center",
     },
     {
-      field: "nazwaProduktu",
+      field: "productId",
       headerName: "Nazwa produktu",
       flex: 0.6,
       align: "center",
       headerAlign: "center",
+      renderCell: (params: GridCellParams): React.ReactNode => (
+        <Box display="flex" justifyContent="center" width="100%">
+          {
+            (products.find((product) => product.id === params.value)?.name ||
+              params.value) as React.ReactNode
+          }
+        </Box>
+      ),
     },
     {
       field: "format",
@@ -67,26 +109,31 @@ const ProjectSelector = () => {
       headerAlign: "center",
     },
     {
-      field: "czyEdytowalny",
-      headerName: "Czy edytowalny",
-      flex: 0.6,
-      align: "center",
-      headerAlign: "center",
-      renderCell: RenderCheckBox,
-    },
-    {
-      field: "przezKogoStworzony",
+      field: "adminId",
       headerName: "Przez kogo stworzony",
       flex: 0.6,
       align: "center",
       headerAlign: "center",
+      renderCell: (params: GridCellParams): React.ReactNode => (
+        <Box display="flex" justifyContent="center" width="100%">
+          {
+            (admins.find((admin) => admin.uuid === params.value)?.name ||
+              params.value) as React.ReactNode
+          }
+        </Box>
+      ),
     },
     {
-      field: "ostatniaModyfikacja",
+      field: "dateModified",
       headerName: "Ostatnia modyfikacja",
       flex: 0.6,
       align: "center",
       headerAlign: "center",
+      renderCell: (params: GridCellParams): React.ReactNode => (
+        <Box display="flex" justifyContent="center" width="100%">
+          {new Date(params.value as string).toLocaleDateString()}
+        </Box>
+      ),
     },
     {
       field: "actions",
@@ -130,15 +177,15 @@ const ProjectSelector = () => {
   ];
 
   const handleEdit = useCallback((id: number) => {
-    console.log(`Edit product with id: ${id}`);
+    console.log(`Edit template with id: ${id}`);
   }, []);
 
   const handleCopy = useCallback((id: number) => {
-    console.log(`Copy product with id: ${id}`);
+    console.log(`Copy template with id: ${id}`);
   }, []);
 
   const handleDelete = useCallback((id: number) => {
-    console.log(`Delete product with id: ${id}`);
+    console.log(`Delete template with id: ${id}`);
   }, []);
 
   return (
@@ -148,14 +195,14 @@ const ProjectSelector = () => {
           <InputLabel id="select-label">Klienci</InputLabel>
           <Select
             labelId="select-label"
-            id="project-select"
-            value={currentProject}
+            id="client-select"
+            value={currentClient}
             label="Klienci"
             onChange={handleChange}
           >
-            {keys.map((key) => (
-              <MenuItem key={key} value={key}>
-                {key}
+            {clients.map((client) => (
+              <MenuItem key={client.uuid} value={client.uuid}>
+                {client.name}
               </MenuItem>
             ))}
           </Select>
@@ -163,7 +210,7 @@ const ProjectSelector = () => {
       </Box>
       <Box sx={{ marginBottom: "20px" }}>
         <Tabs
-          value={value}
+          value={currentTab}
           onChange={handleTabChange}
           aria-label="basic tabs example"
         >
@@ -171,10 +218,16 @@ const ProjectSelector = () => {
           <Tab label="Projekty zapisane" {...a11yProps(1)} />
         </Tabs>
       </Box>
-
-      <Box sx={{ height: 400, width: "100%" }}>
-        <DataGrid rows={dataGridRows} columns={columns} checkboxSelection />
-      </Box>
+      <CustomTabPanel value={currentTab} index={0}>
+        <Box sx={{ height: 400, width: "100%" }}>
+          <DataGrid rows={dataTemplates} columns={columns} checkboxSelection />
+        </Box>
+      </CustomTabPanel>
+      <CustomTabPanel value={currentTab} index={1}>
+        <Box sx={{ height: 400, width: "100%" }}>
+          <DataGrid rows={dataProjects} columns={columns} checkboxSelection />
+        </Box>
+      </CustomTabPanel>
     </Box>
   );
 };
