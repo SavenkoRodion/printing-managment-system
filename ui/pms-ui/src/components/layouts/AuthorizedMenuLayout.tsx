@@ -10,7 +10,7 @@ import {
   Divider,
 } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
-import { Outlet, Link as RouterLink } from "react-router-dom";
+import { Outlet, Link as RouterLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import getAxiosClient from "../../utility/getAxiosClient";
 import styles from "./AuthorizedMenuLayout.style";
@@ -19,6 +19,7 @@ const AuthorizedMenuLayout = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleMenuToggle = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(isMenuOpen ? null : event.currentTarget);
@@ -35,6 +36,12 @@ const AuthorizedMenuLayout = () => {
     });
   }, []);
 
+  const handleLogout = () => {
+    const client = getAxiosClient();
+    client.post("/auth/logout").then(() => {
+      navigate("/login");
+    });
+  };
   const primary = {
     main: "#19247C",
   };
@@ -125,7 +132,7 @@ const AuthorizedMenuLayout = () => {
               <MenuItem disabled>{userEmail}</MenuItem>
               <Divider />
               <MenuItem
-                onClick={handleMenuClose}
+                onClick={handleLogout}
                 sx={{ fontWeight: "bold", color: "red" }}
               >
                 Wyloguj
