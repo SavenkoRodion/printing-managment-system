@@ -4,7 +4,7 @@ import InfoView from "./InfoView";
 import EditorView from "./EditorView";
 import { View } from "./views";
 
-const App = () => {
+const Editor = () => {
   const [view, setView] = useState<View>(View.Info);
   const handleViewChange = (
     _event: React.MouseEvent<HTMLElement>,
@@ -37,4 +37,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Editor;

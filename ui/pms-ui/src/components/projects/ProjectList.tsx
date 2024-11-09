@@ -15,6 +15,7 @@ import { Template, Client, Admin, Project, Product } from "../../utility/types";
 import { a11yProps } from "./utils";
 import getAxiosClient from "../../utility/getAxiosClient";
 import CustomTabPanel from "./CustomTabPanel";
+import { useNavigate } from "react-router-dom";
 
 const ProjectSelector = () => {
   const client = getAxiosClient();
@@ -155,9 +156,10 @@ const ProjectSelector = () => {
       ),
     },
   ];
-
+  const navigate = useNavigate();
   const handleEdit = useCallback((id: number) => {
     console.log(`Edit template with id: ${id}`);
+    navigate(`/editor/${id}`);
   }, []);
 
   const handleCopy = useCallback((id: number) => {
