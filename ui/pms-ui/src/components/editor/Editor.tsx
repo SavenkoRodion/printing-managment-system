@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import InfoView from "./InfoView";
 import EditorView from "./EditorView";
 import { View } from "./views";
+import getAxiosClient from "../../utility/getAxiosClient";
+import { useParams } from "react-router-dom";
+
+type EditorParams = { projectId: string };
 
 const Editor = () => {
   const [view, setView] = useState<View>(View.Info);
+  const client = getAxiosClient();
+  const { projectId } = useParams<EditorParams>();
+
   const handleViewChange = (
     _event: React.MouseEvent<HTMLElement>,
     newView: View
@@ -14,6 +21,11 @@ const Editor = () => {
       setView(newView);
     }
   };
+
+  useEffect(() => {
+    client.get(`project/${projectId}`).then((e) => console.log(e));
+  }, []);
+
   return (
     <Container>
       <Box display="flex" justifyContent="center" mb={2}>

@@ -15,6 +15,7 @@ public class ProjectController(IProjectRepository repository) : ControllerBase
     {
         return await repository.GetAllAsync(cancellationToken);
     }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Project>> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
@@ -23,6 +24,6 @@ public class ProjectController(IProjectRepository repository) : ControllerBase
         {
             return NotFound();
         }
-        return Ok();
+        return Ok(project);
     }
 }
