@@ -26,6 +26,57 @@ public class TemplateController(ITemplateRepository repository) : ControllerBase
         {
             return NotFound();
         }
-        return Ok();
+        return Ok(template);
+    }
+
+
+    [HttpPost]
+    public async Task<ActionResult<Template>> CreateTemplateAsync([FromBody] CreateTemplateRequest request, CancellationToken cancellationToken)
+    {
+        if (request == null)
+        {
+            return BadRequest("Template data is required.");
+        }
+
+        try
+        {
+            var template = new Template
+            {
+                Name = request.Name,
+                ClientId = request.ClientId,
+                ProductId = request.ProductId,
+                Format = request.Format,
+                LiczbaStron = request.LiczbaStron,
+                DateModified = DateTime.Now,
+                AdminId = request.AdminId
+            };
+
+            var createdTemplate = await repository.AddTemplateAsync(template, cancellationToken);
+
+            var templateWithRelations = await repository.GetByIdAsync(createdTemplate.Id, cancellationToken);
+            
+            if (templateWithRelations == null)
+            {
+                return NotFound();
+            }
+            return templateWithRelations;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error creating project: {ex.Message}");
+            return StatusCode(500, "An error occurred while creating the template.");
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Template>> DeleteAsync(int id, CancellationToken cancellationToken)
+    {
+        var template = await repository.GetByIdAsync(id, cancellationToken);
+        if (template == null)
+        {
+            return NotFound();
+        }
+        await repository.DeleteAsync(template, cancellationToken);
+        return NoContent();
     }
 }
