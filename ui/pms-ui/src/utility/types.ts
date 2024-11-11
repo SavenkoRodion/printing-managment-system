@@ -24,6 +24,7 @@ export interface Template {
   liczbaStron: number;
   dateModified: Date;
   adminId: string;
+  admin: Admin;
 }
 
 export interface Project {
@@ -36,4 +37,5 @@ export interface Project {
   liczbaStron: number;
   dateModified: Date;
   adminId: string;
+  admin: Admin;
 }
