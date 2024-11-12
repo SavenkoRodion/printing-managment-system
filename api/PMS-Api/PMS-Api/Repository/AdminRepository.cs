@@ -33,4 +33,22 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
 
         return true;
     }
+    public async Task<bool> UpdateNameAsync(Guid adminId, string newName, CancellationToken cancellationToken)
+    {
+        var admin = await context.Admins.FirstOrDefaultAsync(x => x.Uuid == adminId, cancellationToken);
+        if (admin is null)
+            return false;
+
+        admin.Name = newName;
+        try
+        {
+            await context.SaveChangesAsync(cancellationToken);
+        }
+        catch
+        {
+            return false;
+        }
+
+        return true;
+    }
 }

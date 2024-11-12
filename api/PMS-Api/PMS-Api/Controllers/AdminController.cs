@@ -24,5 +24,12 @@ namespace PMS_Api.Controllers
         {
             return await adminRepository.ChangePasswordAsync(request.UserId, request.NewPassword, cancellationToken) ? Ok() : Problem();
         }
+
+        [HttpPut("change-name")]
+        public async Task<IActionResult> ChangeNameAsync([FromBody] ChangeNameRequest request, CancellationToken cancellationToken)
+        {
+            return await adminRepository.UpdateNameAsync(request.UserId, request.NewName, cancellationToken) ? Ok() : Problem();
+        }
+
     }
 }
