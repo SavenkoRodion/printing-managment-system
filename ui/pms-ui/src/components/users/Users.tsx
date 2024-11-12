@@ -5,6 +5,7 @@ import getAxiosClient from "../../utility/getAxiosClient";
 import Admin from "../../model/Admin";
 import PageHeader from "../reusable/PageHeader";
 import ChangePasswordDialog from "./ChangePasswordDialog";
+import ChangeNameDialog from "./ChangeNameDialog";
 
 const Users = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
@@ -13,6 +14,12 @@ const Users = () => {
   const [changePasswordDialogUserEmail, setChangePasswordDialogUserEmail] =
     useState("");
   const [changePasswordDialogUserId, setChangePasswordDialogUserId] =
+    useState("");
+  const [isOpenChangeNameDialog, setIsOpenChangeNameDialog] = useState(false);
+  const [changeNameDialogUserId, setChangeNameDialogUserId] = useState("");
+  const [changeNameDialogUserEmail, setChangeNameDialogUserEmail] =
+    useState("");
+  const [changeNameDialogCurrentName, setChangeNameDialogCurrentName] =
     useState("");
 
   useEffect(() => {
@@ -28,11 +35,29 @@ const Users = () => {
     setIsOpenChangePasswordDialog(true);
   };
 
+  const onChangeNameDialogOpen = (
+    userEmail: string,
+    userId: string,
+    currentName: string
+  ) => {
+    setChangeNameDialogUserId(userId);
+    setChangeNameDialogUserEmail(userEmail);
+    setChangeNameDialogCurrentName(currentName);
+    setIsOpenChangeNameDialog(true);
+  };
+
   const columns: GridColDef[] = [
     {
       field: "email",
       headerName: "Email",
       flex: 0.6,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "name",
+      headerName: "Imię",
+      flex: 0.5,
       align: "center",
       headerAlign: "center",
     },
@@ -51,7 +76,17 @@ const Users = () => {
       headerAlign: "center",
       renderCell: (props) => (
         <Box sx={{ display: "flex", gap: 1 }}>
-          <Button variant="outlined" size="small">
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => {
+              onChangeNameDialogOpen(
+                props.row.email,
+                props.row.uuid,
+                props.row.name
+              );
+            }}
+          >
             Edytuj
           </Button>
           <Button variant="outlined" size="small">
@@ -103,6 +138,13 @@ const Users = () => {
         isOpen={isOpenChangePasswordDialog}
         userEmail={changePasswordDialogUserEmail}
         userId={changePasswordDialogUserId}
+      />
+      <ChangeNameDialog
+        onClose={() => setIsOpenChangeNameDialog(false)}
+        isOpen={isOpenChangeNameDialog}
+        userEmail={changeNameDialogUserEmail}
+        userId={changeNameDialogUserId}
+        currentName={changeNameDialogCurrentName}
       />
     </Box>
   );
