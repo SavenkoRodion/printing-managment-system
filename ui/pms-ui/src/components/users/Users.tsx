@@ -6,6 +6,7 @@ import Admin from "../../model/Admin";
 import PageHeader from "../reusable/PageHeader";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import ChangeNameDialog from "./ChangeNameDialog";
+import CreateAdminDialog from "./CreateAdminDialog";
 
 const Users = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
@@ -21,6 +22,7 @@ const Users = () => {
     useState("");
   const [changeNameDialogCurrentName, setChangeNameDialogCurrentName] =
     useState("");
+    const [isCreateAdminDialogOpen, setCreateAdminDialogOpen] = useState(false);
 
   useEffect(() => {
     const client = getAxiosClient();
@@ -111,11 +113,9 @@ const Users = () => {
 
   return (
     <Box>
-      <PageHeader
+        <PageHeader
         pageTitle="Lista użytkowników"
-        handleCreate={() => {
-          console.log("tmp");
-        }}
+        handleCreate={() => setCreateAdminDialogOpen(true)}
         createButtonText="Nowy użytkownik"
       />
       <Box sx={{ paddingTop: "16px" }}>
@@ -145,6 +145,10 @@ const Users = () => {
         userEmail={changeNameDialogUserEmail}
         userId={changeNameDialogUserId}
         currentName={changeNameDialogCurrentName}
+      />
+      <CreateAdminDialog
+        isOpen={isCreateAdminDialogOpen}
+        handleClose={() => setCreateAdminDialogOpen(false)} 
       />
     </Box>
   );

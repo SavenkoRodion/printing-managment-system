@@ -31,5 +31,11 @@ namespace PMS_Api.Controllers
             return await adminRepository.UpdateNameAsync(request.UserId, request.NewName, cancellationToken) ? Ok() : Problem();
         }
 
+        [HttpPost("create")]
+        public async Task<bool> CreateAdminAsync([FromBody] CreateAdminRequest request, CancellationToken cancellationToken)
+        {
+            return await adminRepository.CreateAdminAsync(request.AdminName, request.AdminEmail, request.Password, cancellationToken);
+        }
+
     }
 }

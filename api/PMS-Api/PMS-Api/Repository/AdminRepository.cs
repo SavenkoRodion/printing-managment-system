@@ -51,4 +51,26 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
 
         return true;
     }
+    public async Task<bool> CreateAdminAsync(string adminName, string adminEmail, string password, CancellationToken cancellationToken)
+    {
+        await context.Admins.AddAsync(new Admin()
+        {
+            Name = adminName,
+            Email = adminEmail,
+            Password = password,
+            Uuid = Guid.NewGuid(),
+            CreatedAt = DateOnly.FromDateTime(DateTime.Now)
+        }, cancellationToken);
+
+        try
+        {
+            await context.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
 }
