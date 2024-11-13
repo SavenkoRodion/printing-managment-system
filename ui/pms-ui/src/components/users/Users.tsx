@@ -7,6 +7,7 @@ import PageHeader from "../reusable/PageHeader";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import ChangeNameDialog from "./ChangeNameDialog";
 import CreateAdminDialog from "./CreateAdminDialog";
+import DeleteAdminDialog from "./DeleteAdminDialog";
 
 const Users = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
@@ -23,6 +24,9 @@ const Users = () => {
   const [changeNameDialogCurrentName, setChangeNameDialogCurrentName] =
     useState("");
   const [isCreateAdminDialogOpen, setCreateAdminDialogOpen] = useState(false);
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState(false);
+  const [deleteAdminName, setDeleteAdminName] = useState("");
+  const [deleteAdminId, setDeleteAdminId] = useState("");
 
   useEffect(() => {
     const client = getAxiosClient();
@@ -46,6 +50,27 @@ const Users = () => {
     setChangeNameDialogUserEmail(userEmail);
     setChangeNameDialogCurrentName(currentName);
     setIsOpenChangeNameDialog(true);
+  };
+
+  const onDeleteDialogOpen = (adminId: string, adminName: string) => {
+    setDeleteAdminId(adminId);
+    setDeleteAdminName(adminName);
+    setIsOpenDeleteDialog(true);
+  };
+
+  const handleDeleteAdmin = () => {
+    const client = getAxiosClient();
+    client
+      .delete(`admin/${deleteAdminId}`)
+      .then(() => {
+        setAdmins((prevAdmins) =>
+          prevAdmins.filter((admin) => admin.uuid !== deleteAdminId)
+        );
+        setIsOpenDeleteDialog(false);
+      })
+      .catch(() => {
+        alert("Nie udało się usunąć administratora");
+      });
   };
 
   const columns: GridColDef[] = [
@@ -103,7 +128,12 @@ const Users = () => {
           >
             Zmień hasło
           </Button>
-          <Button variant="outlined" size="small" color="error">
+          <Button
+            variant="outlined"
+            size="small"
+            color="error"
+            onClick={() => onDeleteDialogOpen(props.row.uuid, props.row.name)}
+          >
             Usuń
           </Button>
         </Box>
@@ -149,6 +179,12 @@ const Users = () => {
       <CreateAdminDialog
         isOpen={isCreateAdminDialogOpen}
         handleClose={() => setCreateAdminDialogOpen(false)}
+      />
+      <DeleteAdminDialog
+        isOpen={isOpenDeleteDialog}
+        handleClose={() => setIsOpenDeleteDialog(false)}
+        handleDelete={handleDeleteAdmin}
+        adminName={deleteAdminName}
       />
     </Box>
   );

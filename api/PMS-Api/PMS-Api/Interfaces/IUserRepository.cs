@@ -8,4 +8,5 @@ public interface IUserRepository<User> where User : IUser
     Task<bool> ChangePasswordAsync(Guid adminId, string password, CancellationToken cancellationToken);
     Task<bool> UpdateNameAsync(Guid userId, string newName, CancellationToken cancellationToken);
     Task<bool> CreateAdminAsync(string adminName, string adminEmail, string password, CancellationToken cancellationToken);
+    Task<bool> DeleteAdminAsync(Guid adminId, CancellationToken cancellationToken);
 }

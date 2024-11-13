@@ -73,4 +73,16 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
         }
     }
 
+    public async Task<bool> DeleteAdminAsync(Guid adminId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await context.Admins.Where(x => x.Uuid == adminId).ExecuteDeleteAsync(cancellationToken);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }
