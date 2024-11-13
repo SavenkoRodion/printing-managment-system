@@ -22,7 +22,7 @@ const Users = () => {
     useState("");
   const [changeNameDialogCurrentName, setChangeNameDialogCurrentName] =
     useState("");
-    const [isCreateAdminDialogOpen, setCreateAdminDialogOpen] = useState(false);
+  const [isCreateAdminDialogOpen, setCreateAdminDialogOpen] = useState(false);
 
   useEffect(() => {
     const client = getAxiosClient();
@@ -113,7 +113,7 @@ const Users = () => {
 
   return (
     <Box>
-        <PageHeader
+      <PageHeader
         pageTitle="Lista użytkowników"
         handleCreate={() => setCreateAdminDialogOpen(true)}
         createButtonText="Nowy użytkownik"
@@ -148,7 +148,7 @@ const Users = () => {
       />
       <CreateAdminDialog
         isOpen={isCreateAdminDialogOpen}
-        handleClose={() => setCreateAdminDialogOpen(false)} 
+        handleClose={() => setCreateAdminDialogOpen(false)}
       />
     </Box>
   );
