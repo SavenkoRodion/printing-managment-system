@@ -37,7 +37,7 @@ namespace PMS_Api.Controllers
             return await adminRepository.CreateAdminAsync(request.AdminName, request.AdminEmail, request.Password, cancellationToken);
         }
 
-        [HttpDelete("{adminId:guid}")]
+        [HttpDelete("{adminId}")]
         public async Task<bool> DeleteAsync([FromRoute] Guid adminId, CancellationToken cancellationToken)
         {
             return await adminRepository.DeleteAdminAsync(adminId, cancellationToken);
