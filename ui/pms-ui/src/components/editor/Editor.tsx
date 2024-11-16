@@ -6,12 +6,12 @@ import { View } from "./views";
 import getAxiosClient from "../../utility/getAxiosClient";
 import { useParams } from "react-router-dom";
 
-type EditorParams = { projectId: string };
+type EditorParams = { projectId: string; type: "szablon" | "projekt" };
 
 const Editor = () => {
   const [view, setView] = useState<View>(View.Info);
   const client = getAxiosClient();
-  const { projectId } = useParams<EditorParams>();
+  const { projectId, type } = useParams<EditorParams>();
 
   const handleViewChange = (
     _event: React.MouseEvent<HTMLElement>,
@@ -23,7 +23,9 @@ const Editor = () => {
   };
 
   useEffect(() => {
-    client.get(`project/${projectId}`).then((e) => console.log(e));
+    client
+      .get(`${type === "szablon" ? "template" : "project"}/${projectId}`)
+      .then((e) => console.log(e));
   }, []);
 
   return (

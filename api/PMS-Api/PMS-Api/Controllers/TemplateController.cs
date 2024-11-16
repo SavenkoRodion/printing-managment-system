@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PMS_Api.Model.DbModel;
-using PMS_Api.Model.Requests;
 using PMS_Api.Repository;
 
 
@@ -26,6 +25,6 @@ public class TemplateController(ITemplateRepository repository) : ControllerBase
         {
             return NotFound();
         }
-        return Ok();
+        return Ok(template);
     }
 }
