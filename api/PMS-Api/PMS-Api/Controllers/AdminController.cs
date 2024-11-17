@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PMS_Api.Enums;
 using PMS_Api.Interfaces;
 using PMS_Api.Model.DbModel;
 using PMS_Api.Model.Requests;
@@ -32,9 +33,17 @@ namespace PMS_Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<bool> CreateAdminAsync([FromBody] CreateAdminRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateAdminAsync([FromBody] CreateAdminRequest request, CancellationToken cancellationToken)
         {
-            return await adminRepository.CreateAdminAsync(request.AdminName, request.AdminEmail, request.Password, cancellationToken);
+            var result = await adminRepository.CreateAdminAsync(request.AdminName, request.AdminEmail, request.Password, cancellationToken);
+
+            return result switch
+            {
+                CreateAdminResult.Success => Ok(),
+                CreateAdminResult.Duplicate => Conflict("Administrator z takim adresem mailowym już istnieje"),
+                CreateAdminResult.Failure => Problem("Nie udało się utworzyć użytkownika"),
+                _ => Problem("Nieznany błąd")
+            };
         }
 
         [HttpDelete("{adminId}")]

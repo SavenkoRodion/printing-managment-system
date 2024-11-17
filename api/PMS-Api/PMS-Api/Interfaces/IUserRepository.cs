@@ -1,4 +1,6 @@
-﻿namespace PMS_Api.Interfaces;
+﻿using PMS_Api.Enums;
+
+namespace PMS_Api.Interfaces;
 
 public interface IUserRepository<User> where User : IUser
 {
@@ -7,6 +9,6 @@ public interface IUserRepository<User> where User : IUser
     Task<User?> GetByUuidAsync(string uuid, CancellationToken cancellationToken);
     Task<bool> ChangePasswordAsync(Guid adminId, string password, CancellationToken cancellationToken);
     Task<bool> UpdateNameAsync(Guid userId, string newName, CancellationToken cancellationToken);
-    Task<bool> CreateAdminAsync(string adminName, string adminEmail, string password, CancellationToken cancellationToken);
+    Task<CreateAdminResult> CreateAdminAsync(string adminName, string adminEmail, string password, CancellationToken cancellationToken);
     Task<bool> DeleteAdminAsync(Guid adminId, CancellationToken cancellationToken);
 }

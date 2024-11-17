@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Alert,
 } from "@mui/material";
 import styles from "./CreateAdminDialog.style";
 import getAxiosClient from "../../utility/getAxiosClient";
@@ -18,12 +19,14 @@ const CreateAdminDialog = ({ isOpen, handleClose }: CreateAdminDialogProps) => {
   const [adminName, setAdminName] = useState("");
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const client = getAxiosClient();
 
   const createAdmin = () => {
+    setErrorMessage("");
     client
-      .post<boolean>("admin/create", {
+      .post("admin/create", {
         AdminName: adminName,
         AdminEmail: adminEmail,
         Password: adminPassword,
@@ -31,8 +34,14 @@ const CreateAdminDialog = ({ isOpen, handleClose }: CreateAdminDialogProps) => {
       .then(() => {
         window.location.reload();
       })
-      .catch(() => {
-        alert("Nie udało się stworzyć nowego administratora");
+      .catch((error) => {
+        if (error.response?.status === 409) {
+          setErrorMessage("Użytkownik z tym adresem email już istnieje.");
+        } else if (error.response?.status === 500) {
+          setErrorMessage("Nie udało się stworzyć nowego administratora.");
+        } else {
+          setErrorMessage("Wystąpił nieznany błąd.");
+        }
       });
   };
 
@@ -40,6 +49,11 @@ const CreateAdminDialog = ({ isOpen, handleClose }: CreateAdminDialogProps) => {
     <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
       <DialogTitle>Stwórz nowego administratora</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
+        {errorMessage && (
+          <Alert severity="error" sx={styles.dialogElement}>
+            {errorMessage}
+          </Alert>
+        )}
         <TextField
           size="small"
           label="Imię"
