@@ -1,4 +1,4 @@
-type ProjectTemplate = {
+type TemplateOrProject = {
   id: number;
   name: string;
   clientId: number;
@@ -9,4 +9,4 @@ type ProjectTemplate = {
   adminId: string;
 };
 
-export default ProjectTemplate;
+export default TemplateOrProject;

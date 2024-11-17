@@ -1,32 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Container, Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import InfoView from "./InfoView";
 import EditorView from "./EditorView";
-import { View } from "./views";
-import getAxiosClient from "../../utility/getAxiosClient";
-import { useParams } from "react-router-dom";
+import EditorTab from "./EditorTab";
+import ProjectOrTemplate from "../../model/TemplateOrProject";
+import InfoView from "./InfoView";
 
-type EditorParams = { projectId: string; type: "szablon" | "projekt" };
+export type EditorParams = { projectId: string; type: "template" | "project" };
 
 const Editor = () => {
-  const [view, setView] = useState<View>(View.Info);
-  const client = getAxiosClient();
-  const { projectId, type } = useParams<EditorParams>();
+  const [view, setView] = useState<EditorTab>(EditorTab.Info);
 
   const handleViewChange = (
     _event: React.MouseEvent<HTMLElement>,
-    newView: View
+    newTab: EditorTab
   ) => {
-    if (newView !== null) {
-      setView(newView);
+    if (newTab !== null) {
+      setView(newTab);
     }
   };
 
-  useEffect(() => {
-    client
-      .get(`${type === "szablon" ? "template" : "project"}/${projectId}`)
-      .then((e) => console.log(e));
-  }, []);
+  // useEffect(() => {
+  //   client
+  //     .get<ProjectOrTemplate>(
+  //       `${type === "template" ? "template" : "project"}/${projectId}`
+  //     )
+  //     .then((e) => console.log(e));
+  // }, []);
 
   return (
     <Container>
@@ -37,16 +36,16 @@ const Editor = () => {
           onChange={handleViewChange}
           aria-label="view selection"
         >
-          <ToggleButton value={View.Info} aria-label="info view">
+          <ToggleButton value={EditorTab.Info} aria-label="info view">
             Info
           </ToggleButton>
-          <ToggleButton value={View.Editor} aria-label="editor view">
+          <ToggleButton value={EditorTab.Editor} aria-label="editor view">
             Edytor
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      {view === View.Info && <InfoView />}
-      {view === View.Editor && <EditorView />}
+      {view === EditorTab.Info && <InfoView />}
+      {view === EditorTab.Editor && <EditorView />}
     </Container>
   );
 };

@@ -12,10 +12,7 @@ import {
 import getAxiosClient from "../../utility/getAxiosClient";
 import Client from "../../model/Client";
 import { useParams } from "react-router-dom";
-
-// type InfoViewProps = {
-
-// }
+import { EditorParams } from "./Editor";
 
 const InfoView = () => {
   const axiosClient = getAxiosClient();
@@ -23,7 +20,7 @@ const InfoView = () => {
   const [client, setClient] = useState<Client | undefined>();
   const [clientList, setClientList] = useState<Client[]>([]);
 
-  const { projectId } = useParams();
+  const { projectId, type } = useParams<EditorParams>();
 
   const [name, setName] = useState<string>("");
   const [productType, setProductType] = useState<string>("");
@@ -41,7 +38,7 @@ const InfoView = () => {
     axiosClient.get<Client[]>("client").then((e) => {
       setClientList(e.data);
     });
-    axiosClient.get(`project/${projectId}`).then((e) => console.log(e));
+    axiosClient.get(`project/${projectId}`).then((e) => console.log(e.data));
   }, []);
 
   return (

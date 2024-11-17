@@ -57,6 +57,7 @@ const ProjectSelector = () => {
     setDataProjects(projectsForClient);
   };
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    alert(newValue);
     setCurrentTab(newValue);
   };
 
@@ -161,7 +162,8 @@ const ProjectSelector = () => {
   const navigate = useNavigate();
   const handleEdit = useCallback((id: number) => {
     console.log(`Edit template with id: ${id}`);
-    navigate(`/edytor/${currentTab === 0 ? "szablon" : "projekt"}/${id}`);
+    alert(currentTab === 0 ? "szablon1" : "projekt1");
+    navigate(`/edytor/${currentTab === 0 ? "template" : "project"}/${id}`);
   }, []);
 
   const handleCopy = useCallback((id: number) => {
@@ -198,8 +200,8 @@ const ProjectSelector = () => {
           onChange={handleTabChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Szablony firmowe" {...a11yProps(0)} />
-          <Tab label="Projekty zapisane" {...a11yProps(1)} />
+          <Tab label="Szablony firmowe" {...a11yProps(0)} value={0} />
+          <Tab label="Projekty zapisane" {...a11yProps(1)} value={1} />
         </Tabs>
       </Box>
       <CustomTabPanel value={currentTab} index={0}>
