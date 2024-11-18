@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PMS_Api.Interfaces;
 using PMS_Api.Model.DbModel;
+using PMS_Api.Enums;
 
 namespace PMS_Api.Repository;
 
@@ -50,5 +51,45 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
         }
 
         return true;
+    }
+    public async Task<CreateAdminResult> CreateAdminAsync(string adminName, string adminEmail, string password, CancellationToken cancellationToken)
+    {
+        bool userExists = await context.Admins.AnyAsync(x => x.Email == adminEmail, cancellationToken);
+
+        if (userExists)
+        {
+            return CreateAdminResult.Duplicate;
+        }
+        await context.Admins.AddAsync(new Admin()
+        {
+            Name = adminName,
+            Email = adminEmail,
+            Password = password,
+            Uuid = Guid.NewGuid(),
+            CreatedAt = DateOnly.FromDateTime(DateTime.Now)
+        }, cancellationToken);
+
+        try
+        {
+            await context.SaveChangesAsync(cancellationToken);
+            return CreateAdminResult.Success;
+        }
+        catch
+        {
+            return CreateAdminResult.Failure;
+        }
+    }
+
+    public async Task<bool> DeleteAdminAsync(Guid adminId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await context.Admins.Where(x => x.Uuid == adminId).ExecuteDeleteAsync(cancellationToken);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
