@@ -1,3 +1,7 @@
+export type Client = {
+  uuid: string;
+  name: string;
+};
 export interface Admin {
   uuid: string;
   name: string;
