@@ -66,7 +66,6 @@ const InfoView = () => {
       .get<TemplateOrProject>(`template/${projectId}`)
       .then((e) => {
         if (isStatusCodeSuccessfull(e.status)) {
-          console.log(e.data);
           setTemplateOrProject(e.data);
           reset(e.data);
         } else {
@@ -109,7 +108,9 @@ const InfoView = () => {
                     onChange={onChange}
                   >
                     {clientList.map((e) => (
-                      <MenuItem value={e.uuid}>{e.name}</MenuItem>
+                      <MenuItem value={e.uuid} key={e.uuid}>
+                        {e.name}
+                      </MenuItem>
                     ))}
                   </Select>
                 );
@@ -123,8 +124,6 @@ const InfoView = () => {
               control={control}
               name={"productId"}
               render={({ field: { value, onChange } }) => {
-                console.log("HERE ", value);
-                console.log("HERE ", productList);
                 return (
                   <Select
                     labelId="product-type-label"
@@ -133,7 +132,9 @@ const InfoView = () => {
                     label={"Produkt"}
                   >
                     {productList.map((e) => (
-                      <MenuItem value={e.id}>{e.name}</MenuItem>
+                      <MenuItem value={e.id} key={e.id}>
+                        {e.name}
+                      </MenuItem>
                     ))}
                   </Select>
                 );
