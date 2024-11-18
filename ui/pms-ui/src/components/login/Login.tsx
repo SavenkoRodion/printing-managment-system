@@ -74,6 +74,7 @@ const Login = () => {
         size="small"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        autoComplete="username"
       />
       <TextField
         label="Hasło"
@@ -83,6 +84,7 @@ const Login = () => {
         size="small"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        autoComplete="current-password"
       />
 
       <Button variant="contained" color="primary" fullWidth type="submit">

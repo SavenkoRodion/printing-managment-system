@@ -35,7 +35,7 @@ const ResetPasswordDialog = ({
       })
       .then((res) => {
         if (!isStatusCodeSuccessfull(res.status)) {
-          alert("Nie udało się zmienić hasła");
+          console.error("Nie udało się zmienić hasła");
         }
         window.location.reload();
       });

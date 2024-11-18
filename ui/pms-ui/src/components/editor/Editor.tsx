@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { Container, Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import InfoView from "./InfoView";
 import EditorView from "./EditorView";
-import { View } from "./views";
+import EditorTab from "./EditorTab";
+import InfoView from "./InfoView";
+
+export type EditorParams = { projectId: string; type: "template" | "project" };
 
 const Editor = () => {
-  const [view, setView] = useState<View>(View.Info);
+  const [editorTab, setEditorTab] = useState<EditorTab>(EditorTab.Info);
 
   const handleViewChange = (
     _event: React.MouseEvent<HTMLElement>,
-    newView: View
+    newTab: EditorTab
   ) => {
-    if (newView !== null) {
-      setView(newView);
+    if (newTab !== null) {
+      setEditorTab(newTab);
     }
   };
 
@@ -20,21 +22,21 @@ const Editor = () => {
     <Container>
       <Box display="flex" justifyContent="center" mb={2}>
         <ToggleButtonGroup
-          value={view}
+          value={editorTab}
           exclusive
           onChange={handleViewChange}
           aria-label="view selection"
         >
-          <ToggleButton value={View.Info} aria-label="info view">
+          <ToggleButton value={EditorTab.Info} aria-label="info view">
             Info
           </ToggleButton>
-          <ToggleButton value={View.Editor} aria-label="editor view">
+          <ToggleButton value={EditorTab.Editor} aria-label="editor view">
             Edytor
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      {view === View.Info && <InfoView />}
-      {view === View.Editor && <EditorView />}
+      {editorTab === EditorTab.Info && <InfoView />}
+      {editorTab === EditorTab.Editor && <EditorView />}
     </Container>
   );
 };

@@ -11,10 +11,12 @@ import {
   Tab,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridCellParams } from "@mui/x-data-grid";
-import { Template, Client, Admin, Project, Product } from "../../utility/types"; // Import types
+import { Template, Admin, Project, Product } from "../../utility/types"; // Import types
 import { a11yProps } from "./utils";
 import getAxiosClient from "../../utility/getAxiosClient";
 import CustomTabPanel from "./CustomTabPanel";
+import { useNavigate } from "react-router-dom";
+import Client from "../../model/Client";
 
 const ProjectSelector = () => {
   const client = getAxiosClient();
@@ -156,8 +158,10 @@ const ProjectSelector = () => {
     },
   ];
 
+  const navigate = useNavigate();
   const handleEdit = useCallback((id: number) => {
     console.log(`Edit template with id: ${id}`);
+    navigate(`/edytor/${currentTab === 0 ? "template" : "project"}/${id}`);
   }, []);
 
   const handleCopy = useCallback((id: number) => {
