@@ -7,130 +7,171 @@ import {
   MenuItem,
   InputLabel,
   Box,
-  Stack,
+  CircularProgress,
 } from "@mui/material";
 import getAxiosClient from "../../utility/getAxiosClient";
 import Client from "../../model/Client";
 import { useParams } from "react-router-dom";
 import { EditorParams } from "./Editor";
+import TemplateOrProject from "../../model/TemplateOrProject";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import Product from "../../model/Product";
+import { isStatusCodeSuccessfull } from "../../utility/util";
 
 const InfoView = () => {
-  const axiosClient = getAxiosClient();
-
-  const [client, setClient] = useState<Client | undefined>();
   const [clientList, setClientList] = useState<Client[]>([]);
 
-  const { projectId, type } = useParams<EditorParams>();
+  const { projectId } = useParams<EditorParams>(); //TODO: should work for both template and project
 
-  const [name, setName] = useState<string>("");
-  const [productType, setProductType] = useState<string>("");
-  const [format, setFormat] = useState<string>("");
-  const [width, setWidth] = useState<string>("");
-  const [height, setHeight] = useState<string>("");
-  const [pdfWidth, setPdfWidth] = useState<string>("");
-  const [pdfHeight, setPdfHeight] = useState<string>("");
+  const [productList, setProductList] = useState<Product[]>([]);
 
-  const handleSave = () => {
-    console.log("Zapisałeś");
-  };
+  const [templateOrProject, setTemplateOrProject] =
+    useState<TemplateOrProject>();
 
   useEffect(() => {
-    axiosClient.get<Client[]>("client").then((e) => {
-      setClientList(e.data);
-    });
-    axiosClient.get(`project/${projectId}`).then((e) => console.log(e.data));
+    const axiosClient = getAxiosClient();
+
+    //TODO: Better error handling
+    axiosClient
+      .get<Client[]>("client")
+      .then((e) => {
+        if (isStatusCodeSuccessfull(e.status)) {
+          setClientList(e.data);
+        } else {
+          console.error("Błąd przy pobraniu listy użytkowników");
+        }
+      })
+      .catch(() => console.error("Błąd przy pobraniu listy użytkowników"));
+
+    axiosClient
+      .get<Product[]>("product")
+      .then((e) => {
+        if (isStatusCodeSuccessfull(e.status)) {
+          setProductList(e.data);
+        } else {
+          console.error("Błąd przy pobraniu listy produktów");
+        }
+      })
+      .catch(() => console.error("Błąd przy pobraniu listy produktów"));
   }, []);
+
+  const { handleSubmit, control, reset } = useForm<TemplateOrProject>({
+    defaultValues: templateOrProject,
+  });
+
+  useEffect(() => {
+    const axiosClient = getAxiosClient();
+
+    axiosClient
+      .get<TemplateOrProject>(`template/${projectId}`)
+      .then((e) => {
+        if (isStatusCodeSuccessfull(e.status)) {
+          console.log(e.data);
+          setTemplateOrProject(e.data);
+          reset(e.data);
+        } else {
+          console.error("Błąd przy pobraniu danych szablonu/projektu");
+        }
+      })
+      .catch(() =>
+        console.error("Błąd przy pobraniu danych szablonu/projektu")
+      );
+  }, [reset, projectId]);
+
+  const onSubmit: SubmitHandler<TemplateOrProject> = (data) =>
+    console.log("HERE", data);
 
   return (
     <Box>
-      <Stack>
-        <TextField
-          label="Nazwa"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </Stack>
+      {productList.length && clientList.length ? (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl fullWidth margin="normal">
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { value, onChange } }) => (
+                <TextField label="Nazwa" value={value} onChange={onChange} />
+              )}
+            />
+          </FormControl>
 
-      <FormControl fullWidth margin="normal">
-        <InputLabel id="demo-simple-select-label">Klient</InputLabel>
-        <Select
-          label="Klient"
-          labelId="demo-simple-select-label"
-          value={client?.uuid}
-          onChange={(e) =>
-            setClient(clientList.filter((z) => z.uuid === e.target.value)[0])
-          }
-        >
-          {clientList.map((e) => (
-            <MenuItem value={e.uuid}>{e.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="demo-simple-select-label">Klient</InputLabel>
+            <Controller
+              control={control}
+              name={"clientId"}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Select
+                    label="Klient"
+                    labelId="demo-simple-select-label"
+                    value={value}
+                    onChange={onChange}
+                  >
+                    {clientList.map((e) => (
+                      <MenuItem value={e.uuid}>{e.name}</MenuItem>
+                    ))}
+                  </Select>
+                );
+              }}
+            />
+          </FormControl>
 
-      <FormControl fullWidth margin="normal">
-        <InputLabel id="product-type-label">Produkt</InputLabel>
-        <Select
-          labelId="product-type-label"
-          value={productType}
-          onChange={(e) => setProductType(e.target.value)}
-          label={"Produkt"}
-        >
-          <MenuItem value="broszura">Broszura</MenuItem>
-          <MenuItem value="broszura16">Broszura 16 stron</MenuItem>
-          <MenuItem value="broszura32">Broszura 32 stron</MenuItem>
-        </Select>
-      </FormControl>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="product-type-label">Produkt</InputLabel>
+            <Controller
+              control={control}
+              name={"productId"}
+              render={({ field: { value, onChange } }) => {
+                console.log("HERE ", value);
+                console.log("HERE ", productList);
+                return (
+                  <Select
+                    labelId="product-type-label"
+                    value={value}
+                    onChange={onChange}
+                    label={"Produkt"}
+                  >
+                    {productList.map((e) => (
+                      <MenuItem value={e.id}>{e.name}</MenuItem>
+                    ))}
+                  </Select>
+                );
+              }}
+            />
+          </FormControl>
 
-      <FormControl fullWidth margin="normal">
-        <InputLabel id="format-label">Format</InputLabel>
-        <Select
-          labelId="format-label"
-          value={format}
-          onChange={(e) => setFormat(e.target.value)}
-          label="Format"
-        >
-          <MenuItem value="a4">A4</MenuItem>
-          <MenuItem value="a3">A3</MenuItem>
-        </Select>
-      </FormControl>
-
-      <FormControl fullWidth margin="normal">
-        <TextField
-          label="Szerokość"
-          value={width}
-          onChange={(e) => setWidth(e.target.value)}
-        />
-      </FormControl>
-
-      <FormControl fullWidth margin="normal">
-        <TextField
-          label="Wysokość"
-          value={height}
-          onChange={(e) => setHeight(e.target.value)}
-        />
-      </FormControl>
-
-      <FormControl fullWidth margin="normal">
-        <TextField
-          label="Szerokość PDF"
-          value={pdfWidth}
-          onChange={(e) => setPdfWidth(e.target.value)}
-        />
-      </FormControl>
-
-      <FormControl fullWidth margin="normal">
-        <TextField
-          label="Wysokość PDF"
-          value={pdfHeight}
-          onChange={(e) => setPdfHeight(e.target.value)}
-        />
-      </FormControl>
-
-      <Box mt={4}>
-        <Button variant="contained" onClick={handleSave}>
-          Zapisz
-        </Button>
-      </Box>
+          <FormControl fullWidth margin="normal">
+            <Controller
+              control={control}
+              name="format"
+              render={({ field: { value, onChange } }) => (
+                <TextField label="Format" value={value} onChange={onChange} />
+              )}
+            />
+            {/* 
+          TODO: This should work as select in the future
+          <InputLabel id="format-label">Format</InputLabel>
+          <Select
+            labelId="format-label"
+            value={format}
+            onChange={(e) => setFormat(e.target.value)}
+            label="Format"
+          >
+            <MenuItem value="a4">A4</MenuItem>
+            <MenuItem value="a3">A3</MenuItem>
+          </Select> */}
+          </FormControl>
+          <Box mt={2}>
+            <Button variant="contained" type="submit">
+              Zapisz
+            </Button>
+          </Box>
+        </form>
+      ) : (
+        <CircularProgress />
+        //TODO: Better loading
+      )}
     </Box>
   );
 };
