@@ -9,7 +9,7 @@ import Editor from "./components/editor/Editor";
 import AuthorizedComponent from "./authorizationWrappers/AuthorizedComponent.tsx";
 import AuthorizedMenu from "./components/layouts/AuthorizedMenuLayout.tsx";
 import ProductPage from "./components/products/Products.tsx";
-import ProjectSelector from "./components/projects/ProjectSelector.tsx";
+import ProjectList from "./components/projects/ProjectList.tsx";
 import Params from "./components/params/Params.tsx";
 import Users from "./components/users/Users.tsx";
 
@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </Route>
         <Route element={<AuthorizedComponent />}>
           <Route element={<AuthorizedMenu />}>
-            <Route path="/projekty-klientow" element={<ProjectSelector />} />
+            <Route path="/projekty-klientow" element={<ProjectList />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/produkty" element={<ProductPage />} />
             <Route path="/parametry" element={<Params />} />

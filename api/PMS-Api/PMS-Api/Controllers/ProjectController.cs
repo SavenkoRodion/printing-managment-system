@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PMS_Api.Interfaces;
 using PMS_Api.Model.DbModel;
 using PMS_Api.Model.Requests;
 using PMS_Api.Repository;
@@ -10,7 +11,7 @@ namespace PMS_Api.Controllers;
 [Authorize]
 [Route("api/project")]
 [ApiController]
-public class ProjectController(IProjectRepository repository) : ControllerBase
+public class ProjectController(IProjectRepository repository, IUserRepository<Admin> adminRepository) : ControllerBase
 {
     [HttpGet]
     public async Task<IReadOnlyList<Project>> GetAsync(CancellationToken cancellationToken)
@@ -38,17 +39,21 @@ public class ProjectController(IProjectRepository repository) : ControllerBase
             return BadRequest("Project data is required.");
         }
 
-        try
+        var admin = await adminRepository.GetByUuidAsync(HttpContext.User.Claims.Where(x => x.Type == "Uuid").Single().Value, cancellationToken);
+        if (admin == null)
         {
+            return BadRequest("Admin not found.");
+        }else{
+            
             var project = new Project
             {
                 Name = request.Name,
                 ClientId = request.ClientId,
                 ProductId = request.ProductId,
                 Format = request.Format,
-                LiczbaStron = request.LiczbaStron,
+                LiczbaStron = 0,
                 DateModified = DateTime.Now,
-                AdminId = request.AdminId
+                AdminId = admin.Uuid
             };
 
             var createdProject = await repository.AddProjectAsync(project, cancellationToken);
@@ -60,11 +65,6 @@ public class ProjectController(IProjectRepository repository) : ControllerBase
                 return NotFound();
             }
             return projectWithRelations;
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine($"Error creating project: {ex.Message}");
-            return StatusCode(500, "An error occurred while creating the project.");
         }
     }
 

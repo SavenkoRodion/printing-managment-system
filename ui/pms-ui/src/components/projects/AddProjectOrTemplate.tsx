@@ -11,10 +11,8 @@ interface AddProjectOrTemplateProps {
   onCreate: (
     name: string,
     format: string,
-    pageCount: number,
     selectedClient: string,
-    selectedProduct: number,
-    currentUserUuid: string
+    selectedProduct: number
   ) => void;
 }
 

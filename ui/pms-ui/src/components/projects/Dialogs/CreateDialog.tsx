@@ -24,11 +24,9 @@ type CreateModalProps = {
   onCreate: (
     name: string,
     format: string,
-    pageCount: number,
     selectedClient: string,
-    selectedProduct: number,
-    currentUserUuid: string
-  ) => void; // onCreate callback prop
+    selectedProduct: number
+  ) => void;
 };
 
 const CreateDialog = ({
@@ -42,9 +40,6 @@ const CreateDialog = ({
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [format, setFormat] = useState("");
-  const [pageCount, setPageCount] = useState<number>(0);
-  const [currentUserUuid, setCurrentUserUuid] = useState<string | null>(null);
-  const [currentUserName, setCurrentUserName] = useState<string | null>(null);
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<number>(0);
   const [products, setProducts] = useState<Product[]>([]);
@@ -52,10 +47,6 @@ const CreateDialog = ({
   const client = getAxiosClient();
 
   useEffect(() => {
-    client.get("/auth/who-am-i").then((response) => {
-      setCurrentUserUuid(response.data.uuid);
-      setCurrentUserName(response.data.name);
-    });
     client.get("/product").then((response) => {
       setProducts(response.data);
     });
@@ -68,34 +59,19 @@ const CreateDialog = ({
   }, [isOpen, currentClient]);
 
   const handleCreate = () => {
-    if (
-      !name ||
-      !selectedClient ||
-      !selectedProduct ||
-      !format ||
-      !pageCount ||
-      !currentUserUuid
-    ) {
+    if (!name || !selectedClient || !selectedProduct || !format) {
       setError("Wszystkie pola muszą być wypełnione");
       setTimeout(() => setError(""), 3000);
       return;
     }
 
-    onCreate(
-      name,
-      format,
-      pageCount,
-      selectedClient,
-      selectedProduct,
-      currentUserUuid
-    ); // Call onCreate with form data
+    onCreate(name, format, selectedClient, selectedProduct);
     handleDialogClose();
   };
 
   const handleDialogClose = () => {
     setName("");
     setFormat("");
-    setPageCount(0);
     setSelectedClient("");
     setSelectedProduct(0);
     handleClose();
@@ -164,21 +140,6 @@ const CreateDialog = ({
           sx={styles.dialogElement}
           value={format}
           onChange={(e) => setFormat(e.target.value)}
-        />
-        <TextField
-          type="number"
-          size="small"
-          label="Liczba Stron"
-          sx={styles.dialogElement}
-          value={pageCount}
-          onChange={(e) => setPageCount(Number(e.target.value))}
-        />
-        <TextField
-          size="small"
-          label="Admin ID"
-          sx={styles.dialogElement}
-          value={currentUserName}
-          disabled={true}
         />
         <Button
           variant="contained"

@@ -10,12 +10,17 @@ import DeleteDialog from "./Dialogs/DeleteDialog";
 import CustomTabPanel from "./CustomTabPanel";
 import AddProjectOrTemplate from "./AddProjectOrTemplate";
 
-const ProjectSelector = () => {
+enum Tab {
+  TemplateTab,
+  ProjectTab,
+}
+
+const ProjectList = () => {
   const client = getAxiosClient();
   const [templates, setTemplates] = useState<Template[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
-  const [currentTab, setCurrentTab] = useState(0);
+  const [currentTab, setCurrentTab] = useState(Tab.TemplateTab);
   const [error, setError] = useState<string | null>(null);
   const [currentClient, setCurrentClient] = useState<string>("");
   const [dataTemplates, setDataTemplates] = useState<Template[]>([]);
@@ -52,7 +57,7 @@ const ProjectSelector = () => {
     );
   };
 
-  const handleTabChange = (newValue: number) => {
+  const handleTabChange = (newValue: Tab) => {
     setCurrentTab(newValue);
   };
 
@@ -67,15 +72,18 @@ const ProjectSelector = () => {
     if (itemId === undefined) return;
 
     const apiEndpoint =
-      currentTab === 0 ? `template/${itemId}` : `project/${itemId}`;
+      currentTab === Tab.TemplateTab
+        ? `template/${itemId}`
+        : `project/${itemId}`;
     const response = await client.delete<boolean>(apiEndpoint);
     if (isStatusCodeSuccessfull(response.status)) {
-      const updatedItems = currentTab === 0 ? templates : projects;
+      const updatedItems =
+        currentTab === Tab.TemplateTab ? templates : projects;
       const filteredItems = updatedItems.filter((item) => item.id !== itemId);
-      currentTab === 0
+      currentTab === Tab.TemplateTab
         ? setTemplates(filteredItems)
         : setProjects(filteredItems);
-      currentTab === 0
+      currentTab === Tab.TemplateTab
         ? setDataTemplates(
             filteredItems.filter((item) => item.clientId === currentClient)
           )
@@ -84,7 +92,7 @@ const ProjectSelector = () => {
           );
     } else {
       setError(
-        currentTab === 0
+        currentTab === Tab.TemplateTab
           ? "Nie udało się usunąć szablonu"
           : "Nie udało się usunąć projektu"
       );
@@ -103,35 +111,20 @@ const ProjectSelector = () => {
   const createTemplateOrProject = (
     name: string,
     format: string,
-    pageCount: number,
     selectedClient: string,
-    selectedProduct: number,
-    currentUserUuid: string
+    selectedProduct: number
   ) => {
-    console.log(
-      name,
-      format,
-      pageCount,
-      selectedClient,
-      selectedProduct,
-      currentUserUuid
-    );
-
     client
-      .post(`/${currentTab === 0 ? "template" : "project"}`, {
+      .post(`/${currentTab === Tab.TemplateTab ? "template" : "project"}`, {
         name: name,
         clientId: selectedClient,
         productId: selectedProduct,
         format: format,
-        liczbaStron: pageCount,
-        adminId: currentUserUuid,
       })
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
         const newItem = response.data;
 
-        if (currentTab === 0) {
+        if (currentTab === Tab.TemplateTab) {
           setTemplates([...templates, newItem]);
           if (selectedClient === currentClient) {
             setDataTemplates([...dataTemplates, newItem]);
@@ -146,27 +139,7 @@ const ProjectSelector = () => {
         setError("");
       })
       .catch((error) => {
-        // Check if the error is from the server (HTTP status 500)
         if (error.response) {
-          const status = error.response.status;
-          if (status === 500) {
-            setError(
-              "An error occurred while creating the item. Please try again."
-            );
-          } else if (status === 400) {
-            setError(
-              "Invalid data. Please check the information and try again."
-            );
-          } else {
-            setError("An unknown error occurred. Please try again later.");
-          }
-        } else if (error.request) {
-          // No response received from the server
-          setError(
-            "Server not responding. Please check your internet connection."
-          );
-        } else {
-          // Error in setting up the request (e.g., network issue)
           setError(`Error: ${error.message}`);
         }
       });
@@ -214,4 +187,4 @@ const ProjectSelector = () => {
   );
 };
 
-export default ProjectSelector;
+export default ProjectList;

@@ -22,7 +22,7 @@ public class ProjectRepository(PmsContext context) : IProjectRepository
 
     public async Task<Project?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await context.Projects.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).FirstOrDefaultAsync(x => x.Id == id) ?? default;
+        return await context.Projects.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).FirstOrDefaultAsync(x => x.Id == id) ?? null;
     }
 
     
@@ -35,15 +35,9 @@ public class ProjectRepository(PmsContext context) : IProjectRepository
             await context.SaveChangesAsync(cancellationToken);
             return project;
         }
-        catch (DbUpdateException dbEx)
+        catch
         {
-            Console.Error.WriteLine($"Database update error: {dbEx.Message}");
-            throw new Exception("An error occurred while saving the project to the database.");
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine($"Unexpected error: {ex.Message}");
-            throw new Exception("An unexpected error occurred while processing the request.");
+          return null;
         }
     }
 

@@ -22,7 +22,7 @@ public class TemplateRepository(PmsContext context) : ITemplateRepository
 
     public async Task<Template?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await context.Templates.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).FirstOrDefaultAsync(x => x.Id == id) ?? default;
+        return await context.Templates.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).FirstOrDefaultAsync(x => x.Id == id) ?? null;
     }
 
     
@@ -35,15 +35,9 @@ public class TemplateRepository(PmsContext context) : ITemplateRepository
             await context.SaveChangesAsync(cancellationToken);
             return template;
         }
-        catch (DbUpdateException dbEx)
+        catch
         {
-            Console.Error.WriteLine($"Database update error: {dbEx.Message}");
-            throw new Exception("An error occurred while saving the template to the database.");
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine($"Unexpected error: {ex.Message}");
-            throw new Exception("An unexpected error occurred while processing the request.");
+          return null;
         }
     }
 
