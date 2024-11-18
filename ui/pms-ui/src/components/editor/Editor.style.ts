@@ -41,12 +41,17 @@ export const styles = {
     maxWidth: "200px",
   },
   pdfContainer: {
+    position: "relative",
     height: "flex",
     width: "100%",
-    overflow: "hidden",
+    overflowX: "auto",
+    overflowY: "hidden",
     border: "2px solid black",
-    borderRadius: "8px",
+    borderRadius: "8px", 
+    display: "flex",
+    flexDirection: "column",
   },
+
   zoomControls: {
     display: "flex",
     justifyContent: "space-between",

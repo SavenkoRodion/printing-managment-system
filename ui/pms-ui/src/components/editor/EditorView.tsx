@@ -172,7 +172,7 @@ const EditorView: React.FC<EditorViewProps> = () => {
 
         {file && (
           <Box sx={styles.pdfContainer}>
-            <Worker workerUrl="node_modules/pdfjs-dist/build/pdf.worker.min.js">
+            <Worker workerUrl="/node_modules/pdfjs-dist/build/pdf.worker.min.js">
               <Box sx={styles.zoomControls}>
                 <ZoomOut />
                 <Box sx={styles.zoomInfo}>
