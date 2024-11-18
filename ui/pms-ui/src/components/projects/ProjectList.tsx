@@ -57,7 +57,6 @@ const ProjectSelector = () => {
     setDataProjects(projectsForClient);
   };
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.error(newValue);
     setCurrentTab(newValue);
   };
 
@@ -162,7 +161,6 @@ const ProjectSelector = () => {
   const navigate = useNavigate();
   const handleEdit = useCallback((id: number) => {
     console.log(`Edit template with id: ${id}`);
-    console.error(currentTab === 0 ? "szablon1" : "projekt1");
     navigate(`/edytor/${currentTab === 0 ? "template" : "project"}/${id}`);
   }, []);
 
