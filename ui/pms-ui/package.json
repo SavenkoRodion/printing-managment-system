@@ -20,10 +20,10 @@
     "@react-pdf-viewer/zoom": "^3.12.0",
     "axios": "^1.7.7",
     "pdfjs-dist": "^2.16.105",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-dom": "^18.2.0",
-    "react-pdf": "^5.7.2",
     "react-hook-form": "^7.53.2",
+    "react-pdf": "^5.7.2",
     "react-router-dom": "^6.23.0"
   },
   "devDependencies": {
