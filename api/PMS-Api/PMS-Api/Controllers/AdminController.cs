@@ -40,9 +40,9 @@ namespace PMS_Api.Controllers
             return result switch
             {
                 CreateAdminResult.Success => Ok(),
-                CreateAdminResult.Duplicate => Conflict("Administrator z takim adresem mailowym już istnieje"),
-                CreateAdminResult.Failure => Problem("Nie udało się utworzyć użytkownika"),
-                _ => Problem("Nieznany błąd")
+                CreateAdminResult.Duplicate => Conflict(),
+                CreateAdminResult.Failure => Problem(),
+                _ => Problem()
             };
         }
 

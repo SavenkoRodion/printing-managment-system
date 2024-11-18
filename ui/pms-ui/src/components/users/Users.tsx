@@ -27,6 +27,9 @@ const Users = () => {
   const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState(false);
   const [deleteAdminName, setDeleteAdminName] = useState("");
   const [deleteAdminId, setDeleteAdminId] = useState("");
+  const [deleteDialogError, setDeleteDialogError] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     const client = getAxiosClient();
@@ -62,14 +65,31 @@ const Users = () => {
     const client = getAxiosClient();
     client
       .delete(`admin/${deleteAdminId}`)
-      .then(() => {
-        setAdmins((prevAdmins) =>
-          prevAdmins.filter((admin) => admin.uuid !== deleteAdminId)
-        );
-        setIsOpenDeleteDialog(false);
+      .then((response) => {
+        if (response.status === 200 && response.data === false) {
+          console.log("Nie udało się usunąć administratora.");
+          setDeleteDialogError(
+            "Nie udało się usunąć administratora. Spróbuj ponownie."
+          );
+        } else {
+          setAdmins((prevAdmins) =>
+            prevAdmins.filter((admin) => admin.uuid !== deleteAdminId)
+          );
+          setIsOpenDeleteDialog(false);
+          setDeleteDialogError(null);
+        }
       })
-      .catch(() => {
-        alert("Nie udało się usunąć administratora");
+      .catch((error) => {
+        console.log("Problem podczas usuwania administratora:", error);
+        if (!error.response) {
+          setDeleteDialogError(
+            "Nie można połączyć się z serwerem."
+          );
+        } else {
+          setDeleteDialogError(
+            "Wystąpił błąd podczas usuwania administratora. Spróbuj ponownie."
+          );
+        }
       });
   };
 
@@ -182,9 +202,13 @@ const Users = () => {
       />
       <DeleteAdminDialog
         isOpen={isOpenDeleteDialog}
-        handleClose={() => setIsOpenDeleteDialog(false)}
+        handleClose={() => {
+          setIsOpenDeleteDialog(false);
+          setDeleteDialogError(null);
+        }}
         handleDelete={handleDeleteAdmin}
         adminName={deleteAdminName}
+        errorMessage={deleteDialogError}
       />
     </Box>
   );
