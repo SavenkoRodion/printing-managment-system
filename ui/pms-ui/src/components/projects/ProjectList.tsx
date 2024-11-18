@@ -200,8 +200,8 @@ const ProjectSelector = () => {
           onChange={handleTabChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Szablony firmowe" {...a11yProps(0)} value={0} />
-          <Tab label="Projekty zapisane" {...a11yProps(1)} value={1} />
+          <Tab label="Szablony firmowe" {...a11yProps(0)} />
+          <Tab label="Projekty zapisane" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={currentTab} index={0}>
