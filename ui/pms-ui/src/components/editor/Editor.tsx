@@ -19,14 +19,6 @@ const Editor = () => {
     }
   };
 
-  // useEffect(() => {
-  //   client
-  //     .get<ProjectOrTemplate>(
-  //       `${type === "template" ? "template" : "project"}/${projectId}`
-  //     )
-  //     .then((e) => console.log(e));
-  // }, []);
-
   return (
     <Container>
       <Box display="flex" justifyContent="center" mb={2}>
