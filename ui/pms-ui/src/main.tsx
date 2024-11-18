@@ -32,7 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route element={<AuthorizedComponent />}>
           <Route element={<AuthorizedMenu />}>
             <Route path="/projekty-klientow" element={<ProjectList />} />
-            <Route path="/editor" element={<Editor />} />
+            <Route path="/edytor/:type/:projectId" element={<Editor />} />
             <Route path="/produkty" element={<ProductPage />} />
             <Route path="/parametry" element={<Params />} />
             <Route path="/users" element={<Users />} />

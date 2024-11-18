@@ -1,13 +1,15 @@
-import { useState, useEffect, useCallback } from "react";
-import { Box, Alert, Button } from "@mui/material";
-import { Client, Template, Project, Admin } from "../../utility/types";
-import { isStatusCodeSuccessfull } from "../../utility/util";
+import { useState, useCallback, useEffect } from "react";
+import { Box, Alert } from "@mui/material";
+import { Template, Project } from "../../utility/types";
 import getAxiosClient from "../../utility/getAxiosClient";
 import ClientSelector from "./ClientSelector";
 import CustomTabs from "./CustomTabs";
 import DataGridWithActions from "./DataGridWithActions";
 import DeleteDialog from "./Dialogs/DeleteDialog";
 import CustomTabPanel from "./CustomTabPanel";
+import { useNavigate } from "react-router-dom";
+import Client from "../../model/Client";
+import { isStatusCodeSuccessfull } from "../../utility/util";
 import AddProjectOrTemplate from "./AddProjectOrTemplate";
 
 enum Tab {
@@ -66,6 +68,12 @@ const ProjectList = () => {
     setDeleteDialogProductName(productName);
     setIsDeleteDialogOpen(true);
   };
+
+  const navigate = useNavigate();
+  const handleEdit = useCallback((id: number) => {
+    console.log(`Edit template with id: ${id}`);
+    navigate(`/edytor/${currentTab === 0 ? "template" : "project"}/${id}`);
+  }, []);
 
   const handleDelete = useCallback(async () => {
     const itemId = deleteDialogProductId;

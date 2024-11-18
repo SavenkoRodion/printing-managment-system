@@ -10,32 +10,34 @@ import getAxiosClient from "../../utility/getAxiosClient";
 import { useState } from "react";
 import { isStatusCodeSuccessfull } from "../../utility/util";
 
-type ResetPasswordDialogProps = {
+type ChangeNameDialogProps = {
   isOpen: boolean;
   onClose: () => void;
   userEmail: string;
   userId: string;
+  currentName: string;
 };
 
-const ResetPasswordDialog = ({
+const ChangeNameDialog = ({
   isOpen,
   onClose,
   userEmail,
   userId,
-}: ResetPasswordDialogProps) => {
+  currentName,
+}: ChangeNameDialogProps) => {
   const client = getAxiosClient();
 
-  const [newPassword, setNewPassword] = useState("");
+  const [newName, setNewName] = useState(currentName);
 
-  const handlePasswordChange = () => {
+  const handleNameChange = () => {
     client
-      .put("admin/change-password", {
+      .put("admin/change-name", {
         UserId: userId,
-        NewPassword: newPassword,
+        NewName: newName,
       })
       .then((res) => {
         if (!isStatusCodeSuccessfull(res.status)) {
-          console.error("Nie udało się zmienić hasła");
+          alert("Nie udało się zmienić imienia");
         }
         window.location.reload();
       });
@@ -43,7 +45,7 @@ const ResetPasswordDialog = ({
 
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="xs" fullWidth>
-      <DialogTitle>Wprowadź nowe hasło dla użytkownika {userEmail}</DialogTitle>
+      <DialogTitle>Wprowadź nowe imię dla użytkownika {userEmail}</DialogTitle>
       <DialogContent>
         <Box
           sx={{
@@ -54,19 +56,14 @@ const ResetPasswordDialog = ({
           }}
         >
           <TextField
-            size={"small"}
-            label="Nowe hasło"
+            size="small"
+            label="Nowe imię"
             fullWidth
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            type={"password"}
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
           />
-          <Button
-            variant={"contained"}
-            fullWidth
-            onClick={handlePasswordChange}
-          >
-            Zmień hasło
+          <Button variant="contained" fullWidth onClick={handleNameChange}>
+            Zmień imię
           </Button>
         </Box>
       </DialogContent>
@@ -74,4 +71,4 @@ const ResetPasswordDialog = ({
   );
 };
 
-export default ResetPasswordDialog;
+export default ChangeNameDialog;
