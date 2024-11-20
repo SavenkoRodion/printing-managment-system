@@ -9,7 +9,7 @@ import DeleteDialog from "./Dialogs/DeleteDialog";
 import CustomTabPanel from "./CustomTabPanel";
 import { useNavigate } from "react-router-dom";
 import Client from "../../model/Client";
-import { isStatusCodeSuccessfull } from "../../utility/util";
+import { isStatusCodeSuccessfull, sortClientsByName } from "../../utility/util";
 import AddProjectOrTemplate from "./AddProjectOrTemplate";
 
 enum Tab {
@@ -45,9 +45,15 @@ const ProjectList = () => {
       .catch(console.error);
     client
       .get("/client")
-      .then((response) => setClients(response.data))
+      .then((response) => {
+        setClients(sortClientsByName(response.data));
+      })
       .catch(console.error);
   }, []);
+
+  useEffect(() => {
+    handleChangeClient(clients[0]?.uuid || "");
+  }, [clients]);
 
   const handleChangeClient = (selectedClient: string) => {
     setCurrentClient(selectedClient);
@@ -167,7 +173,6 @@ const ProjectList = () => {
           currentClient={currentClient}
           clients={clients}
           onCreate={createTemplateOrProject}
-          onTabChange={handleTabChange}
         />
       </Box>
       {error && <Alert severity="error">{error}</Alert>}

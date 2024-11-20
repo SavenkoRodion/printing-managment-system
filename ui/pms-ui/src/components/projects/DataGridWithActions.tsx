@@ -119,8 +119,10 @@ const DataGridWithActions = ({
       <DataGrid
         rows={rows}
         columns={columns}
-        checkboxSelection
-        sx={{ height: 600, width: "100%" }}
+        rowSelection={false}
+        checkboxSelection={false}
+        disableColumnMenu
+        sx={{ width: "100%" }}
       />
     </Box>
   );

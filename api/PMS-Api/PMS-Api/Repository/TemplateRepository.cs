@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PMS_Api.Model.DbModel;
 
 namespace PMS_Api.Repository;
@@ -9,7 +8,7 @@ public interface ITemplateRepository
     Task<bool> DeleteAsync(Template template, CancellationToken cancellationToken);
     Task<IReadOnlyList<Template>> GetAllAsync(CancellationToken cancellationToken);
     Task<Template?> GetByIdAsync(int id, CancellationToken cancellationToken);
-    Task<Template> AddTemplateAsync(Template template, CancellationToken cancellationToken);
+    Task<Template?> AddTemplateAsync(Template template, CancellationToken cancellationToken);
 
 }
 
@@ -25,9 +24,9 @@ public class TemplateRepository(PmsContext context) : ITemplateRepository
         return await context.Templates.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).FirstOrDefaultAsync(x => x.Id == id) ?? null;
     }
 
-    
 
-    public async Task<Template> AddTemplateAsync(Template template, CancellationToken cancellationToken)
+
+    public async Task<Template?> AddTemplateAsync(Template template, CancellationToken cancellationToken)
     {
         try
         {
@@ -37,7 +36,7 @@ public class TemplateRepository(PmsContext context) : ITemplateRepository
         }
         catch
         {
-          return null;
+            return null;
         }
     }
 

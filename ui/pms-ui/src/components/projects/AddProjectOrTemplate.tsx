@@ -7,7 +7,6 @@ interface AddProjectOrTemplateProps {
   currentTab: number;
   currentClient: string;
   clients: Client[];
-  onTabChange: (newValue: number) => void;
   onCreate: (
     name: string,
     format: string,
@@ -20,7 +19,6 @@ const AddProjectOrTemplate = ({
   currentTab,
   currentClient,
   clients,
-  onTabChange,
   onCreate,
 }: AddProjectOrTemplateProps) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -30,7 +28,7 @@ const AddProjectOrTemplate = ({
       <Button
         size="small"
         variant="contained"
-        color="success"
+        color="primary"
         onClick={() => setIsCreateModalOpen(true)}
         style={{ margin: "0 25px 5px" }}
       >

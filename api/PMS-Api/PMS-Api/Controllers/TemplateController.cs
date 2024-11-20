@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PMS_Api.Interfaces;
 using PMS_Api.Model.DbModel;
 using PMS_Api.Model.Requests;
 using PMS_Api.Repository;
@@ -11,7 +10,7 @@ namespace PMS_Api.Controllers;
 [Authorize]
 [Route("api/template")]
 [ApiController]
-public class TemplateController(ITemplateRepository repository, IUserRepository<Admin> adminRepository) : ControllerBase
+public class TemplateController(ITemplateRepository repository) : ControllerBase
 {
     [HttpGet]
     public async Task<IReadOnlyList<Template>> GetAsync(CancellationToken cancellationToken)
@@ -39,33 +38,33 @@ public class TemplateController(ITemplateRepository repository, IUserRepository<
             return BadRequest("Template data is required.");
         }
 
-        var admin = await adminRepository.GetByUuidAsync(HttpContext.User.Claims.Where(x => x.Type == "Uuid").Single().Value, cancellationToken);
-        if (admin == null)
+
+        var template = new Template
         {
-            return BadRequest("Admin not found.");
-        }else{
-            
-            var template = new Template
-            {
-                Name = request.Name,
-                ClientId = request.ClientId,
-                ProductId = request.ProductId,
-                Format = request.Format,
-                LiczbaStron = 0,
-                DateModified = DateTime.Now,
-                AdminId = admin.Uuid
-            };
+            Name = request.Name,
+            ClientId = request.ClientId,
+            ProductId = request.ProductId,
+            Format = request.Format,
+            LiczbaStron = 0,
+            DateModified = DateTime.Now,
+            AdminId = Guid.Parse(HttpContext.User.Claims.Where(x => x.Type == "Uuid").Single().Value)
+        };
 
-            var createdTemplate = await repository.AddTemplateAsync(template, cancellationToken);
+        var createdTemplate = await repository.AddTemplateAsync(template, cancellationToken);
 
-            var templateWithRelations = await repository.GetByIdAsync(createdTemplate.Id, cancellationToken);
-            
-            if (templateWithRelations == null)
-            {
-                return NotFound();
-            }
-            return templateWithRelations;
+        if (createdTemplate == null)
+        {
+            return Problem();
         }
+
+        var templateWithRelations = await repository.GetByIdAsync(createdTemplate.Id, cancellationToken);
+
+        if (templateWithRelations == null)
+        {
+            return Problem();
+        }
+
+        return Ok(templateWithRelations);
     }
 
     [HttpDelete("{id}")]

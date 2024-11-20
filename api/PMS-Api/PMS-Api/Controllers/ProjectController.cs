@@ -39,33 +39,33 @@ public class ProjectController(IProjectRepository repository, IUserRepository<Ad
             return BadRequest("Project data is required.");
         }
 
-        var admin = await adminRepository.GetByUuidAsync(HttpContext.User.Claims.Where(x => x.Type == "Uuid").Single().Value, cancellationToken);
-        if (admin == null)
+
+        var project = new Project
         {
-            return BadRequest("Admin not found.");
-        }else{
-            
-            var project = new Project
-            {
-                Name = request.Name,
-                ClientId = request.ClientId,
-                ProductId = request.ProductId,
-                Format = request.Format,
-                LiczbaStron = 0,
-                DateModified = DateTime.Now,
-                AdminId = admin.Uuid
-            };
+            Name = request.Name,
+            ClientId = request.ClientId,
+            ProductId = request.ProductId,
+            Format = request.Format,
+            LiczbaStron = 0,
+            DateModified = DateTime.Now,
+            AdminId = Guid.Parse(HttpContext.User.Claims.Where(x => x.Type == "Uuid").Single().Value)
+        };
 
-            var createdProject = await repository.AddProjectAsync(project, cancellationToken);
+        var createdProject = await repository.AddProjectAsync(project, cancellationToken);
 
-            var projectWithRelations = await repository.GetByIdAsync(createdProject.Id, cancellationToken);
-            
-            if (projectWithRelations == null)
-            {
-                return NotFound();
-            }
-            return projectWithRelations;
+        if (createdProject == null)
+        {
+            return Problem();
         }
+
+        var projectWithRelations = await repository.GetByIdAsync(createdProject.Id, cancellationToken);
+
+        if (projectWithRelations == null)
+        {
+            return Problem();
+        }
+
+        return Ok(projectWithRelations);
     }
 
     [HttpDelete("{id}")]
