@@ -1,3 +1,7 @@
+export type Client = {
+  uuid: string;
+  name: string;
+};
 export interface Admin {
   uuid: string;
   name: string;
@@ -19,6 +23,7 @@ export interface Template {
   liczbaStron: number;
   dateModified: Date;
   adminId: string;
+  admin: Admin;
 }
 
 export interface Project {
@@ -31,4 +36,5 @@ export interface Project {
   liczbaStron: number;
   dateModified: Date;
   adminId: string;
+  admin: Admin;
 }
