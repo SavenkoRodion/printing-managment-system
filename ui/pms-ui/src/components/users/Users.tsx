@@ -81,14 +81,16 @@ const Users = () => {
       })
       .catch((error) => {
         console.log("Problem podczas usuwania administratora:", error);
-        if (!error.response) {
-          setDeleteDialogError(
-            "Nie można połączyć się z serwerem."
-          );
+        if (error.response) {
+          if (error.response.status === 400) {
+            setDeleteDialogError("Nie możesz usunąć samego siebie!!");
+          } else {
+            setDeleteDialogError(
+              "Wystąpił błąd podczas usuwania administratora. Spróbuj ponownie."
+            );
+          }
         } else {
-          setDeleteDialogError(
-            "Wystąpił błąd podczas usuwania administratora. Spróbuj ponownie."
-          );
+          setDeleteDialogError("Nie można połączyć się z serwerem.");
         }
       });
   };
