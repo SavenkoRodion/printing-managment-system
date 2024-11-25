@@ -30,11 +30,19 @@ const Users = () => {
   const [deleteDialogError, setDeleteDialogError] = useState<string | null>(
     null
   );
+  const [loggedInUserEmail, setLoggedInUserEmail] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     const client = getAxiosClient();
     client.get<Admin[]>("admin").then((response) => {
       setAdmins(response.data);
+    });
+    client.get("auth/who-am-i").then((response) => {
+      if (response.data && response.data.email) {
+        setLoggedInUserEmail(response.data.email);
+      }
     });
   }, []);
 
@@ -67,7 +75,6 @@ const Users = () => {
       .delete(`admin/${deleteAdminId}`)
       .then((response) => {
         if (response.status === 200 && response.data === false) {
-          console.log("Nie udało się usunąć administratora.");
           setDeleteDialogError(
             "Nie udało się usunąć administratora. Spróbuj ponownie."
           );
@@ -150,14 +157,16 @@ const Users = () => {
           >
             Zmień hasło
           </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="error"
-            onClick={() => onDeleteDialogOpen(props.row.uuid, props.row.name)}
-          >
-            Usuń
-          </Button>
+          {loggedInUserEmail && props.row.email !== loggedInUserEmail && (
+            <Button
+              variant="outlined"
+              size="small"
+              color="error"
+              onClick={() => onDeleteDialogOpen(props.row.uuid, props.row.name)}
+            >
+              Usuń
+            </Button>
+          )}
         </Box>
       ),
     },
