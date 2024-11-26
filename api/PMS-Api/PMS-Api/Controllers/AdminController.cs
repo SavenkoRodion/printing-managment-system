@@ -52,12 +52,12 @@ namespace PMS_Api.Controllers
             var currentAdminUuid = HttpContext.User.Claims
                 .FirstOrDefault(c => c.Type == "Uuid")?.Value;
 
-            if (currentAdminUuid == null || Guid.Parse(currentAdminUuid) == adminId)
+            if (currentAdminUuid == null)
             {
                 return BadRequest();
             }
 
-            var result = await adminRepository.DeleteAdminAsync(adminId, cancellationToken);
+            var result = await adminRepository.DeleteAdminAsync(adminId, Guid.Parse(currentAdminUuid), cancellationToken);
 
             return result ? Ok() : Problem();
         }
