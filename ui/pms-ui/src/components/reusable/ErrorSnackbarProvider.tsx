@@ -1,13 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
-
-interface ErrorSnackbarContextType {
-  showError: (message: string) => void;
-}
-
-const ErrorSnackbarContext = createContext<
-  ErrorSnackbarContextType | undefined
->(undefined);
+import { ErrorSnackbarContext } from "./ErrorSnackbarContext";
 
 export const ErrorSnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -37,13 +30,4 @@ export const ErrorSnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
       </Snackbar>
     </ErrorSnackbarContext.Provider>
   );
-};
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const useErrorSnackbar = (): ErrorSnackbarContextType => {
-  const context = useContext(ErrorSnackbarContext);
-  if (!context) {
-    throw new Error();
-  }
-  return context;
 };
