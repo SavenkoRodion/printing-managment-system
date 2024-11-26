@@ -12,6 +12,7 @@ import ProductPage from "./components/products/Products.tsx";
 import ProjectList from "./components/projects/ProjectList.tsx";
 import Params from "./components/params/Params.tsx";
 import Users from "./components/users/Users.tsx";
+import ClientPage from "./components/clients/Clients.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -34,6 +35,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/projekty-klientow" element={<ProjectList />} />
             <Route path="/edytor/:type/:projectId" element={<Editor />} />
             <Route path="/produkty" element={<ProductPage />} />
+            <Route path="/klienci" element={<ClientPage />} />
             <Route path="/parametry" element={<Params />} />
             <Route path="/users" element={<Users />} />
           </Route>
