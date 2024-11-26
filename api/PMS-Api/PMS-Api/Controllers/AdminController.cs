@@ -47,9 +47,20 @@ namespace PMS_Api.Controllers
         }
 
         [HttpDelete("{adminId}")]
-        public async Task<bool> DeleteAsync([FromRoute] Guid adminId, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid adminId, CancellationToken cancellationToken)
         {
-            return await adminRepository.DeleteAdminAsync(adminId, cancellationToken);
+            var currentAdminUuid = HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == "Uuid")?.Value;
+
+            if (currentAdminUuid == null)
+            {
+                return BadRequest();
+            }
+
+            var result = await adminRepository.DeleteAdminAsync(adminId, Guid.Parse(currentAdminUuid), cancellationToken);
+
+            return result ? Ok() : Problem();
         }
+
     }
 }

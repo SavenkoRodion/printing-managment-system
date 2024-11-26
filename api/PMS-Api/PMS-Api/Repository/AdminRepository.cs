@@ -80,11 +80,18 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
         }
     }
 
-    public async Task<bool> DeleteAdminAsync(Guid adminId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteAdminAsync(Guid adminId, Guid currentAdminUuid, CancellationToken cancellationToken)
     {
+        if (adminId == currentAdminUuid)
+        {
+            return false;
+        }
+
         try
         {
-            await context.Admins.Where(x => x.Uuid == adminId).ExecuteDeleteAsync(cancellationToken);
+            await context.Admins
+                .Where(x => x.Uuid == adminId)
+                .ExecuteDeleteAsync(cancellationToken);
             return true;
         }
         catch
@@ -92,4 +99,5 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
             return false;
         }
     }
+
 }
