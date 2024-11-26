@@ -12,9 +12,11 @@ import ProductPage from "./components/products/Products.tsx";
 import ProjectList from "./components/projects/ProjectList.tsx";
 import Params from "./components/params/Params.tsx";
 import Users from "./components/users/Users.tsx";
+import { ErrorSnackbarProvider } from "./components/reusable/ErrorSnackbar";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    <ErrorSnackbarProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<BaselineLayout />}>
@@ -40,5 +42,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </Route>
       </Routes>
     </BrowserRouter>
+    </ErrorSnackbarProvider>
   </React.StrictMode>
 );
