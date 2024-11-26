@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ErrorSnackbarContext } from "./ErrorSnackbarContext";
+import { ErrorSnackbarContext } from "../components/reusable/ErrorSnackbarContext";
 
 export const useErrorSnackbar = () => {
   const context = useContext(ErrorSnackbarContext);

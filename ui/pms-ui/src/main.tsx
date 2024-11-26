@@ -12,7 +12,7 @@ import ProductPage from "./components/products/Products.tsx";
 import ProjectList from "./components/projects/ProjectList.tsx";
 import Params from "./components/params/Params.tsx";
 import Users from "./components/users/Users.tsx";
-import { ErrorSnackbarProvider } from "./components/reusable/ErrorSnackbarProvider.tsx";
+import { ErrorSnackbarProvider } from "./providers/ErrorSnackbarProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

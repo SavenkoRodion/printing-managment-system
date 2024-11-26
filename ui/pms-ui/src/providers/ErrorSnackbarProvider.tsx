@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
-import { ErrorSnackbarContext } from "./ErrorSnackbarContext";
+import { ErrorSnackbarContext } from "../components/reusable/ErrorSnackbarContext";
 
 export const ErrorSnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

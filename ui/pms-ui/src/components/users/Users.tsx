@@ -8,7 +8,7 @@ import ChangePasswordDialog from "./ChangePasswordDialog";
 import ChangeNameDialog from "./ChangeNameDialog";
 import CreateAdminDialog from "./CreateAdminDialog";
 import DeleteAdminDialog from "./DeleteAdminDialog";
-import { useErrorSnackbar } from "../reusable/UseErrorSnackbar";
+import { useErrorSnackbar } from "../../hooks/UseErrorSnackbar";
 
 const Users = () => {
   const { showError } = useErrorSnackbar();
