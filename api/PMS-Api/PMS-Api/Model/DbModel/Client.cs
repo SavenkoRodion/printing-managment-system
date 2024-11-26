@@ -1,6 +1,5 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PMS_Api.Model.DbModel
 {
@@ -12,5 +11,8 @@ namespace PMS_Api.Model.DbModel
 
         public required string Name { get; set; }
 
+        public required string Address { get; set; }
+        public required DateTime DateOfCreation { get; init; }
+        public required string Email { get; set; }
     }
 }
