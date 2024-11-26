@@ -35,24 +35,28 @@ const ProjectList = () => {
   >(undefined);
 
   useEffect(() => {
-    client
-      .get("/template")
-      .then((response) => setTemplates(response.data))
-      .catch(console.error);
-    client
-      .get("/project")
-      .then((response) => setProjects(response.data))
-      .catch(console.error);
-    client
-      .get("/client")
-      .then((response) => {
-        setClients(sortClientsByName(response.data));
-      })
-      .catch(console.error);
+    const fetchData = async () => {
+      try {
+        const [templatesData, projectsData, clientsData] = await Promise.all([
+          client.get("/template"),
+          client.get("/project"),
+          client.get("/client"),
+        ]);
+        setTemplates(templatesData.data);
+        setProjects(projectsData.data);
+        setClients(sortClientsByName(clientsData.data));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
-    handleChangeClient(clients[0]?.uuid || "");
+    if (clients.length > 0) {
+      handleChangeClient(clients[0]?.uuid || "");
+    }
   }, [clients]);
 
   const handleChangeClient = (selectedClient: string) => {
