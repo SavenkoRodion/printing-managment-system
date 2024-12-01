@@ -100,7 +100,7 @@ const Users = () => {
         }
       })
       .catch((error) => {
-        console.log("Problem podczas usuwania administratora:", error);
+        showError("Problem podczas usuwania administratora.");
         if (error.response) {
           if (error.response.status === 400) {
             setDeleteDialogError("Nie można usunąć siebie. Należy skierować prośbę do innego administratora.");
