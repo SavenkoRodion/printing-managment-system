@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PMS_Api.Enums;
 using PMS_Api.Model.DbModel;
+using PMS_Api.Model.Requests;
 using PMS_Api.Repository;
 
 namespace PMS_Api.Controllers;
@@ -26,5 +28,31 @@ public class ClientController(IClientRepository repository) : ControllerBase
             return NotFound();
         }
         return Ok();
+    }
+
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateClientAsync([FromBody] CreateClientRequest request, CancellationToken cancellationToken)
+    {
+        var result = await repository.CreateClientAsync(request.ClientName, request.ClientEmail, request.ClientAddress, cancellationToken);
+
+        return result switch
+        {
+            CreateClientResult.Success => Ok(),
+            CreateClientResult.Duplicate => Conflict(),
+            CreateClientResult.Failure => Problem(),
+            _ => Problem()
+        };
+    }
+
+    [HttpDelete("{clientId}")]
+    public async Task<bool> DeleteAsync([FromRoute] Guid clientId, CancellationToken cancellationToken)
+    {
+        return await repository.DeleteAsync(clientId, cancellationToken);
+    }
+
+    [HttpPut("edit")]
+    public async Task<IActionResult> EditAsync([FromBody] EditClientRequest request, CancellationToken cancellationToken)
+    {
+        return await repository.EditAsync(request.Uuid, request.Name, request.Email, request.Address, cancellationToken) ? Ok() : Problem();
     }
 }

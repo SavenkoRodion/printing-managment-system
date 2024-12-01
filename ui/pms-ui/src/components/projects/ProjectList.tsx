@@ -1,162 +1,83 @@
 import { useState, useCallback, useEffect } from "react";
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Tabs,
-  Tab,
-} from "@mui/material";
-import { DataGrid, GridColDef, GridCellParams } from "@mui/x-data-grid";
-import { Template, Admin, Project, Product } from "../../utility/types"; // Import types
-import { a11yProps } from "./utils";
+import { Box, Alert } from "@mui/material";
+import { Template, Project } from "../../utility/types";
 import getAxiosClient from "../../utility/getAxiosClient";
+import ClientSelector from "./ClientSelector";
+import CustomTabs from "./CustomTabs";
+import DataGridWithActions from "./DataGridWithActions";
+import DeleteDialog from "./Dialogs/DeleteDialog";
 import CustomTabPanel from "./CustomTabPanel";
 import { useNavigate } from "react-router-dom";
 import Client from "../../model/Client";
+import { isStatusCodeSuccessfull, sortClientsByName } from "../../utility/util";
+import AddProjectOrTemplate from "./AddProjectOrTemplate";
 
-const ProjectSelector = () => {
+enum Tab {
+  TemplateTab,
+  ProjectTab,
+}
+
+const ProjectList = () => {
   const client = getAxiosClient();
   const [templates, setTemplates] = useState<Template[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
-  const [currentTab, setCurrentTab] = useState(0);
+  const [currentTab, setCurrentTab] = useState(Tab.TemplateTab);
+  const [error, setError] = useState<string | null>(null);
   const [currentClient, setCurrentClient] = useState<string>("");
   const [dataTemplates, setDataTemplates] = useState<Template[]>([]);
   const [dataProjects, setDataProjects] = useState<Project[]>([]);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deleteDialogProductName, setDeleteDialogProductName] =
+    useState<string>("");
+  const [deleteDialogProductId, setDeleteDialogProductId] = useState<
+    number | undefined
+  >(undefined);
 
   useEffect(() => {
-    client
-      .get("/template")
-      .then((response) => setTemplates(response.data))
-      .catch((error) => console.error("Error fetching templates:", error));
-    client
-      .get("/project")
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.error("Error fetching projects:", error));
+    const fetchData = async () => {
+      try {
+        const [templatesData, projectsData, clientsData] = await Promise.all([
+          client.get("/template"),
+          client.get("/project"),
+          client.get("/client"),
+        ]);
+        setTemplates(templatesData.data);
+        setProjects(projectsData.data);
+        setClients(sortClientsByName(clientsData.data));
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    client
-      .get("/client")
-      .then((response) => setClients(response.data))
-      .catch((error) => console.error("Error fetching clients:", error));
+    fetchData();
   }, []);
 
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    const selectedClient = event.target.value;
+  useEffect(() => {
+    if (clients.length > 0) {
+      handleChangeClient(clients[0]?.uuid || "");
+    }
+  }, [clients]);
+
+  const handleChangeClient = (selectedClient: string) => {
     setCurrentClient(selectedClient);
-    const templatesForClient = templates.filter(
-      (template) => template.clientId === selectedClient
+    setDataTemplates(
+      templates.filter((template) => template.clientId === selectedClient)
     );
-    const projectsForClient = projects.filter(
-      (project) => project.clientId === selectedClient
+    setDataProjects(
+      projects.filter((project) => project.clientId === selectedClient)
     );
-    setDataTemplates(templatesForClient);
-    setDataProjects(projectsForClient);
   };
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+
+  const handleTabChange = (newValue: Tab) => {
     setCurrentTab(newValue);
   };
 
-  const columns: GridColDef[] = [
-    {
-      field: "name",
-      headerName: "Nazwa",
-      flex: 0.6,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "product",
-      headerName: "Nazwa produktu",
-      flex: 0.6,
-      align: "center",
-      headerAlign: "center",
-      valueGetter: (params) => {
-        const product = params.row.product as Product;
-        return product.name ?? "";
-      },
-    },
-    {
-      field: "format",
-      headerName: "Format",
-      flex: 0.4,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "liczbaStron",
-      headerName: "Liczba stron",
-      flex: 0.4,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "admin",
-      headerName: "Przez kogo stworzony",
-      flex: 0.6,
-      align: "center",
-      headerAlign: "center",
-      valueGetter: (params) => {
-        console.log(params);
-        const product = params.row.author as Admin;
-        return product.name ?? "";
-      },
-    },
-    {
-      field: "dateModified",
-      headerName: "Ostatnia modyfikacja",
-      flex: 0.6,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params: GridCellParams): React.ReactNode => (
-        <Box display="flex" justifyContent="center" width="100%">
-          {new Date(params.value as string).toLocaleDateString()}
-        </Box>
-      ),
-    },
-    {
-      field: "actions",
-      headerName: "Akcje",
-      sortable: false,
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params: GridCellParams) => (
-        <Box display="flex" justifyContent="center" width="100%">
-          <Button
-            size="small"
-            variant="contained"
-            color="primary"
-            onClick={() => handleEdit(params.row.id)}
-            style={{ margin: "0 5px" }}
-          >
-            Edytuj
-          </Button>
-          <Button
-            size="small"
-            variant="contained"
-            color="secondary"
-            onClick={() => handleCopy(params.row.id)}
-            style={{ margin: "0 5px" }}
-          >
-            Kopiuj
-          </Button>
-          <Button
-            size="small"
-            variant="contained"
-            color="error"
-            onClick={() => handleDelete(params.row.id)}
-            style={{ margin: "0 5px" }}
-          >
-            Usuń
-          </Button>
-        </Box>
-      ),
-    },
-  ];
+  const handleDeleteDialogOpen = (productId: number, productName: string) => {
+    setDeleteDialogProductId(productId);
+    setDeleteDialogProductName(productName);
+    setIsDeleteDialogOpen(true);
+  };
 
   const navigate = useNavigate();
   const handleEdit = useCallback((id: number) => {
@@ -164,56 +85,123 @@ const ProjectSelector = () => {
     navigate(`/edytor/${currentTab === 0 ? "template" : "project"}/${id}`);
   }, []);
 
-  const handleCopy = useCallback((id: number) => {
-    console.log(`Copy template with id: ${id}`);
-  }, []);
+  const handleDelete = useCallback(async () => {
+    const itemId = deleteDialogProductId;
+    if (itemId === undefined) return;
 
-  const handleDelete = useCallback((id: number) => {
-    console.log(`Delete template with id: ${id}`);
-  }, []);
+    const apiEndpoint =
+      currentTab === Tab.TemplateTab
+        ? `template/${itemId}`
+        : `project/${itemId}`;
+    const response = await client.delete<boolean>(apiEndpoint);
+    if (isStatusCodeSuccessfull(response.status)) {
+      const updatedItems =
+        currentTab === Tab.TemplateTab ? templates : projects;
+      const filteredItems = updatedItems.filter((item) => item.id !== itemId);
+      currentTab === Tab.TemplateTab
+        ? setTemplates(filteredItems)
+        : setProjects(filteredItems);
+      currentTab === Tab.TemplateTab
+        ? setDataTemplates(
+            filteredItems.filter((item) => item.clientId === currentClient)
+          )
+        : setDataProjects(
+            filteredItems.filter((item) => item.clientId === currentClient)
+          );
+    } else {
+      setError(
+        currentTab === Tab.TemplateTab
+          ? "Nie udało się usunąć szablonu"
+          : "Nie udało się usunąć projektu"
+      );
+      setTimeout(() => setError(""), 5000);
+    }
+    setIsDeleteDialogOpen(false);
+  }, [
+    client,
+    templates,
+    projects,
+    currentTab,
+    currentClient,
+    deleteDialogProductId,
+  ]);
+
+  const createTemplateOrProject = (
+    name: string,
+    format: string,
+    selectedClient: string,
+    selectedProduct: number
+  ) => {
+    client
+      .post(`/${currentTab === Tab.TemplateTab ? "template" : "project"}`, {
+        name: name,
+        clientId: selectedClient,
+        productId: selectedProduct,
+        format: format,
+      })
+      .then((response) => {
+        const newItem = response.data;
+
+        if (currentTab === Tab.TemplateTab) {
+          setTemplates([...templates, newItem]);
+          if (selectedClient === currentClient) {
+            setDataTemplates([...dataTemplates, newItem]);
+          }
+        } else {
+          setProjects([...projects, newItem]);
+          if (selectedClient === currentClient) {
+            setDataProjects([...dataProjects, newItem]);
+          }
+        }
+
+        setError("");
+      })
+      .catch((error) => {
+        if (error.response) {
+          setError(`Error: ${error.message}`);
+        }
+      });
+  };
 
   return (
     <Box>
-      <Box sx={{ marginBottom: "20px" }}>
-        <FormControl sx={{ minWidth: 300 }}>
-          <InputLabel id="select-label">Klienci</InputLabel>
-          <Select
-            labelId="select-label"
-            id="client-select"
-            value={currentClient}
-            label="Klienci"
-            onChange={handleChange}
-          >
-            {clients.map((client) => (
-              <MenuItem key={client.uuid} value={client.uuid}>
-                {client.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <ClientSelector
+        clients={clients}
+        currentClient={currentClient}
+        onClientChange={handleChangeClient}
+      />
+      <Box display="flex" justifyContent="space-between">
+        <CustomTabs currentTab={currentTab} onTabChange={handleTabChange} />
+        <AddProjectOrTemplate
+          currentTab={currentTab}
+          currentClient={currentClient}
+          clients={clients}
+          onCreate={createTemplateOrProject}
+        />
       </Box>
-      <Box sx={{ marginBottom: "20px" }}>
-        <Tabs
-          value={currentTab}
-          onChange={handleTabChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Szablony firmowe" {...a11yProps(0)} />
-          <Tab label="Projekty zapisane" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
+      {error && <Alert severity="error">{error}</Alert>}
+      <DeleteDialog
+        isOpen={isDeleteDialogOpen}
+        productName={deleteDialogProductName}
+        handleDelete={handleDelete}
+        handleClose={() => setIsDeleteDialogOpen(false)}
+      />
       <CustomTabPanel value={currentTab} index={0}>
-        <Box sx={{ height: 400, width: "100%" }}>
-          <DataGrid rows={dataTemplates} columns={columns} checkboxSelection />
-        </Box>
+        <DataGridWithActions
+          rows={dataTemplates}
+          currentTab={currentTab}
+          onDeleteDialogOpen={handleDeleteDialogOpen}
+        />
       </CustomTabPanel>
       <CustomTabPanel value={currentTab} index={1}>
-        <Box sx={{ height: 400, width: "100%" }}>
-          <DataGrid rows={dataProjects} columns={columns} checkboxSelection />
-        </Box>
+        <DataGridWithActions
+          rows={dataProjects}
+          currentTab={currentTab}
+          onDeleteDialogOpen={handleDeleteDialogOpen}
+        />
       </CustomTabPanel>
     </Box>
   );
 };
 
-export default ProjectSelector;
+export default ProjectList;

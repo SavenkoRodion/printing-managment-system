@@ -10,7 +10,7 @@ public class PmsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        var adminAId= new Guid("a86e8efd-ebf7-43a4-950c-3398d232de1b");
+        var adminAId = new Guid("a86e8efd-ebf7-43a4-950c-3398d232de1b");
         var adminBId = new Guid("6b9957e6-6465-4cc4-a481-b699bbbe331e");
         var clientAId = new Guid("71e2244b-3f26-4344-a9d6-93a00b8fd83f");
         var clientBId = new Guid("599a628a-a3ea-40d9-9494-0ff27debf95d");
@@ -18,11 +18,12 @@ public class PmsContext : DbContext
         builder.Entity<Admin>().HasData(new { Uuid = adminAId, Email = "testemail@test.com", Name = "Admin", Password = "1234", CreatedAt = new DateOnly(2024, 11, 04) });
         builder.Entity<Admin>().HasData(new { Uuid = adminBId, Email = "admin@test.com", Name = "Administrator", Password = "1234", CreatedAt = new DateOnly(2024, 07, 04) });
 
-        
+
 
         builder.Entity<Client>().HasData(
-            new Client { Uuid = clientAId,  Name = "Client A" },
-            new Client { Uuid = clientBId, Name = "Client B" }
+            new Client { Uuid = clientAId, Name = "Client A", Email = "client1@test.pl", Address = "Address A", DateOfCreation = DateTime.Now },
+            new Client { Uuid = clientBId, Name = "Client B", Email = "client2@test.com", Address = "Address B", DateOfCreation = DateTime.Now }
+
         );
 
         builder.Entity<Product>().HasData(
@@ -114,7 +115,7 @@ public class PmsContext : DbContext
                 DateModified = DateTime.Now,
                 AdminId = adminAId
             }
-        ); 
+        );
     }
 
     public virtual DbSet<Admin> Admins { get; set; }
