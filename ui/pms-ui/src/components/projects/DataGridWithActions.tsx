@@ -5,11 +5,13 @@ import { Product, Admin } from "../../utility/types";
 interface DataGridWithActionsProps {
   rows: any[];
   currentTab: number;
+  onEdit(id: number): void;
   onDeleteDialogOpen: (id: number, name: string) => void;
 }
 
 const DataGridWithActions = ({
   rows,
+  onEdit,
   currentTab,
   onDeleteDialogOpen,
 }: DataGridWithActionsProps): React.ReactElement => {
@@ -83,7 +85,7 @@ const DataGridWithActions = ({
             variant="contained"
             color="primary"
             style={{ margin: "0 5px" }}
-            onClick={() => console.log(`Edit ${params.row.id}`)}
+            onClick={() => onEdit(params.row.id)}
           >
             Edytuj
           </Button>
@@ -117,12 +119,19 @@ const DataGridWithActions = ({
   return (
     <Box sx={{ width: "100%" }}>
       <DataGrid
+        initialState={{
+          pagination: { paginationModel: { pageSize: 10 } },
+        }}
         rows={rows}
         columns={columns}
+        scrollbarSize={0}
         rowSelection={false}
         checkboxSelection={false}
+        pageSizeOptions={[10, 25, 50]}
         disableColumnMenu
-        sx={{ width: "100%" }}
+        sx={{
+          height: rows.length ? "auto" : 200,
+        }}
       />
     </Box>
   );

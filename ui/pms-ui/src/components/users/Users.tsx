@@ -1,5 +1,11 @@
 import { Box, Button } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridCellParams,
+  gridClasses,
+  GridColDef,
+  GridRowParams,
+} from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import getAxiosClient from "../../utility/getAxiosClient";
 import Admin from "../../model/Admin";
@@ -122,6 +128,11 @@ const Users = () => {
       flex: 0.6,
       align: "center",
       headerAlign: "center",
+      valueFormatter: (params) => {
+        if (params.value == loggedInUserEmail) {
+          return params.value + " (Ty)";
+        }
+      },
     },
     {
       field: "name",
@@ -146,7 +157,8 @@ const Users = () => {
       renderCell: (props) => (
         <Box sx={{ display: "flex", gap: 1 }}>
           <Button
-            variant="outlined"
+            variant="contained"
+            color="primary"
             size="small"
             onClick={() => {
               onChangeNameDialogOpen(
@@ -158,11 +170,12 @@ const Users = () => {
           >
             Edytuj
           </Button>
-          <Button variant="outlined" size="small">
+          <Button variant="contained" color="primary" size="small">
             Uprawnienia
           </Button>
           <Button
-            variant="outlined"
+            variant="contained"
+            color="primary"
             size="small"
             onClick={() => {
               onChangePasswordDialogOpen(props.row.email, props.row.uuid);
@@ -172,7 +185,7 @@ const Users = () => {
           </Button>
           {loggedInUserEmail && props.row.email !== loggedInUserEmail && (
             <Button
-              variant="outlined"
+              variant="contained"
               size="small"
               color="error"
               onClick={() => onDeleteDialogOpen(props.row.uuid, props.row.name)}
@@ -192,15 +205,32 @@ const Users = () => {
         handleCreate={() => setCreateAdminDialogOpen(true)}
         createButtonText="Nowy użytkownik"
       />
-      <Box sx={{ paddingTop: "16px" }}>
+      <Box
+        sx={{
+          paddingTop: "16px",
+          [`.${gridClasses.row}.highlighted-row`]: {
+            backgroundColor: "#edf3fc",
+            color: "#1a3e72",
+          },
+        }}
+      >
         <DataGrid
+          initialState={{
+            pagination: { paginationModel: { pageSize: 10 } },
+          }}
+          getRowClassName={(params: GridRowParams) => {
+            if (params.row.email === loggedInUserEmail) {
+              return "highlighted-row";
+            }
+            return "";
+          }}
           rows={admins}
           columns={columns}
           disableRowSelectionOnClick
           autoHeight
           checkboxSelection={false}
           disableColumnMenu
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[10, 25, 50]}
           getRowId={(row) => row.uuid}
           sx={{
             border: "none",
