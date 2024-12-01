@@ -1,7 +1,6 @@
 import { Box, Button } from "@mui/material";
 import {
   DataGrid,
-  GridCellParams,
   gridClasses,
   GridColDef,
   GridRowParams,
