@@ -90,7 +90,6 @@ const Login = () => {
       <Button variant="contained" color="primary" fullWidth type="submit">
         Zaloguj
       </Button>
-      <Link href="/password">Nie pamiętam hasła</Link>
     </Box>
   );
 };

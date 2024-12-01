@@ -8,8 +8,10 @@ import ChangePasswordDialog from "./ChangePasswordDialog";
 import ChangeNameDialog from "./ChangeNameDialog";
 import CreateAdminDialog from "./CreateAdminDialog";
 import DeleteAdminDialog from "./DeleteAdminDialog";
+import { useErrorSnackbar } from "../../hooks/UseErrorSnackbar";
 
 const Users = () => {
+  const { showError } = useErrorSnackbar();
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [isOpenChangePasswordDialog, setIsOpenChangePasswordDialog] =
     useState(false);
@@ -36,15 +38,26 @@ const Users = () => {
 
   useEffect(() => {
     const client = getAxiosClient();
-    client.get<Admin[]>("admin").then((response) => {
-      setAdmins(response.data);
-    });
-    client.get("auth/who-am-i").then((response) => {
-      if (response.data && response.data.email) {
-        setLoggedInUserEmail(response.data.email);
-      }
-    });
-  }, []);
+    client
+      .get<Admin[]>("admin")
+      .then((response) => {
+        setAdmins(response.data);
+      })
+      .catch(() => {
+        showError("Nie udało się pobrać listy administratorów.");
+      });
+
+    client
+      .get("auth/who-am-i")
+      .then((response) => {
+        if (response.data && response.data.email) {
+          setLoggedInUserEmail(response.data.email);
+        }
+      })
+      .catch(() => {
+        showError("Nie udało się pobrać informacji o zalogowanym użytkowniku.");
+      });
+  }, [showError]);
 
   const onChangePasswordDialogOpen = (userEmail: string, userId: string) => {
     setChangePasswordDialogUserId(userId);
