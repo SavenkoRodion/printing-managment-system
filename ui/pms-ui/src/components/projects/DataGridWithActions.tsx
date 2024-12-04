@@ -4,14 +4,14 @@ import { Product, Admin } from "../../utility/types";
 
 interface DataGridWithActionsProps {
   rows: any[];
-  currentTab: number;
   onDeleteDialogOpen: (id: number, name: string) => void;
+  onEdit: (id: number) => void;
 }
 
 const DataGridWithActions = ({
   rows,
-  currentTab,
   onDeleteDialogOpen,
+  onEdit,
 }: DataGridWithActionsProps): React.ReactElement => {
   const columns: GridColDef[] = [
     {
@@ -83,7 +83,7 @@ const DataGridWithActions = ({
             variant="contained"
             color="primary"
             style={{ margin: "0 5px" }}
-            onClick={() => console.log(`Edit ${params.row.id}`)}
+            onClick={() => onEdit(params.row.id)}
           >
             Edytuj
           </Button>
