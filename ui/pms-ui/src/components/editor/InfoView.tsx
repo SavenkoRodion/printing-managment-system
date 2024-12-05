@@ -101,18 +101,24 @@ const InfoView = () => {
               name={"clientId"}
               render={({ field: { value, onChange } }) => {
                 return (
-                  <Select
-                    label="Klient"
-                    labelId="demo-simple-select-label"
-                    value={value}
-                    onChange={onChange}
-                  >
-                    {clientList.map((e) => (
-                      <MenuItem value={e.uuid} key={e.uuid}>
-                        {e.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <>
+                    {value ? (
+                      <Select
+                        label="Klient"
+                        labelId="demo-simple-select-label"
+                        value={value}
+                        onChange={onChange}
+                      >
+                        {clientList.map((e) => (
+                          <MenuItem value={e.uuid} key={e.uuid}>
+                            {e.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    ) : (
+                      <></>
+                    )}
+                  </>
                 );
               }}
             />
@@ -125,18 +131,24 @@ const InfoView = () => {
               name={"productId"}
               render={({ field: { value, onChange } }) => {
                 return (
-                  <Select
-                    labelId="product-type-label"
-                    value={value}
-                    onChange={onChange}
-                    label={"Produkt"}
-                  >
-                    {productList.map((e) => (
-                      <MenuItem value={e.id} key={e.id}>
-                        {e.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <>
+                    {value ? (
+                      <Select
+                        labelId="product-type-label"
+                        value={value}
+                        onChange={onChange}
+                        label={"Produkt"}
+                      >
+                        {productList.map((e) => (
+                          <MenuItem value={e.id} key={e.id}>
+                            {e.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    ) : (
+                      <></>
+                    )}
+                  </>
                 );
               }}
             />
