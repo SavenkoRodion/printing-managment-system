@@ -25,9 +25,6 @@ const InfoView = () => {
 
   const [productList, setProductList] = useState<Product[]>([]);
 
-  const [templateOrProject, setTemplateOrProject] =
-    useState<TemplateOrProject>();
-
   useEffect(() => {
     const axiosClient = getAxiosClient();
 
@@ -55,27 +52,44 @@ const InfoView = () => {
       .catch(() => console.error("Błąd przy pobraniu listy produktów"));
   }, []);
 
-  const { handleSubmit, control, reset } = useForm<TemplateOrProject>({
-    defaultValues: templateOrProject,
-  });
+  const { handleSubmit, control, reset } = useForm<TemplateOrProject>();
 
   useEffect(() => {
     const axiosClient = getAxiosClient();
 
-    axiosClient
-      .get<TemplateOrProject>(`template/${projectId}`)
-      .then((e) => {
-        if (isStatusCodeSuccessfull(e.status)) {
-          setTemplateOrProject(e.data);
-          reset(e.data);
-        } else {
-          console.error("Błąd przy pobraniu danych szablonu/projektu");
-        }
-      })
-      .catch(() =>
-        console.error("Błąd przy pobraniu danych szablonu/projektu")
-      );
-  }, [reset, projectId]);
+    switch (type) {
+      case "project":
+        axiosClient
+          .get<TemplateOrProject>(`project/${projectId}`)
+          .then((e) => {
+            if (isStatusCodeSuccessfull(e.status)) {
+              reset(e.data);
+            } else {
+              console.error("Błąd przy pobraniu danych szablonu/projektu");
+            }
+          })
+          .catch(() =>
+            console.error("Błąd przy pobraniu danych szablonu/projektu")
+          );
+        break;
+      case "template":
+        axiosClient
+          .get<TemplateOrProject>(`template/${projectId}`)
+          .then((e) => {
+            if (isStatusCodeSuccessfull(e.status)) {
+              reset(e.data);
+            } else {
+              console.error("Błąd przy pobraniu danych szablonu/projektu");
+            }
+          })
+          .catch(() =>
+            console.error("Błąd przy pobraniu danych szablonu/projektu")
+          );
+        break;
+      default:
+        console.error("lol");
+    }
+  }, [reset, projectId, type]);
 
   const onSubmit: SubmitHandler<TemplateOrProject> = (data) => {
     const axiosClient = getAxiosClient();
