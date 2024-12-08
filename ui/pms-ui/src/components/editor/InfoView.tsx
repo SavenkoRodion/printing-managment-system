@@ -17,18 +17,20 @@ import TemplateOrProject from "../../model/TemplateOrProject";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Product from "../../model/Product";
 import { isStatusCodeSuccessfull } from "../../utility/util";
+import { useErrorSnackbar } from "../../hooks/UseErrorSnackbar";
 
 const InfoView = () => {
-  const [clientList, setClientList] = useState<Client[]>([]);
-
   const { projectId, type } = useParams<EditorParams>();
 
+  const [clientList, setClientList] = useState<Client[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { showError } = useErrorSnackbar();
 
   useEffect(() => {
     const axiosClient = getAxiosClient();
 
-    //TODO: Better error handling
     axiosClient
       .get<Client[]>("client")
       .then((e) => {
@@ -38,7 +40,7 @@ const InfoView = () => {
           console.error("Błąd przy pobraniu listy użytkowników");
         }
       })
-      .catch(() => console.error("Błąd przy pobraniu listy użytkowników"));
+      .catch(() => showError("Błąd przy pobraniu listy użytkowników"));
 
     axiosClient
       .get<Product[]>("product")
@@ -46,15 +48,17 @@ const InfoView = () => {
         if (isStatusCodeSuccessfull(e.status)) {
           setProductList(e.data);
         } else {
-          console.error("Błąd przy pobraniu listy produktów");
+          showError("Błąd przy pobraniu listy produktów");
         }
       })
-      .catch(() => console.error("Błąd przy pobraniu listy produktów"));
-  }, []);
+      .catch(() => showError("Błąd przy pobraniu listy produktów"));
+  }, [showError]);
 
   const { handleSubmit, control, reset } = useForm<TemplateOrProject>();
 
   useEffect(() => {
+    setIsLoading(true);
+
     const axiosClient = getAxiosClient();
 
     switch (type) {
@@ -64,13 +68,12 @@ const InfoView = () => {
           .then((e) => {
             if (isStatusCodeSuccessfull(e.status)) {
               reset(e.data);
+              setIsLoading(false);
             } else {
-              console.error("Błąd przy pobraniu danych szablonu/projektu");
+              showError("Błąd przy pobraniu danych projektu");
             }
           })
-          .catch(() =>
-            console.error("Błąd przy pobraniu danych szablonu/projektu")
-          );
+          .catch(() => showError("Błąd przy pobraniu danych projektu"));
         break;
       case "template":
         axiosClient
@@ -78,50 +81,50 @@ const InfoView = () => {
           .then((e) => {
             if (isStatusCodeSuccessfull(e.status)) {
               reset(e.data);
+              setIsLoading(false);
             } else {
-              console.error("Błąd przy pobraniu danych szablonu/projektu");
+              showError("Błąd przy pobraniu danych szablonu");
             }
           })
-          .catch(() =>
-            console.error("Błąd przy pobraniu danych szablonu/projektu")
-          );
+          .catch(() => showError("Błąd przy pobraniu danych szablonu"));
         break;
-      default:
-        console.error("lol");
     }
-  }, [reset, projectId, type]);
+  }, [reset, projectId, type, showError]);
 
   const onSubmit: SubmitHandler<TemplateOrProject> = (data) => {
     const axiosClient = getAxiosClient();
     switch (type) {
       case "project":
-        axiosClient.put("project/edit", {
-          projectId: data.id,
-          newProjectName: data.name,
-          newClientId: data.clientId,
-          newProductId: data.productId,
-          newFormat: data.format,
-        });
-        window.location.reload();
+        axiosClient
+          .put("project/edit", {
+            projectId: data.id,
+            newProjectName: data.name,
+            newClientId: data.clientId,
+            newProductId: data.productId,
+            newFormat: data.format,
+          })
+          .then(() => window.location.reload())
+          .catch(() => showError("Nie udało się zedytować projekt"));
+
         break;
       case "template":
-        axiosClient.put("template/edit", {
-          templateId: data.id,
-          newTemplateName: data.name,
-          newClientId: data.clientId,
-          newProductId: data.productId,
-          newFormat: data.format,
-        });
-        window.location.reload();
+        axiosClient
+          .put("template/edit", {
+            templateId: data.id,
+            newTemplateName: data.name,
+            newClientId: data.clientId,
+            newProductId: data.productId,
+            newFormat: data.format,
+          })
+          .then(() => window.location.reload())
+          .catch(() => showError("Nie udało się zedytować szablon"));
         break;
-      default:
-        console.error("lol");
     }
   };
 
   return (
     <Box>
-      {productList.length && clientList.length && control ? (
+      {!isLoading ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth margin="normal">
             <Controller
