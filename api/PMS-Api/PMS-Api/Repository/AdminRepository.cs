@@ -2,6 +2,7 @@
 using PMS_Api.Interfaces;
 using PMS_Api.Model.DbModel;
 using PMS_Api.Enums;
+using BCrypt.Net;
 
 namespace PMS_Api.Repository;
 
@@ -11,7 +12,16 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
         => await context.Admins.AsNoTracking().ToListAsync(cancellationToken);
 
     public async Task<Admin?> GetByCredentialsAsync(string email, string password, CancellationToken cancellationToken)
-        => await context.Admins.FirstOrDefaultAsync(x => x.Email == email && x.Password == password, cancellationToken);
+    {
+        var admin = await context.Admins.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+
+        if (admin is null || !BCrypt.Net.BCrypt.Verify(password, admin.Password))
+        {
+            return null;
+        }
+
+        return admin;
+    }
 
     public async Task<Admin?> GetByUuidAsync(string uuid, CancellationToken cancellationToken)
         => await context.Admins.FirstOrDefaultAsync(x => x.Uuid == Guid.Parse(uuid), cancellationToken);
@@ -22,7 +32,7 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
         if (admin is null)
             return false;
 
-        admin.Password = password;
+        admin.Password = BCrypt.Net.BCrypt.HashPassword(password);
         try
         {
             await context.SaveChangesAsync(cancellationToken);
@@ -60,6 +70,7 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
         {
             return CreateAdminResult.Duplicate;
         }
+        password = BCrypt.Net.BCrypt.HashPassword(password);
         await context.Admins.AddAsync(new Admin()
         {
             Name = adminName,
@@ -99,5 +110,4 @@ public class AdminRepository(PmsContext context) : IUserRepository<Admin>
             return false;
         }
     }
-
 }
