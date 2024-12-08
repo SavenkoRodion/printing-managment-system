@@ -79,4 +79,11 @@ public class ProjectController(IProjectRepository repository, IUserRepository<Ad
         await repository.DeleteAsync(project, cancellationToken);
         return NoContent();
     }
+
+    [HttpPut("edit")]
+    public async Task<IActionResult> EditAsync([FromBody] EditProjectRequest request, CancellationToken cancellationToken)
+    {
+        var result = await repository.EditAsync(request, cancellationToken);
+        return result ? Ok() : Problem();
+    }
 }

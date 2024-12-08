@@ -78,4 +78,11 @@ public class TemplateController(ITemplateRepository repository) : ControllerBase
         await repository.DeleteAsync(template, cancellationToken);
         return NoContent();
     }
+
+    [HttpPut("edit")]
+    public async Task<IActionResult> EditAsync(EditTemplateRequest request, CancellationToken cancellationToken)
+    {
+        var result = await repository.EditAsync(request, cancellationToken);
+        return result ? Ok() : Problem();
+    }
 }
