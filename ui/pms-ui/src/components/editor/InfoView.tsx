@@ -21,7 +21,7 @@ import { isStatusCodeSuccessfull } from "../../utility/util";
 const InfoView = () => {
   const [clientList, setClientList] = useState<Client[]>([]);
 
-  const { projectId } = useParams<EditorParams>(); //TODO: should work for both template and project
+  const { projectId, type } = useParams<EditorParams>();
 
   const [productList, setProductList] = useState<Product[]>([]);
 
@@ -77,12 +77,37 @@ const InfoView = () => {
       );
   }, [reset, projectId]);
 
-  const onSubmit: SubmitHandler<TemplateOrProject> = (data) =>
-    console.log("HERE", data);
+  const onSubmit: SubmitHandler<TemplateOrProject> = (data) => {
+    const axiosClient = getAxiosClient();
+    switch (type) {
+      case "project":
+        axiosClient.put("project/edit", {
+          projectId: data.id,
+          newProjectName: data.name,
+          newClientId: data.clientId,
+          newProductId: data.productId,
+          newFormat: data.format,
+        });
+        window.location.reload();
+        break;
+      case "template":
+        axiosClient.put("template/edit", {
+          templateId: data.id,
+          newTemplateName: data.name,
+          newClientId: data.clientId,
+          newProductId: data.productId,
+          newFormat: data.format,
+        });
+        window.location.reload();
+        break;
+      default:
+        console.error("lol");
+    }
+  };
 
   return (
     <Box>
-      {productList.length && clientList.length ? (
+      {productList.length && clientList.length && control ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth margin="normal">
             <Controller
@@ -102,7 +127,7 @@ const InfoView = () => {
               render={({ field: { value, onChange } }) => {
                 return (
                   <>
-                    {value ? (
+                    {value && clientList.length ? (
                       <Select
                         label="Klient"
                         labelId="demo-simple-select-label"
@@ -132,7 +157,7 @@ const InfoView = () => {
               render={({ field: { value, onChange } }) => {
                 return (
                   <>
-                    {value ? (
+                    {value && productList.length ? (
                       <Select
                         labelId="product-type-label"
                         value={value}
@@ -162,18 +187,6 @@ const InfoView = () => {
                 <TextField label="Format" value={value} onChange={onChange} />
               )}
             />
-            {/* 
-          TODO: This should work as select in the future
-          <InputLabel id="format-label">Format</InputLabel>
-          <Select
-            labelId="format-label"
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
-            label="Format"
-          >
-            <MenuItem value="a4">A4</MenuItem>
-            <MenuItem value="a3">A3</MenuItem>
-          </Select> */}
           </FormControl>
           <Box mt={2}>
             <Button variant="contained" type="submit">
@@ -183,7 +196,6 @@ const InfoView = () => {
         </form>
       ) : (
         <CircularProgress />
-        //TODO: Better loading
       )}
     </Box>
   );
