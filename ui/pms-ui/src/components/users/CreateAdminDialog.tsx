@@ -46,7 +46,13 @@ const CreateAdminDialog = ({ isOpen, handleClose }: CreateAdminDialogProps) => {
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       <DialogTitle>Stwórz nowego administratora</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         {errorMessage && (

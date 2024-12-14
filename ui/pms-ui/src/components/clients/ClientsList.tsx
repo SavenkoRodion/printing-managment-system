@@ -87,13 +87,16 @@ const ClientList = ({
   return (
     <Box sx={styles.tablePadding}>
       <DataGrid
+        initialState={{
+          pagination: { paginationModel: { pageSize: 10 } },
+        }}
         rows={rows}
         columns={columns}
         getRowId={(row) => row.uuid}
         rowSelection={false}
         checkboxSelection={false}
         disableColumnMenu
-        pageSizeOptions={[10]}
+        pageSizeOptions={[10, 25, 50]}
         sx={styles.borderNone}
       />
     </Box>

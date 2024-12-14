@@ -36,6 +36,9 @@ const ProductList = ({
       headerAlign: "center",
       flex: 1,
       disableReorder: true,
+      valueFormatter: (params) => {
+        return new Date(params.value as string).toLocaleDateString();
+      },
     },
     {
       field: "buttons",
@@ -49,6 +52,10 @@ const ProductList = ({
       renderCell: (params) => (
         <Box>
           <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            sx={styles.buttonMargin}
             onClick={() => {
               handleEditDialogOpen(params.row.id, params.row.name);
             }}
@@ -56,6 +63,10 @@ const ProductList = ({
             Edytuj
           </Button>
           <Button
+            size="small"
+            variant="contained"
+            color="error"
+            sx={styles.buttonMargin}
             onClick={() => {
               handleDeleteDialogOpen(params.row.id, params.row.name);
             }}
@@ -69,12 +80,15 @@ const ProductList = ({
   return (
     <Box sx={styles.tablePadding}>
       <DataGrid
+        initialState={{
+          pagination: { paginationModel: { pageSize: 10 } },
+        }}
         rows={rows}
         columns={columns}
         rowSelection={false}
         checkboxSelection={false}
         disableColumnMenu
-        pageSizeOptions={[10]}
+        pageSizeOptions={[10, 25, 50]}
         sx={styles.borderNone}
       />
     </Box>

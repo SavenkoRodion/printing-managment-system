@@ -29,7 +29,13 @@ const CreateProductDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       <DialogTitle>Stwórz nowy produkt</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         <TextField

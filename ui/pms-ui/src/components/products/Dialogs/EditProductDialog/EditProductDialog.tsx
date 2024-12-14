@@ -23,7 +23,13 @@ const EditProductDialog = ({
   setProductName,
 }: EditProductDialogProps) => {
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       <DialogTitle>Edycja produktu</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         <TextField

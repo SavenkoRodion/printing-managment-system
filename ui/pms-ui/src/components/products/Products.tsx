@@ -29,7 +29,6 @@ const ProductPage = () => {
   const [editDialogProductName, setEditDialogProductName] = useState("");
 
   const handleDeleteDialogOpen = (productId: number, productName: string) => {
-    console.log(productId, productName);
     setDeleteDialogProductId(productId);
     setDeleteDialogProductName(productName);
     setIsDeleteDialogOpen(true);
