@@ -1,7 +1,7 @@
-type Product = {
+type ProjectType = {
   id: number;
   name: string;
   dateOfCreation: Date;
 };
 
-export default Product;
+export default ProjectType;

@@ -5,26 +5,26 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import styles from "./CreateProductDialog.style";
+import styles from "./CreateProjectTypeDialog.style";
 import { useState } from "react";
 import getAxiosClient from "../../../../utility/getAxiosClient";
 
-type CreateProductModalProps = {
+type CreateProjectTypeModalProps = {
   isOpen: boolean;
   handleClose: () => void;
 };
 
-const CreateProductDialog = ({
+const CreateProjectTypeDialog = ({
   isOpen,
   handleClose,
-}: CreateProductModalProps) => {
-  const [productName, setProductName] = useState("");
+}: CreateProjectTypeModalProps) => {
+  const [projectTypeName, setProjectTypeName] = useState("");
 
   const client = getAxiosClient();
 
-  const createProduct = () => {
+  const createProjectType = () => {
     client
-      .post<boolean>("product", { ProductName: productName })
+      .post<boolean>("projectType", { ProjectTypeName: projectTypeName })
       .then(() => window.location.reload());
   };
 
@@ -36,19 +36,19 @@ const CreateProductDialog = ({
       fullWidth
       closeAfterTransition={false}
     >
-      <DialogTitle>Stwórz nowy produkt</DialogTitle>
+      <DialogTitle>Stwórz nowy rodzaj projektu</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         <TextField
           size="small"
-          label="Nazwa produktu"
+          label="Nazwa rodzaju projektu"
           sx={styles.dialogElement}
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
+          value={projectTypeName}
+          onChange={(e) => setProjectTypeName(e.target.value)}
         />
         <Button
           variant="contained"
           sx={styles.dialogElement}
-          onClick={createProduct}
+          onClick={createProjectType}
         >
           Stwórz
         </Button>
@@ -57,4 +57,4 @@ const CreateProductDialog = ({
   );
 };
 
-export default CreateProductDialog;
+export default CreateProjectTypeDialog;

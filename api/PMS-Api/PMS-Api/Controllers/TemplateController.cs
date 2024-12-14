@@ -43,7 +43,7 @@ public class TemplateController(ITemplateRepository repository) : ControllerBase
         {
             Name = request.Name,
             ClientId = request.ClientId,
-            ProductId = request.ProductId,
+            ProjectTypeId = request.ProjectTypeId,
             Format = request.Format,
             LiczbaStron = 0,
             DateModified = DateTime.Now,
