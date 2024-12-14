@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginLayout from "./components/layouts/LoginLayout.tsx";
 import Login from "./components/login/Login.tsx";
-import PasswordReset from "./components/password/password";
 import BaselineLayout from "./components/layouts/BaselineLayout";
 import Editor from "./components/editor/Editor";
 import AuthorizedComponent from "./authorizationWrappers/AuthorizedComponent.tsx";
@@ -28,7 +27,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 
               <Route>
                 <Route index element={<Login />} />
-                <Route path="/password" element={<PasswordReset />} />
               </Route>
             </Route>
           </Route>
