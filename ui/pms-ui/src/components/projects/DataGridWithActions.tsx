@@ -4,16 +4,14 @@ import { Product, Admin } from "../../utility/types";
 
 interface DataGridWithActionsProps {
   rows: any[];
-  currentTab: number;
-  onEdit(id: number): void;
   onDeleteDialogOpen: (id: number, name: string) => void;
+  onEdit: (id: number) => void;
 }
 
 const DataGridWithActions = ({
   rows,
-  onEdit,
-  currentTab,
   onDeleteDialogOpen,
+  onEdit,
 }: DataGridWithActionsProps): React.ReactElement => {
   const columns: GridColDef[] = [
     {

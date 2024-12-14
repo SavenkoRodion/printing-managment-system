@@ -17,21 +17,20 @@ import TemplateOrProject from "../../model/TemplateOrProject";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Product from "../../model/Product";
 import { isStatusCodeSuccessfull } from "../../utility/util";
+import { useErrorSnackbar } from "../../hooks/UseErrorSnackbar";
 
 const InfoView = () => {
+  const { projectId, type } = useParams<EditorParams>();
+
   const [clientList, setClientList] = useState<Client[]>([]);
-
-  const { projectId } = useParams<EditorParams>(); //TODO: should work for both template and project
-
   const [productList, setProductList] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [templateOrProject, setTemplateOrProject] =
-    useState<TemplateOrProject>();
+  const { showError } = useErrorSnackbar();
 
   useEffect(() => {
     const axiosClient = getAxiosClient();
 
-    //TODO: Better error handling
     axiosClient
       .get<Client[]>("client")
       .then((e) => {
@@ -41,7 +40,7 @@ const InfoView = () => {
           console.error("Błąd przy pobraniu listy użytkowników");
         }
       })
-      .catch(() => console.error("Błąd przy pobraniu listy użytkowników"));
+      .catch(() => showError("Błąd przy pobraniu listy użytkowników"));
 
     axiosClient
       .get<Product[]>("product")
@@ -49,40 +48,83 @@ const InfoView = () => {
         if (isStatusCodeSuccessfull(e.status)) {
           setProductList(e.data);
         } else {
-          console.error("Błąd przy pobraniu listy produktów");
+          showError("Błąd przy pobraniu listy produktów");
         }
       })
-      .catch(() => console.error("Błąd przy pobraniu listy produktów"));
-  }, []);
+      .catch(() => showError("Błąd przy pobraniu listy produktów"));
+  }, [showError]);
 
-  const { handleSubmit, control, reset } = useForm<TemplateOrProject>({
-    defaultValues: templateOrProject,
-  });
+  const { handleSubmit, control, reset } = useForm<TemplateOrProject>();
 
   useEffect(() => {
+    setIsLoading(true);
+
     const axiosClient = getAxiosClient();
 
-    axiosClient
-      .get<TemplateOrProject>(`template/${projectId}`)
-      .then((e) => {
-        if (isStatusCodeSuccessfull(e.status)) {
-          setTemplateOrProject(e.data);
-          reset(e.data);
-        } else {
-          console.error("Błąd przy pobraniu danych szablonu/projektu");
-        }
-      })
-      .catch(() =>
-        console.error("Błąd przy pobraniu danych szablonu/projektu")
-      );
-  }, [reset, projectId]);
+    switch (type) {
+      case "project":
+        axiosClient
+          .get<TemplateOrProject>(`project/${projectId}`)
+          .then((e) => {
+            if (isStatusCodeSuccessfull(e.status)) {
+              reset(e.data);
+              setIsLoading(false);
+            } else {
+              showError("Błąd przy pobraniu danych projektu");
+            }
+          })
+          .catch(() => showError("Błąd przy pobraniu danych projektu"));
+        break;
+      case "template":
+        axiosClient
+          .get<TemplateOrProject>(`template/${projectId}`)
+          .then((e) => {
+            if (isStatusCodeSuccessfull(e.status)) {
+              reset(e.data);
+              setIsLoading(false);
+            } else {
+              showError("Błąd przy pobraniu danych szablonu");
+            }
+          })
+          .catch(() => showError("Błąd przy pobraniu danych szablonu"));
+        break;
+    }
+  }, [reset, projectId, type, showError]);
 
-  const onSubmit: SubmitHandler<TemplateOrProject> = (data) =>
-    console.log("HERE", data);
+  const onSubmit: SubmitHandler<TemplateOrProject> = (data) => {
+    const axiosClient = getAxiosClient();
+    switch (type) {
+      case "project":
+        axiosClient
+          .put("project/edit", {
+            projectId: data.id,
+            newProjectName: data.name,
+            newClientId: data.clientId,
+            newProductId: data.productId,
+            newFormat: data.format,
+          })
+          .then(() => window.location.reload())
+          .catch(() => showError("Nie udało się zedytować projekt"));
+
+        break;
+      case "template":
+        axiosClient
+          .put("template/edit", {
+            templateId: data.id,
+            newTemplateName: data.name,
+            newClientId: data.clientId,
+            newProductId: data.productId,
+            newFormat: data.format,
+          })
+          .then(() => window.location.reload())
+          .catch(() => showError("Nie udało się zedytować szablon"));
+        break;
+    }
+  };
 
   return (
     <Box>
-      {productList.length && clientList.length ? (
+      {!isLoading ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth margin="normal">
             <Controller
@@ -101,18 +143,24 @@ const InfoView = () => {
               name={"clientId"}
               render={({ field: { value, onChange } }) => {
                 return (
-                  <Select
-                    label="Klient"
-                    labelId="demo-simple-select-label"
-                    value={value}
-                    onChange={onChange}
-                  >
-                    {clientList.map((e) => (
-                      <MenuItem value={e.uuid} key={e.uuid}>
-                        {e.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <>
+                    {value && clientList.length ? (
+                      <Select
+                        label="Klient"
+                        labelId="demo-simple-select-label"
+                        value={value}
+                        onChange={onChange}
+                      >
+                        {clientList.map((e) => (
+                          <MenuItem value={e.uuid} key={e.uuid}>
+                            {e.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    ) : (
+                      <></>
+                    )}
+                  </>
                 );
               }}
             />
@@ -125,18 +173,24 @@ const InfoView = () => {
               name={"productId"}
               render={({ field: { value, onChange } }) => {
                 return (
-                  <Select
-                    labelId="product-type-label"
-                    value={value}
-                    onChange={onChange}
-                    label={"Produkt"}
-                  >
-                    {productList.map((e) => (
-                      <MenuItem value={e.id} key={e.id}>
-                        {e.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <>
+                    {value && productList.length ? (
+                      <Select
+                        labelId="product-type-label"
+                        value={value}
+                        onChange={onChange}
+                        label={"Produkt"}
+                      >
+                        {productList.map((e) => (
+                          <MenuItem value={e.id} key={e.id}>
+                            {e.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    ) : (
+                      <></>
+                    )}
+                  </>
                 );
               }}
             />
@@ -150,18 +204,6 @@ const InfoView = () => {
                 <TextField label="Format" value={value} onChange={onChange} />
               )}
             />
-            {/* 
-          TODO: This should work as select in the future
-          <InputLabel id="format-label">Format</InputLabel>
-          <Select
-            labelId="format-label"
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
-            label="Format"
-          >
-            <MenuItem value="a4">A4</MenuItem>
-            <MenuItem value="a3">A3</MenuItem>
-          </Select> */}
           </FormControl>
           <Box mt={2}>
             <Button variant="contained" type="submit">
@@ -171,7 +213,6 @@ const InfoView = () => {
         </form>
       ) : (
         <CircularProgress />
-        //TODO: Better loading
       )}
     </Box>
   );

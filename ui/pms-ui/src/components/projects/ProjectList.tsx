@@ -80,9 +80,12 @@ const ProjectList = () => {
   };
 
   const navigate = useNavigate();
-  const handleEdit = useCallback((id: number) => {
-    navigate(`/edytor/${currentTab === 0 ? "template" : "project"}/${id}`);
-  }, []);
+  const handleEdit = useCallback(
+    (id: number) => {
+      navigate(`/edytor/${currentTab === 0 ? "template" : "project"}/${id}`);
+    },
+    [currentTab, navigate]
+  );
 
   const handleDelete = useCallback(async () => {
     const itemId = deleteDialogProductId;
@@ -188,17 +191,15 @@ const ProjectList = () => {
       <CustomTabPanel value={currentTab} index={0}>
         <DataGridWithActions
           rows={dataTemplates}
-          currentTab={currentTab}
-          onEdit={handleEdit}
           onDeleteDialogOpen={handleDeleteDialogOpen}
+          onEdit={handleEdit}
         />
       </CustomTabPanel>
       <CustomTabPanel value={currentTab} index={1}>
         <DataGridWithActions
           rows={dataProjects}
-          currentTab={currentTab}
-          onEdit={handleEdit}
           onDeleteDialogOpen={handleDeleteDialogOpen}
+          onEdit={handleEdit}
         />
       </CustomTabPanel>
     </Box>

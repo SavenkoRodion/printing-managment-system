@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PMS_Api.Model.DbModel;
+using PMS_Api.Model.Requests;
 
 namespace PMS_Api.Repository;
 
@@ -9,6 +10,7 @@ public interface ITemplateRepository
     Task<IReadOnlyList<Template>> GetAllAsync(CancellationToken cancellationToken);
     Task<Template?> GetByIdAsync(int id, CancellationToken cancellationToken);
     Task<Template?> AddTemplateAsync(Template template, CancellationToken cancellationToken);
+    Task<bool> EditAsync(EditTemplateRequest request, CancellationToken cancellationToken);
 
 }
 
@@ -52,5 +54,28 @@ public class TemplateRepository(PmsContext context) : ITemplateRepository
         {
             return false;
         }
+    }
+
+    public async Task<bool> EditAsync(EditTemplateRequest request, CancellationToken cancellationToken)
+    {
+        var template = await context.Templates.FirstOrDefaultAsync(x => x.Id == request.TemplateId, cancellationToken);
+        if (template is null)
+            return false;
+
+        template.Name = request.NewTemplateName;
+        template.ClientId = request.NewClientId;
+        template.ProductId = request.NewProductId;
+        template.Format = request.NewFormat;
+
+        try
+        {
+            await context.SaveChangesAsync(cancellationToken);
+        }
+        catch
+        {
+            return false;
+        }
+
+        return true;
     }
 }

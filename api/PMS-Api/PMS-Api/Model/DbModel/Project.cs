@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PMS_Api.Model.DbModel
 {
@@ -7,13 +7,13 @@ namespace PMS_Api.Model.DbModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  
+
         public int Id { get; init; }
 
         public required string Name { get; set; }
-        
+
         [ForeignKey("Client")]
-        public required Guid ClientId { get; init; }
+        public required Guid ClientId { get; set; }
         public Client Client { get; set; }
 
         [ForeignKey("Product")]
@@ -29,6 +29,6 @@ namespace PMS_Api.Model.DbModel
         [ForeignKey("Admin")]
         public required Guid AdminId { get; set; }
         public Admin Author { get; set; }
-    
+
     }
 }
