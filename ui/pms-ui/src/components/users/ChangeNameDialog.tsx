@@ -44,7 +44,13 @@ const ChangeNameDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       <DialogTitle>Wprowadź nowe imię dla użytkownika {userEmail}</DialogTitle>
       <DialogContent>
         <Box

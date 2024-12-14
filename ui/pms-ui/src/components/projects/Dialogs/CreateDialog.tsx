@@ -78,7 +78,13 @@ const CreateDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleDialogClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={handleDialogClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       {error && (
         <Alert
           severity="error"

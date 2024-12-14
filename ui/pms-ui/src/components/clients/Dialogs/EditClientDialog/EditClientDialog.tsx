@@ -49,7 +49,13 @@ const EditClientDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       <DialogTitle>Edycja klienta</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         <TextField

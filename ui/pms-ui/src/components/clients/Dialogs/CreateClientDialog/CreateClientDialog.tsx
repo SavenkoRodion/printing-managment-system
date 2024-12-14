@@ -58,7 +58,13 @@ const CreateClientDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       <DialogTitle>Stwórz nowego klienta</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         {errorMessage && (

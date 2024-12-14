@@ -22,7 +22,13 @@ const DeleteAdminDialog = ({
   errorMessage,
 }: DeleteAdminDialogProps) => {
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       <DialogTitle>
         Czy na pewno chcesz usunąć administratora "{adminName}"?
       </DialogTitle>

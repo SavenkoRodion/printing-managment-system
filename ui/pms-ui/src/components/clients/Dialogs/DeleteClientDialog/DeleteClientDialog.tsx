@@ -15,7 +15,13 @@ const DeleteClientDialog = ({
   client,
 }: DeleteClientDialogProps) => {
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       <DialogTitle>Napewno chcesz usunąć klienta "{client.name}"?</DialogTitle>
       <DialogActions sx={{ padding: "0 15px 10px" }}>
         <Button

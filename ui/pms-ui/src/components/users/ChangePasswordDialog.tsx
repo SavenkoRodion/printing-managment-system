@@ -42,7 +42,13 @@ const ResetPasswordDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      maxWidth="xs"
+      fullWidth
+      closeAfterTransition={false}
+    >
       <DialogTitle>Wprowadź nowe hasło dla użytkownika {userEmail}</DialogTitle>
       <DialogContent>
         <Box

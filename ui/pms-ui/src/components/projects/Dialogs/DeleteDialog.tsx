@@ -19,7 +19,13 @@ const DeleteDialog = ({
   handleDelete,
   handleClose,
 }: DeleteDialogProps) => (
-  <Dialog open={isOpen} onClose={handleClose} maxWidth="xs" fullWidth>
+  <Dialog
+    open={isOpen}
+    onClose={handleClose}
+    maxWidth="xs"
+    fullWidth
+    closeAfterTransition={false}
+  >
     <DialogTitle>Usuń {productName}</DialogTitle>
     <DialogContent>Czy na pewno chcesz usunąć {productName}?</DialogContent>
     <DialogActions>
