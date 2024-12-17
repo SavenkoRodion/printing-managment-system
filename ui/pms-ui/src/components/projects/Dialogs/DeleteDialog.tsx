@@ -8,14 +8,14 @@ import {
 
 interface DeleteDialogProps {
   isOpen: boolean;
-  productName: string;
+  projectName: string;
   handleDelete: () => void;
   handleClose: () => void;
 }
 
 const DeleteDialog = ({
   isOpen,
-  productName,
+  projectName,
   handleDelete,
   handleClose,
 }: DeleteDialogProps) => (
@@ -26,8 +26,8 @@ const DeleteDialog = ({
     fullWidth
     closeAfterTransition={false}
   >
-    <DialogTitle>Usuń {productName}</DialogTitle>
-    <DialogContent>Czy na pewno chcesz usunąć {productName}?</DialogContent>
+    <DialogTitle>Usuń {projectName}</DialogTitle>
+    <DialogContent>Czy na pewno chcesz usunąć {projectName}?</DialogContent>
     <DialogActions>
       <Button
         onClick={handleClose}

@@ -81,11 +81,11 @@ const AuthorizedMenuLayout = () => {
             </Link>
             <Link
               component={RouterLink}
-              to="/produkty"
+              to="/rodzaje-projektow"
               underline="none"
               color="inherit"
             >
-              Produkty
+              Rodzaje projektów
             </Link>
             <Link
               component={RouterLink}

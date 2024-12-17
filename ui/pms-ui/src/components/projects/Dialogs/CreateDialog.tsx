@@ -13,19 +13,24 @@ import {
 import styles from "./CreateDialog.style";
 import { useEffect, useState } from "react";
 import getAxiosClient from "../../../utility/getAxiosClient";
-import { Client, Product } from "../../../utility/types";
+import { Client, ProjectType } from "../../../utility/types";
+
+enum Tab {
+  TemplateTab,
+  ProjectTab,
+}
 
 type CreateModalProps = {
   isOpen: boolean;
   currentClient: string;
-  currentTab: number;
+  currentTab: Tab;
   clients: Client[];
   handleClose: () => void;
   onCreate: (
     name: string,
     format: string,
     selectedClient: string,
-    selectedProduct: number
+    selectedProjectType: number
   ) => void;
 };
 
@@ -41,14 +46,15 @@ const CreateDialog = ({
   const [name, setName] = useState("");
   const [format, setFormat] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState<number>(0);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedProjectType, setSelectedProjectType] = useState<number>(0);
+  const [projectTypes, setProjectTypes] = useState<ProjectType[]>([]);
 
   const client = getAxiosClient();
 
   useEffect(() => {
-    client.get("/product").then((response) => {
-      setProducts(response.data);
+    client.get("/projectType").then((response) => {
+      setProjectTypes(response.data);
+      console.log(response.data);
     });
   }, []);
 
@@ -59,13 +65,13 @@ const CreateDialog = ({
   }, [isOpen, currentClient]);
 
   const handleCreate = () => {
-    if (!name || !selectedClient || !selectedProduct || !format) {
+    if (!name || !selectedClient || !selectedProjectType || !format) {
       setError("Wszystkie pola muszą być wypełnione");
       setTimeout(() => setError(""), 3000);
       return;
     }
 
-    onCreate(name, format, selectedClient, selectedProduct);
+    onCreate(name, format, selectedClient, selectedProjectType);
     handleDialogClose();
   };
 
@@ -73,7 +79,7 @@ const CreateDialog = ({
     setName("");
     setFormat("");
     setSelectedClient("");
-    setSelectedProduct(0);
+    setSelectedProjectType(0);
     handleClose();
   };
 
@@ -100,23 +106,27 @@ const CreateDialog = ({
         </Alert>
       )}
       <DialogTitle>
-        {currentTab === 0 ? "Stwórz nowy szablon" : "Stwórz nowy projekt"}
+        {currentTab === Tab.TemplateTab
+          ? "Stwórz nowy szablon"
+          : "Stwórz nowy projekt"}
       </DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         <TextField
           size="small"
-          label={currentTab === 0 ? "Nazwa szablonu" : "Nazwa projektu"}
+          label={
+            currentTab === Tab.TemplateTab ? "Nazwa szablonu" : "Nazwa projektu"
+          }
           sx={styles.dialogElement}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <FormControl size="small" sx={styles.dialogElement}>
-          <InputLabel id="client-label">Client</InputLabel>
+          <InputLabel id="client-label">Klienci</InputLabel>
           <Select
             labelId="client-label"
             value={selectedClient}
             onChange={(e) => setSelectedClient(e.target.value)}
-            label="Client"
+            label="Klienci"
           >
             {clients.map((client) => (
               <MenuItem key={client.uuid} value={client.uuid}>
@@ -126,16 +136,16 @@ const CreateDialog = ({
           </Select>
         </FormControl>
         <FormControl size="small" sx={styles.dialogElement}>
-          <InputLabel id="product-label">Product</InputLabel>
+          <InputLabel id="projectType-label">Rodzaj Projektu</InputLabel>
           <Select
-            labelId="product-label"
-            value={selectedProduct === 0 ? "" : selectedProduct}
-            onChange={(e) => setSelectedProduct(Number(e.target.value))}
-            label="Product"
+            labelId="projectType-label"
+            value={selectedProjectType === 0 ? "" : selectedProjectType}
+            onChange={(e) => setSelectedProjectType(Number(e.target.value))}
+            label="Rodzaj Projektu"
           >
-            {products.map((product) => (
-              <MenuItem key={product.id} value={product.id}>
-                {product.name}
+            {projectTypes.map((projectType) => (
+              <MenuItem key={projectType.id} value={projectType.id}>
+                {projectType.name}
               </MenuItem>
             ))}
           </Select>

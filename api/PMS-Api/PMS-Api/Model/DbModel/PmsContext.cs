@@ -26,10 +26,10 @@ public class PmsContext : DbContext
 
         );
 
-        builder.Entity<Product>().HasData(
-            new Product { Id = 1, Name = "Product 1", DateOfCreation = DateTime.Now },
-            new Product { Id = 2, Name = "Product 2", DateOfCreation = DateTime.Now },
-            new Product { Id = 3, Name = "Product 3", DateOfCreation = DateTime.Now }
+        builder.Entity<ProjectType>().HasData(
+            new ProjectType { Id = 1, Name = "ProjectType 1", DateOfCreation = DateTime.Now },
+            new ProjectType { Id = 2, Name = "ProjectType 2", DateOfCreation = DateTime.Now },
+            new ProjectType { Id = 3, Name = "ProjectType 3", DateOfCreation = DateTime.Now }
         );
 
 
@@ -40,7 +40,7 @@ public class PmsContext : DbContext
                 Id = 1,
                 Name = "Project 1",
                 ClientId = clientAId,
-                ProductId = 1,
+                ProjectTypeId = 1,
                 Format = "A4",
                 LiczbaStron = 100,
                 DateModified = DateTime.Now,
@@ -51,7 +51,7 @@ public class PmsContext : DbContext
                 Id = 2,
                 Name = "Project 2",
                 ClientId = clientBId,
-                ProductId = 2,
+                ProjectTypeId = 2,
                 Format = "A3",
                 LiczbaStron = 200,
                 DateModified = DateTime.Now,
@@ -62,7 +62,7 @@ public class PmsContext : DbContext
                 Id = 3,
                 Name = "Project 3",
                 ClientId = clientAId,
-                ProductId = 3,
+                ProjectTypeId = 3,
                 Format = "A5",
                 LiczbaStron = 300,
                 DateModified = DateTime.Now,
@@ -73,7 +73,7 @@ public class PmsContext : DbContext
                 Id = 4,
                 Name = "Project 4",
                 ClientId = clientAId,
-                ProductId = 1,
+                ProjectTypeId = 1,
                 Format = "A6",
                 LiczbaStron = 400,
                 DateModified = DateTime.Now,
@@ -87,7 +87,7 @@ public class PmsContext : DbContext
                 Id = 1,
                 Name = "Template 1",
                 ClientId = clientAId,
-                ProductId = 1,
+                ProjectTypeId = 1,
                 Format = "A4",
                 LiczbaStron = 100,
                 DateModified = DateTime.Now,
@@ -98,7 +98,7 @@ public class PmsContext : DbContext
                 Id = 2,
                 Name = "Template 2",
                 ClientId = clientBId,
-                ProductId = 2,
+                ProjectTypeId = 2,
                 Format = "A3",
                 LiczbaStron = 200,
                 DateModified = DateTime.Now,
@@ -109,7 +109,7 @@ public class PmsContext : DbContext
                 Id = 3,
                 Name = "Template 3",
                 ClientId = clientBId,
-                ProductId = 3,
+                ProjectTypeId = 3,
                 Format = "A5",
                 LiczbaStron = 300,
                 DateModified = DateTime.Now,
@@ -119,7 +119,7 @@ public class PmsContext : DbContext
     }
 
     public virtual DbSet<Admin> Admins { get; set; }
-    public virtual DbSet<Product> Products { get; set; }
+    public virtual DbSet<ProjectType> ProjectTypes { get; set; }
     public virtual DbSet<Project> Projects { get; set; }
     public virtual DbSet<Template> Templates { get; set; }
     public virtual DbSet<Client> Clients { get; set; }

@@ -23,7 +23,7 @@ import { styles } from "./Editor.style";
 interface EditorViewProps {}
 
 const EditorView: React.FC<EditorViewProps> = () => {
-  const [productType, setProductType] = useState<string>("");
+  const [projectType, setProjectType] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [client, setClient] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
@@ -82,8 +82,8 @@ const EditorView: React.FC<EditorViewProps> = () => {
             </InputLabel>
             <Select
               labelId="select-label"
-              value={productType}
-              onChange={(e) => setProductType(e.target.value)}
+              value={projectType}
+              onChange={(e) => setProjectType(e.target.value)}
               sx={styles.textField}
             >
               <MenuItem value="option1">Opcja 1</MenuItem>
