@@ -38,7 +38,6 @@ export const styles = {
   },
   fileButton: {
     mt: 1,
-    maxWidth: "200px",
   },
   pdfContainer: {
     position: "relative",
@@ -47,11 +46,19 @@ export const styles = {
     overflowX: "auto",
     overflowY: "hidden",
     border: "2px solid black",
-    borderRadius: "8px", 
+    borderRadius: "8px",
     display: "flex",
     flexDirection: "column",
   },
-
+  emptyPdfcontainer: {
+    minHeight: "350px",
+    border: "2px solid black",
+    borderRadius: "8px",
+    width: "100%",
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
+  },
   zoomControls: {
     display: "flex",
     justifyContent: "space-between",
