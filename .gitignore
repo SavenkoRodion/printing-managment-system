@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+api/PMS-Api/PMS-Api/Files/*

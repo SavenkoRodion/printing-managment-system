@@ -6,9 +6,11 @@ export const ErrorSnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  const showError = (message: string) => {
+  const showError = (message: string, isSuccess?: boolean) => {
     setErrorMessage(message);
+    setIsSuccess(isSuccess ?? false);
   };
 
   const handleClose = () => {
@@ -24,7 +26,11 @@ export const ErrorSnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleClose}
+          severity={isSuccess ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
           {errorMessage}
         </Alert>
       </Snackbar>

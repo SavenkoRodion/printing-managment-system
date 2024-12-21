@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   FormControl,
@@ -23,6 +23,8 @@ import "@react-pdf-viewer/zoom/lib/styles/index.css";
 import { styles } from "./Editor.style";
 import getAxiosClient from "../../utility/getAxiosClient";
 import { useErrorSnackbar } from "../../hooks/UseErrorSnackbar";
+import { useParams } from "react-router-dom";
+import { EditorParams } from "./Editor";
 
 interface EditorViewProps {}
 
@@ -82,14 +84,30 @@ const EditorView: React.FC<EditorViewProps> = () => {
 
   const { showError } = useErrorSnackbar();
 
-  const submitProjectFile = () => {
+  const { projectId, type } = useParams<EditorParams>();
+
+  const submitProjectFile = async () => {
     const client = getAxiosClient();
-    client.post(
-      "TestFile",
-      { file },
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
+    const formData = new FormData();
+    formData.append("File", file!);
+    formData.append("FiTemplateOrProjectle", type === "template" ? "0" : "1");
+    formData.append("TemplateOrProjectId", projectId!);
+    client
+      .post("ProjectFile", formData)
+      .then(() => showError("Udało się zapisać plik", true));
   };
+
+  useEffect(() => {
+    const client = getAxiosClient();
+    client
+      .get("ProjectFile", {
+        responseType: "blob",
+        params: { id: projectId, type: type === "template" ? 0 : 1 },
+      })
+      .then((response) => {
+        setFile(response.data);
+      });
+  }, [projectId, type]);
 
   return (
     <Box sx={styles.container}>
@@ -193,6 +211,7 @@ const EditorView: React.FC<EditorViewProps> = () => {
             variant="contained"
             sx={styles.fileButton}
             onClick={submitProjectFile}
+            disabled={!file}
           >
             Zapisz plik projektu
           </Button>
