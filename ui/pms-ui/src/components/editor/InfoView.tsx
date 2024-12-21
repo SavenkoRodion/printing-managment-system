@@ -26,7 +26,7 @@ const InfoView = () => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { showError } = useErrorSnackbar();
+  const { showMessage } = useErrorSnackbar();
 
   useEffect(() => {
     const axiosClient = getAxiosClient();
@@ -40,7 +40,7 @@ const InfoView = () => {
           console.error("Błąd przy pobraniu listy użytkowników");
         }
       })
-      .catch(() => showError("Błąd przy pobraniu listy użytkowników"));
+      .catch(() => showMessage("Błąd przy pobraniu listy użytkowników"));
 
     axiosClient
       .get<Product[]>("product")
@@ -48,11 +48,11 @@ const InfoView = () => {
         if (isStatusCodeSuccessfull(e.status)) {
           setProductList(e.data);
         } else {
-          showError("Błąd przy pobraniu listy produktów");
+          showMessage("Błąd przy pobraniu listy produktów");
         }
       })
-      .catch(() => showError("Błąd przy pobraniu listy produktów"));
-  }, [showError]);
+      .catch(() => showMessage("Błąd przy pobraniu listy produktów"));
+  }, [showMessage]);
 
   const { handleSubmit, control, reset } = useForm<TemplateOrProject>();
 
@@ -70,10 +70,10 @@ const InfoView = () => {
               reset(e.data);
               setIsLoading(false);
             } else {
-              showError("Błąd przy pobraniu danych projektu");
+              showMessage("Błąd przy pobraniu danych projektu");
             }
           })
-          .catch(() => showError("Błąd przy pobraniu danych projektu"));
+          .catch(() => showMessage("Błąd przy pobraniu danych projektu"));
         break;
       case "template":
         axiosClient
@@ -83,13 +83,13 @@ const InfoView = () => {
               reset(e.data);
               setIsLoading(false);
             } else {
-              showError("Błąd przy pobraniu danych szablonu");
+              showMessage("Błąd przy pobraniu danych szablonu");
             }
           })
-          .catch(() => showError("Błąd przy pobraniu danych szablonu"));
+          .catch(() => showMessage("Błąd przy pobraniu danych szablonu"));
         break;
     }
-  }, [reset, projectId, type, showError]);
+  }, [reset, projectId, type, showMessage]);
 
   const onSubmit: SubmitHandler<TemplateOrProject> = (data) => {
     const axiosClient = getAxiosClient();
@@ -104,7 +104,7 @@ const InfoView = () => {
             newFormat: data.format,
           })
           .then(() => window.location.reload())
-          .catch(() => showError("Nie udało się zedytować projekt"));
+          .catch(() => showMessage("Nie udało się zedytować projekt"));
 
         break;
       case "template":
@@ -117,7 +117,7 @@ const InfoView = () => {
             newFormat: data.format,
           })
           .then(() => window.location.reload())
-          .catch(() => showError("Nie udało się zedytować szablon"));
+          .catch(() => showMessage("Nie udało się zedytować szablon"));
         break;
     }
   };

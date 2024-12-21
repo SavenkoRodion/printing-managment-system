@@ -75,14 +75,14 @@ const EditorView: React.FC<EditorViewProps> = () => {
     const files = event.target.files;
     if (files && files[0]) {
       if (files[0].type !== "application/pdf") {
-        showError("Dozwolone są tylko pliki PDF");
+        showMessage("Dozwolone są tylko pliki PDF");
         return;
       }
       setFile(files[0]);
     }
   };
 
-  const { showError } = useErrorSnackbar();
+  const { showMessage } = useErrorSnackbar();
 
   const { projectId, type } = useParams<EditorParams>();
 
@@ -90,11 +90,11 @@ const EditorView: React.FC<EditorViewProps> = () => {
     const client = getAxiosClient();
     const formData = new FormData();
     formData.append("File", file!);
-    formData.append("FiTemplateOrProjectle", type === "template" ? "0" : "1");
+    formData.append("TemplateOrProject", type === "template" ? "0" : "1");
     formData.append("TemplateOrProjectId", projectId!);
     client
       .post("ProjectFile", formData)
-      .then(() => showError("Udało się zapisać plik", true));
+      .then(() => showMessage("Udało się zapisać plik", true));
   };
 
   useEffect(() => {
@@ -102,7 +102,10 @@ const EditorView: React.FC<EditorViewProps> = () => {
     client
       .get("ProjectFile", {
         responseType: "blob",
-        params: { id: projectId, type: type === "template" ? 0 : 1 },
+        params: {
+          id: projectId,
+          templateOrProject: type === "template" ? 0 : 1,
+        },
       })
       .then((response) => {
         setFile(response.data);

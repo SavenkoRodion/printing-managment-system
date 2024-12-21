@@ -8,7 +8,7 @@ export const ErrorSnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  const showError = (message: string, isSuccess?: boolean) => {
+  const showMessage = (message: string, isSuccess?: boolean) => {
     setErrorMessage(message);
     setIsSuccess(isSuccess ?? false);
   };
@@ -18,7 +18,7 @@ export const ErrorSnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <ErrorSnackbarContext.Provider value={{ showError }}>
+    <ErrorSnackbarContext.Provider value={{ showMessage }}>
       {children}
       <Snackbar
         open={!!errorMessage}

@@ -2,6 +2,6 @@
 
 public enum TemplateOrProjectEnum
 {
-    Template,
-    Project
+    Template = 0,
+    Project = 1
 }
