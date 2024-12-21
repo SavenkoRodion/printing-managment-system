@@ -16,9 +16,9 @@ namespace PMS_Api.Model.DbModel
         public required Guid ClientId { get; set; }
         public Client Client { get; set; }
 
-        [ForeignKey("Product")]
-        public required int ProductId { get; set; }
-        public Product Product { get; set; }
+        [ForeignKey("ProjectType")]
+        public required int ProjectTypeId { get; set; }
+        public ProjectType ProjectType { get; set; }
 
         public required string Format { get; set; }
 

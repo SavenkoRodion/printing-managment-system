@@ -18,12 +18,12 @@ public class TemplateRepository(PmsContext context) : ITemplateRepository
 {
     public async Task<IReadOnlyList<Template>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await context.Templates.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).ToListAsync(cancellationToken);
+        return await context.Templates.Include(x => x.Author).Include(x => x.Client).Include(x => x.ProjectType).ToListAsync(cancellationToken);
     }
 
     public async Task<Template?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await context.Templates.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).FirstOrDefaultAsync(x => x.Id == id) ?? null;
+        return await context.Templates.Include(x => x.Author).Include(x => x.Client).Include(x => x.ProjectType).FirstOrDefaultAsync(x => x.Id == id) ?? null;
     }
 
 
@@ -64,7 +64,7 @@ public class TemplateRepository(PmsContext context) : ITemplateRepository
 
         template.Name = request.NewTemplateName;
         template.ClientId = request.NewClientId;
-        template.ProductId = request.NewProductId;
+        template.ProjectTypeId = request.NewProjectTypeId;
         template.Format = request.NewFormat;
 
         try
