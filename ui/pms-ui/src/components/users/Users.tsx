@@ -16,7 +16,7 @@ import DeleteAdminDialog from "./DeleteAdminDialog";
 import { useErrorSnackbar } from "../../hooks/UseErrorSnackbar";
 
 const Users = () => {
-  const { showError } = useErrorSnackbar();
+  const { showMessage } = useErrorSnackbar();
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [isOpenChangePasswordDialog, setIsOpenChangePasswordDialog] =
     useState(false);
@@ -49,7 +49,7 @@ const Users = () => {
         setAdmins(response.data);
       })
       .catch(() => {
-        showError("Nie udało się pobrać listy administratorów.");
+        showMessage("Nie udało się pobrać listy administratorów.");
       });
 
     client
@@ -60,9 +60,11 @@ const Users = () => {
         }
       })
       .catch(() => {
-        showError("Nie udało się pobrać informacji o zalogowanym użytkowniku.");
+        showMessage(
+          "Nie udało się pobrać informacji o zalogowanym użytkowniku."
+        );
       });
-  }, [showError]);
+  }, [showMessage]);
 
   const onChangePasswordDialogOpen = (userEmail: string, userId: string) => {
     setChangePasswordDialogUserId(userId);
@@ -105,10 +107,12 @@ const Users = () => {
         }
       })
       .catch((error) => {
-        showError("Problem podczas usuwania administratora.");
+        showMessage("Problem podczas usuwania administratora.");
         if (error.response) {
           if (error.response.status === 400) {
-            setDeleteDialogError("Nie można usunąć siebie. Należy skierować prośbę do innego administratora.");
+            setDeleteDialogError(
+              "Nie można usunąć siebie. Należy skierować prośbę do innego administratora."
+            );
           } else {
             setDeleteDialogError(
               "Wystąpił błąd podczas usuwania administratora. Spróbuj ponownie."
