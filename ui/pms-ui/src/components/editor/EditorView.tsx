@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   FormControl,
@@ -9,6 +9,8 @@ import {
   InputLabel,
   IconButton,
   Checkbox,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,6 +21,10 @@ import { zoomPlugin } from "@react-pdf-viewer/zoom";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/zoom/lib/styles/index.css";
 import { styles } from "./Editor.style";
+import getAxiosClient from "../../utility/getAxiosClient";
+import { useErrorSnackbar } from "../../hooks/UseErrorSnackbar";
+import { useParams } from "react-router-dom";
+import { EditorParams } from "./Editor";
 
 interface EditorViewProps {}
 
@@ -68,9 +74,43 @@ const EditorView: React.FC<EditorViewProps> = () => {
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files[0]) {
+      if (files[0].type !== "application/pdf") {
+        showMessage("Dozwolone są tylko pliki PDF");
+        return;
+      }
       setFile(files[0]);
     }
   };
+
+  const { showMessage } = useErrorSnackbar();
+
+  const { projectId, type } = useParams<EditorParams>();
+
+  const submitProjectFile = async () => {
+    const client = getAxiosClient();
+    const formData = new FormData();
+    formData.append("File", file!);
+    formData.append("TemplateOrProject", type === "template" ? "0" : "1");
+    formData.append("TemplateOrProjectId", projectId!);
+    client
+      .post("ProjectFile", formData)
+      .then(() => showMessage("Udało się zapisać plik", true));
+  };
+
+  useEffect(() => {
+    const client = getAxiosClient();
+    client
+      .get("ProjectFile", {
+        responseType: "blob",
+        params: {
+          id: projectId,
+          templateOrProject: type === "template" ? 0 : 1,
+        },
+      })
+      .then((response) => {
+        setFile(response.data);
+      });
+  }, [projectId, type]);
 
   return (
     <Box sx={styles.container}>
@@ -160,17 +200,27 @@ const EditorView: React.FC<EditorViewProps> = () => {
       </Box>
 
       <Box sx={styles.rightPanel}>
-        <Button variant="contained" component="label" sx={styles.fileButton}>
-          Wybierz plik PDF
-          <input
-            type="file"
-            accept="application/pdf"
-            hidden
-            onChange={onFileChange}
-          />
-        </Button>
+        <Stack direction={"row"} gap="8px">
+          <Button variant="contained" component="label" sx={styles.fileButton}>
+            Wybierz plik PDF
+            <input
+              type="file"
+              accept="application/pdf"
+              hidden
+              onChange={onFileChange}
+            />
+          </Button>
+          <Button
+            variant="contained"
+            sx={styles.fileButton}
+            onClick={submitProjectFile}
+            disabled={!file}
+          >
+            Zapisz plik projektu
+          </Button>
+        </Stack>
 
-        {file && (
+        {file ? (
           <Box sx={styles.pdfContainer}>
             <Worker workerUrl="/node_modules/pdfjs-dist/build/pdf.worker.min.js">
               <Box sx={styles.zoomControls}>
@@ -185,6 +235,10 @@ const EditorView: React.FC<EditorViewProps> = () => {
                 plugins={[zoomPluginInstance]}
               />
             </Worker>
+          </Box>
+        ) : (
+          <Box sx={styles.emptyPdfcontainer}>
+            <Typography>Projekt nie ma przypisanego pliku PDF</Typography>
           </Box>
         )}
       </Box>
