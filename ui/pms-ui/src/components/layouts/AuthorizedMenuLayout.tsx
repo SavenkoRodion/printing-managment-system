@@ -14,6 +14,7 @@ import { Outlet, Link as RouterLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import getAxiosClient from "../../utility/getAxiosClient";
 import styles from "./AuthorizedMenuLayout.style";
+import packageJson from "../../../package.json";
 
 const AuthorizedMenuLayout = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -61,14 +62,7 @@ const AuthorizedMenuLayout = () => {
         <Toolbar sx={{ justifyContent: "space-between", paddingX: "16px" }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
             <Typography variant="h6" component="div" sx={{ marginRight: 4 }}>
-              <Link
-                component={RouterLink}
-                to="/"
-                underline="none"
-                color="inherit"
-              >
-                PrintingHouseManager
-              </Link>
+              PrintingHouseManager v{packageJson.version}
             </Typography>
 
             <Link

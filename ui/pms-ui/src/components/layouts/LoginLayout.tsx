@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import styles from "./LoginLayout.style";
+import packageJson from "../../../package.json";
 
 const LoginLayout = () => {
   return (
@@ -10,7 +11,7 @@ const LoginLayout = () => {
           SYSTEM ZAMAWIANIA DRUKÓW FIRMOWYCH
         </Typography>
         <Typography variant="h3" sx={styles.headerTextLine2}>
-          PANEL LOGOWANIA ADMINISTRATORA
+          PANEL LOGOWANIA ADMINISTRATORA v{packageJson.version}
         </Typography>
         <Box
           component="img"
