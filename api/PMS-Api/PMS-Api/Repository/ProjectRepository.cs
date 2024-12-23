@@ -18,12 +18,12 @@ public class ProjectRepository(PmsContext context) : IProjectRepository
 {
     public async Task<IReadOnlyList<Project>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await context.Projects.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).ToListAsync(cancellationToken);
+        return await context.Projects.Include(x => x.Author).Include(x => x.Client).Include(x => x.ProjectType).ToListAsync(cancellationToken);
     }
 
     public async Task<Project?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await context.Projects.Include(x => x.Author).Include(x => x.Client).Include(x => x.Product).FirstOrDefaultAsync(x => x.Id == id) ?? null;
+        return await context.Projects.Include(x => x.Author).Include(x => x.Client).Include(x => x.ProjectType).FirstOrDefaultAsync(x => x.Id == id) ?? null;
     }
 
     public async Task<Project?> AddProjectAsync(Project project, CancellationToken cancellationToken)
@@ -62,7 +62,7 @@ public class ProjectRepository(PmsContext context) : IProjectRepository
 
         project.Name = request.NewProjectName;
         project.ClientId = request.NewClientId;
-        project.ProductId = request.NewProductId;
+        project.ProjectTypeId = request.NewProjectTypeId;
         project.Format = request.NewFormat;
 
         try

@@ -7,7 +7,7 @@ export interface Admin {
   name: string;
 }
 
-export interface Product {
+export interface ProjectType {
   id: string;
   name: string;
   dateOfCreation: Date;
@@ -18,7 +18,7 @@ export interface Template {
   name: string;
   clientId: string;
   client: Client;
-  productId: number;
+  projectTypeId: number;
   format: string;
   liczbaStron: number;
   dateModified: Date;
@@ -31,7 +31,7 @@ export interface Project {
   name: string;
   clientId: string;
   client: Client;
-  productId: number;
+  projectTypeId: number;
   format: string;
   liczbaStron: number;
   dateModified: Date;

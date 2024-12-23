@@ -1,18 +1,18 @@
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 
-type DeleteProductDialogProps = {
+type DeleteProjectTypeDialogProps = {
   isOpen: boolean;
   handleClose: () => void;
   handleDelete: () => void;
-  productName: string;
+  projectTypeName: string;
 };
 
-const DeleteProductDialog = ({
+const DeleteProjectTypeDialog = ({
   isOpen,
   handleClose,
   handleDelete,
-  productName,
-}: DeleteProductDialogProps) => {
+  projectTypeName,
+}: DeleteProjectTypeDialogProps) => {
   return (
     <Dialog
       open={isOpen}
@@ -21,7 +21,9 @@ const DeleteProductDialog = ({
       fullWidth
       closeAfterTransition={false}
     >
-      <DialogTitle>Napewno chcesz usunąć produkt "{productName}"?</DialogTitle>
+      <DialogTitle>
+        Napewno chcesz usunąć ten rodzaj projektu: "{projectTypeName}"?
+      </DialogTitle>
       <DialogActions sx={{ padding: "0 15px 10px" }}>
         <Button
           color={"error"}
@@ -39,4 +41,4 @@ const DeleteProductDialog = ({
   );
 };
 
-export default DeleteProductDialog;
+export default DeleteProjectTypeDialog;

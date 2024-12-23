@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 import { EditorParams } from "./Editor";
 import TemplateOrProject from "../../model/TemplateOrProject";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import Product from "../../model/Product";
+import ProjectType from "../../model/ProjectType";
 import { isStatusCodeSuccessfull } from "../../utility/util";
 import { useErrorSnackbar } from "../../hooks/UseErrorSnackbar";
 
@@ -23,10 +23,10 @@ const InfoView = () => {
   const { projectId, type } = useParams<EditorParams>();
 
   const [clientList, setClientList] = useState<Client[]>([]);
-  const [productList, setProductList] = useState<Product[]>([]);
+  const [projectTypeList, setProjectTypeList] = useState<ProjectType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { showError } = useErrorSnackbar();
+  const { showMessage } = useErrorSnackbar();
 
   useEffect(() => {
     const axiosClient = getAxiosClient();
@@ -40,19 +40,19 @@ const InfoView = () => {
           console.error("Błąd przy pobraniu listy użytkowników");
         }
       })
-      .catch(() => showError("Błąd przy pobraniu listy użytkowników"));
+      .catch(() => showMessage("Błąd przy pobraniu listy użytkowników"));
 
     axiosClient
-      .get<Product[]>("product")
+      .get<ProjectType[]>("projectType")
       .then((e) => {
         if (isStatusCodeSuccessfull(e.status)) {
-          setProductList(e.data);
+          setProjectTypeList(e.data);
         } else {
-          showError("Błąd przy pobraniu listy produktów");
+          showMessage("Błąd przy pobraniu listy rodzajów projektów");
         }
       })
-      .catch(() => showError("Błąd przy pobraniu listy produktów"));
-  }, [showError]);
+      .catch(() => showMessage("Błąd przy pobraniu listy rodzajów projektów"));
+  }, [showMessage]);
 
   const { handleSubmit, control, reset } = useForm<TemplateOrProject>();
 
@@ -70,10 +70,10 @@ const InfoView = () => {
               reset(e.data);
               setIsLoading(false);
             } else {
-              showError("Błąd przy pobraniu danych projektu");
+              showMessage("Błąd przy pobraniu danych projektu");
             }
           })
-          .catch(() => showError("Błąd przy pobraniu danych projektu"));
+          .catch(() => showMessage("Błąd przy pobraniu danych projektu"));
         break;
       case "template":
         axiosClient
@@ -83,13 +83,13 @@ const InfoView = () => {
               reset(e.data);
               setIsLoading(false);
             } else {
-              showError("Błąd przy pobraniu danych szablonu");
+              showMessage("Błąd przy pobraniu danych szablonu");
             }
           })
-          .catch(() => showError("Błąd przy pobraniu danych szablonu"));
+          .catch(() => showMessage("Błąd przy pobraniu danych szablonu"));
         break;
     }
-  }, [reset, projectId, type, showError]);
+  }, [reset, projectId, type, showMessage]);
 
   const onSubmit: SubmitHandler<TemplateOrProject> = (data) => {
     const axiosClient = getAxiosClient();
@@ -100,11 +100,11 @@ const InfoView = () => {
             projectId: data.id,
             newProjectName: data.name,
             newClientId: data.clientId,
-            newProductId: data.productId,
+            newProjectTypeId: data.projectTypeId,
             newFormat: data.format,
           })
           .then(() => window.location.reload())
-          .catch(() => showError("Nie udało się zedytować projekt"));
+          .catch(() => showMessage("Nie udało się zedytować projekt"));
 
         break;
       case "template":
@@ -113,11 +113,11 @@ const InfoView = () => {
             templateId: data.id,
             newTemplateName: data.name,
             newClientId: data.clientId,
-            newProductId: data.productId,
+            newProjectTypeId: data.projectTypeId,
             newFormat: data.format,
           })
           .then(() => window.location.reload())
-          .catch(() => showError("Nie udało się zedytować szablon"));
+          .catch(() => showMessage("Nie udało się zedytować szablon"));
         break;
     }
   };
@@ -167,21 +167,21 @@ const InfoView = () => {
           </FormControl>
 
           <FormControl fullWidth margin="normal">
-            <InputLabel id="product-type-label">Produkt</InputLabel>
+            <InputLabel id="projectType-type-label">Rodzaj Projektu</InputLabel>
             <Controller
               control={control}
-              name={"productId"}
+              name={"projectTypeId"}
               render={({ field: { value, onChange } }) => {
                 return (
                   <>
-                    {value && productList.length ? (
+                    {value && projectTypeList.length ? (
                       <Select
-                        labelId="product-type-label"
+                        labelId="projectType-type-label"
                         value={value}
                         onChange={onChange}
-                        label={"Produkt"}
+                        label={"Rodzaj Projektu"}
                       >
-                        {productList.map((e) => (
+                        {projectTypeList.map((e) => (
                           <MenuItem value={e.id} key={e.id}>
                             {e.name}
                           </MenuItem>

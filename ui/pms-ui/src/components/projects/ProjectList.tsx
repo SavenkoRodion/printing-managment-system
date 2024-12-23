@@ -28,9 +28,9 @@ const ProjectList = () => {
   const [dataTemplates, setDataTemplates] = useState<Template[]>([]);
   const [dataProjects, setDataProjects] = useState<Project[]>([]);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [deleteDialogProductName, setDeleteDialogProductName] =
+  const [deleteDialogProjectName, setDeleteDialogProjectName] =
     useState<string>("");
-  const [deleteDialogProductId, setDeleteDialogProductId] = useState<
+  const [deleteDialogProjectId, setDeleteDialogProjectId] = useState<
     number | undefined
   >(undefined);
 
@@ -73,22 +73,26 @@ const ProjectList = () => {
     setCurrentTab(newValue);
   };
 
-  const handleDeleteDialogOpen = (productId: number, productName: string) => {
-    setDeleteDialogProductId(productId);
-    setDeleteDialogProductName(productName);
+  const handleDeleteDialogOpen = (projectId: number, projectName: string) => {
+    setDeleteDialogProjectId(projectId);
+    setDeleteDialogProjectName(projectName);
     setIsDeleteDialogOpen(true);
   };
 
   const navigate = useNavigate();
   const handleEdit = useCallback(
     (id: number) => {
-      navigate(`/edytor/${currentTab === 0 ? "template" : "project"}/${id}`);
+      navigate(
+        `/edytor/${
+          currentTab === Tab.TemplateTab ? "template" : "project"
+        }/${id}`
+      );
     },
     [currentTab, navigate]
   );
 
   const handleDelete = useCallback(async () => {
-    const itemId = deleteDialogProductId;
+    const itemId = deleteDialogProjectId;
     if (itemId === undefined) return;
 
     const apiEndpoint =
@@ -125,20 +129,20 @@ const ProjectList = () => {
     projects,
     currentTab,
     currentClient,
-    deleteDialogProductId,
+    deleteDialogProjectId,
   ]);
 
   const createTemplateOrProject = (
     name: string,
     format: string,
     selectedClient: string,
-    selectedProduct: number
+    selectedProjectType: number
   ) => {
     client
       .post(`/${currentTab === Tab.TemplateTab ? "template" : "project"}`, {
         name: name,
         clientId: selectedClient,
-        productId: selectedProduct,
+        projectTypeId: selectedProjectType,
         format: format,
       })
       .then((response) => {
@@ -184,7 +188,7 @@ const ProjectList = () => {
       {error && <Alert severity="error">{error}</Alert>}
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
-        productName={deleteDialogProductName}
+        projectName={deleteDialogProjectName}
         handleDelete={handleDelete}
         handleClose={() => setIsDeleteDialogOpen(false)}
       />

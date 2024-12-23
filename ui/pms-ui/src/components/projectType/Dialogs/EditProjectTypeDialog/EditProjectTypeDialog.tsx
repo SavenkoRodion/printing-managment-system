@@ -5,23 +5,23 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import styles from "./EditProductDialog.style";
+import styles from "./EditProjectTypeDialog.style";
 
-type EditProductDialogProps = {
+type EditProjectTypeDialogProps = {
   isOpen: boolean;
   handleClose: () => void;
   handleEdit: () => void;
-  productName: string;
-  setProductName: (productName: string) => void;
+  projectTypeName: string;
+  setProjectTypeName: (projectTypeName: string) => void;
 };
 
-const EditProductDialog = ({
+const EditProjectTypeDialog = ({
   isOpen,
   handleClose,
   handleEdit,
-  productName,
-  setProductName,
-}: EditProductDialogProps) => {
+  projectTypeName,
+  setProjectTypeName,
+}: EditProjectTypeDialogProps) => {
   return (
     <Dialog
       open={isOpen}
@@ -30,14 +30,14 @@ const EditProductDialog = ({
       fullWidth
       closeAfterTransition={false}
     >
-      <DialogTitle>Edycja produktu</DialogTitle>
+      <DialogTitle>Edycja rodzaju projektu</DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         <TextField
           size="small"
-          label="Nazwa produktu"
+          label="Nazwa rodzaju projektu"
           sx={styles.dialogElement}
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
+          value={projectTypeName}
+          onChange={(e) => setProjectTypeName(e.target.value)}
         />
         <Button
           variant="contained"
@@ -51,4 +51,4 @@ const EditProductDialog = ({
   );
 };
 
-export default EditProductDialog;
+export default EditProjectTypeDialog;

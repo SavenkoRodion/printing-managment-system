@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PMS_Api.Model.DbModel;
 
-public record Product
+public record ProjectType
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

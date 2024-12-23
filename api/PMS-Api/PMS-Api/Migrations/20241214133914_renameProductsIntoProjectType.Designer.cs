@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PMS_Api.Model.DbModel;
 
@@ -11,9 +12,11 @@ using PMS_Api.Model.DbModel;
 namespace PMS_Api.Migrations
 {
     [DbContext(typeof(PmsContext))]
-    partial class PmsContextModelSnapshot : ModelSnapshot
+    [Migration("20241214133914_renameProductsIntoProjectType")]
+    partial class renameProductsIntoProjectType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

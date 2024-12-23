@@ -3,15 +3,20 @@ import CreateDialog from "../projects/Dialogs/CreateDialog";
 import { useState } from "react";
 import { Client } from "../../utility/types";
 
+enum Tab {
+  TemplateTab,
+  ProjectTab,
+}
+
 interface AddProjectOrTemplateProps {
-  currentTab: number;
+  currentTab: Tab;
   currentClient: string;
   clients: Client[];
   onCreate: (
     name: string,
     format: string,
     selectedClient: string,
-    selectedProduct: number
+    selectedProjectType: number
   ) => void;
 }
 
@@ -32,7 +37,7 @@ const AddProjectOrTemplate = ({
         onClick={() => setIsCreateModalOpen(true)}
         style={{ margin: "0 25px 5px" }}
       >
-        Add {currentTab === 0 ? "Template" : "Project"}
+        Add {currentTab === Tab.TemplateTab ? "Template" : "Project"}
       </Button>
       <CreateDialog
         isOpen={isCreateModalOpen}

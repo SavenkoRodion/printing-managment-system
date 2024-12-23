@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { DataGrid, GridColDef, GridCellParams } from "@mui/x-data-grid";
-import { Product, Admin } from "../../utility/types";
+import { ProjectType, Admin } from "../../utility/types";
 
 interface DataGridWithActionsProps {
   rows: any[];
@@ -22,14 +22,14 @@ const DataGridWithActions = ({
       headerAlign: "center",
     },
     {
-      field: "product",
-      headerName: "Nazwa produktu",
+      field: "projectType",
+      headerName: "Rodzaj projektu",
       flex: 0.6,
       align: "center",
       headerAlign: "center",
       valueGetter: (params: GridCellParams) => {
-        const product = params.row.product as Product;
-        return product.name ?? "";
+        const projectType = params.row.projectType as ProjectType;
+        return projectType.name ?? "";
       },
     },
     {
@@ -53,8 +53,8 @@ const DataGridWithActions = ({
       align: "center",
       headerAlign: "center",
       valueGetter: (params) => {
-        const product = params.row.author as Admin;
-        return product.name ?? "";
+        const admin = params.row.author as Admin;
+        return admin.name ?? "";
       },
     },
     {

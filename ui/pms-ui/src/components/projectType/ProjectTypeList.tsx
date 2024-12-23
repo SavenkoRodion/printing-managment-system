@@ -1,19 +1,25 @@
 import { Box, Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Product from "../../model/Product";
-import styles from "./Products.style";
+import ProjectType from "../../model/ProjectType";
+import styles from "./ProjectType.style";
 
-type ProductListProps = {
-  rows: Product[];
-  handleDeleteDialogOpen: (productId: number, productName: string) => void;
-  handleEditDialogOpen: (productId: number, productName: string) => void;
+type ProjectTypeListProps = {
+  rows: ProjectType[];
+  handleDeleteDialogOpen: (
+    projectTypeId: number,
+    projectTypeName: string
+  ) => void;
+  handleEditDialogOpen: (
+    projectTypeId: number,
+    projectTypeName: string
+  ) => void;
 };
 
-const ProductList = ({
+const ProjectTypeList = ({
   rows,
   handleDeleteDialogOpen,
   handleEditDialogOpen,
-}: ProductListProps) => {
+}: ProjectTypeListProps) => {
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -24,7 +30,7 @@ const ProductList = ({
     },
     {
       field: "name",
-      headerName: "Nazwa produktu",
+      headerName: "Nazwa rodzaju projektu",
       align: "center",
       headerAlign: "center",
       flex: 1,
@@ -95,4 +101,4 @@ const ProductList = ({
   );
 };
 
-export default ProductList;
+export default ProjectTypeList;
