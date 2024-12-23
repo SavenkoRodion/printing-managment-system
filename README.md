@@ -38,6 +38,7 @@ The Printing Management System (PMS) is a comprehensive system for managing prin
   - [Setup Instructions](#setup-instructions)
     - [Backend (API)](#backend-api-2)
     - [Frontend (UI)](#frontend-ui-2)
+    - [Project Versioning](#project-versioning)
 
 ## Project Structure
 
@@ -103,11 +104,12 @@ Handle HTTP requests and route them to the appropriate services or repositories.
 
 - [`AdminController`](api/PMS-Api/PMS-Api/Controllers/AdminController.cs): Manages user-related operations.
 - [`AuthController`](api/PMS-Api/PMS-Api/Controllers/AuthController.cs): Handles authentication and authorization.
-- [`ClientController`](api/PMS-Api/PMS-Api/Controllers/ClientController.cs): Manages client-related operations.
-- [`ParametersController`](api/PMS-Api/PMS-Api/Controllers/ParametersController.cs): Manages parameter-related operations.
+- [`ClientController`](api/PMS-Api/PMS-Api/Controllers/ClientController.cs): Manages client related operations.
+- [`ParametersController`](api/PMS-Api/PMS-Api/Controllers/ParametersController.cs): Manages parameter related operations.
 - [`ProjectController`](api/PMS-Api/PMS-Api/Controllers/ProjectController.cs): Manages project-related operations.
-- [`TemplateController`](api/PMS-Api/PMS-Api/Controllers/TemplateController.cs): Manages template-related operations.
-- [`ProjectTypeController`](api/PMS-Api/PMS-Api/Controllers/ProjectTypeController.cs): Manages project type-related operations.
+- [`ProjectFileController`](api/PMS-Api/PMS-Api/Controllers/ProjectFileController.cs): Manages file related operations.
+- [`ProjectTypeController`](api/PMS-Api/PMS-Api/Controllers/ProjectTypeController.cs): Manages project type related operations.
+- [`TemplateController`](api/PMS-Api/PMS-Api/Controllers/TemplateController.cs): Manages template related operations.
 
 #### Enums
 
@@ -115,6 +117,7 @@ Define the enumerations used in the project.
 
 - [`CreateAdminResult`](api/PMS-Api/PMS-Api/Enums/CreateAdminResult.cs): Enum representing the result of creating an admin.
 - [`CreateClientResult`](api/PMS-Api/PMS-Api/Enums/CreateClientResult.cs): Enum representing the result of creating a client.
+- [`TemplateOrProjectEnum`](api/PMS-Api/PMS-Api/Enums/TemplateOrProjectEnum.cs): Enum representing template or project type.
 
 #### Interfaces
 
@@ -163,6 +166,7 @@ Define the data structures.
   - [`EditProjectRequest`](api/PMS-Api/PMS-Api/Model/Requests/EditProjectRequest.cs): Represents a request to edit a project.
   - [`EditTemplateRequest`](api/PMS-Api/PMS-Api/Model/Requests/EditTemplateRequest.cs): Represents a request to edit a template.
   - [`ReplaceProjectTypeRequest`](api/PMS-Api/PMS-Api/Model/Requests/ReplaceProjectTypeRequest.cs): Represents a request to replace a project type.
+  - [`SaveProjectRequest`](api/PMS-Api/PMS-Api/Model/Requests/SaveProjectRequest.cs): Represents a request to upload a file.
 
 #### Repositories
 
@@ -184,16 +188,93 @@ Define the business logic and operations.
 
 The frontend is implemented using React and TypeScript. It includes the following key components:
 
+- **Authorization Wrappers**: Provide higher-order components for handling authorization.
+
+  - [`AuthorizedComponent`](ui/pms-ui/src/authorizationWrappers/AuthorizedComponent.tsx): Ensures that the wrapped component is only accessible to authorized users, displaying a loading indicator while checking authorization status.
+
 - **Components**: Define the UI elements.
 
-  - [`ProjectTypeList`](ui/pms-ui/src/components/projectType/ProjectTypeList.tsx): Displays a list of project types.
-  - [`CreateProjectTypeDialog`](ui/pms-ui/src/components/projectType/Dialogs/CreateProjectTypeDialog/CreateProjectTypeDialog.tsx): Dialog for creating a new project type.
-  - [`ClientSelector`](ui/pms-ui/src/components/projects/ClientSelector.tsx): Dropdown for selecting clients.
-  - [`ProjectList`](ui/pms-ui/src/components/projects/ProjectList.tsx): Displays a list of projects and templates.
+  - _Clients_
+
+    - [`Clients`](ui/pms-ui/src/components/clients/Clients.tsx): Displays and manages clients details, including creating, editing, and deleting clients.
+    - [`ClientsList`](ui/pms-ui/src/components/clients/ClientsList.tsx): Component for listing clients.
+    - [`CreateClientDialog`](ui/pms-ui/src/components/clients/Dialogs/CreateClientDialog/CreateClientDialog.tsx): Dialog for creating a new client.
+    - [`DeleteClientDialog`](ui/pms-ui/src/components/clients/Dialogs/DeleteClientDialog/DeleteClientDialog.tsx): Dialog for deleting a client.
+    - [`EditClientDialog`](ui/pms-ui/src/components/clients/Dialogs/EditClientDialog/EditClientDialog.tsx): Dialog for editing a client.
+
+  - _Editor_
+
+    - [`EditorView`](ui/pms-ui/src/components/editor/EditorView.tsx): View for editing projects or templates.
+    - [`InfoView`](ui/pms-ui/src/components/editor/InfoView.tsx): View for displaying project or template information.
+    - [`Editor`](ui/pms-ui/src/components/editor/Editor.tsx): Main editor component.
+    - [`EditorTab`](ui/pms-ui/src/components/editor/EditorTab.tsx): Enum for editor tabs.
+
+  - _Layouts_
+
+    - [`BaselineLayout`](ui/pms-ui/src/components/layouts/BaselineLayout.tsx): Provides a baseline layout for the application.
+    - [`AuthorizedMenuLayout`](ui/pms-ui/src/components/layouts/AuthorizedMenuLayout.tsx): Layout for authorized user menu.
+    - [`LoginLayout`](ui/pms-ui/src/components/layouts/LoginLayout.tsx): Layout for the login page.
+
+  - _Login_
+
+    - [`Login`](ui/pms-ui/src/components/params/Login.tsx): Component for handling user login.
+
+  - _Params_
+
+    - [`Params`](ui/pms-ui/src/components/params/Params.tsx): Displays a list of parameters.
+
+  - _Projects_
+
+    - [`AddProjectOrTemplate`](ui/pms-ui/src/components/projects/AddProjectOrTemplate.tsx): Component for adding a new project or template.
+    - [`CustomTabPanel`](ui/pms-ui/src/components/projects/CustomTabPanel.tsx): Custom tab panel component.
+    - [`CustomTabs`](ui/pms-ui/src/components/projects/CustomTabs.tsx): Custom tabs component.
+    - [`DataGridWithActions`](ui/pms-ui/src/components/projects/DataGridWithActions.tsx): Data grid with action buttons.
+    - [`ClientSelector`](ui/pms-ui/src/components/projects/ClientSelector.tsx): Dropdown for selecting clients.
+    - [`ProjectList`](ui/pms-ui/src/components/projects/ProjectList.tsx): Displays a list of projects and templates.
+    - [`CreateDialog`](ui/pms-ui/src/components/projects/Dialogs/CreateDialog.tsx): Dialog for creating a project or template.
+    - [`DeleteDialog`](ui/pms-ui/src/components/projects/Dialogs/DeleteDialog.tsx): Dialog for deleting a project or template.
+
+  - _Project-Type_
+
+    - [`ProjectType`](ui/pms-ui/src/components/projectType/ProjectType.tsx): Displays and manages project type details, including creating, editing, and deleting project types.
+    - [`ProjectTypeList`](ui/pms-ui/src/components/projectType/ProjectTypeList.tsx): Displays a list of project types.
+    - [`CreateProjectTypeDialog`](ui/pms-ui/src/components/projectType/Dialogs/CreateProjectTypeDialog/CreateProjectTypeDialog.tsx): Dialog for creating a new project type.
+    - [`DeleteProjectTypeDialog`](ui/pms-ui/src/components/projectType/Dialogs/DeleteProjectTypeDialog/DeleteProjectTypeDialog.tsx): Dialog for deleting a project type.
+    - [`EditProjectTypeDialog`](ui/pms-ui/src/components/projectType/Dialogs/EditProjectTypeDialog/EditProjectTypeDialog.tsx): Dialog for editing a project type.
+
+  - _Reusable_
+
+    - [`PageHeader`](ui/pms-ui/src/components/reusable/PageHeader.tsx): Component for displaying a page header with a title and a create button.
+
+  - _Users_
+
+    - [`Users`](ui/pms-ui/src/components/users/Users.tsx): Displays a list of users.
+    - [`CreateAdminDialog`](ui/pms-ui/src/components/users/CreateAdminDialog.tsx): Dialog for creating a new admin.
+    - [`DeleteAdminDialog`](ui/pms-ui/src/components/users/DeleteAdminDialog.tsx): Dialog for deleting an admin.
+    - [`ChangePasswordDialog`](ui/pms-ui/src/components/users/ChangePasswordDialog.tsx): Dialog for changing a user's password.
+    - [`ChangeNameDialog`](ui/pms-ui/src/components/users/ChangeNameDialog.tsx): Dialog for changing a user's name.
+
+- **Hooks**: Provide reusable logic for components.
+
+  - [`useErrorSnackbar`](ui/pms-ui/src/hooks/useErrorSnackbar.ts): Custom hook for using the error snackbar context.
+
+- **Models**: Define the data structures.
+
+  - [`Admin`](ui/pms-ui/src/models/Admin.ts): Represents an admin entity.
+  - [`Client`](ui/pms-ui/src/models/Client.ts): Represents a client entity.
+  - [`Parameter`](ui/pms-ui/src/models/Parameter.ts): Represents a parameter entity.
+  - [`ProjectType`](ui/pms-ui/src/models/ProjectType.ts): Represents a project-type entity.
+  - [`TemplateOrProject`](ui/pms-ui/src/models/TemplateOrProject.ts): Represents a project or type entity.
+
+- **Providers**: Provide context and state management.
+
+  - [`ErrorSnackbarProvider`](ui/pms-ui/src/providers/ErrorSnackbarProvider.tsx): Provides context for displaying error and success messages using a snackbar.
 
 - **Utilities**: Provide helper functions.
+
   - [`getAxiosClient`](ui/pms-ui/src/utility/getAxiosClient.ts): Configures Axios for making HTTP requests.
   - [`isStatusCodeSuccessfull`](ui/pms-ui/src/utility/util.ts): Checks if an HTTP status code indicates success.
+  - [`sortClientsByName`](ui/pms-ui/src/utility/util.ts): Sort received clients alphabetically by client name.
 
 ## Database
 
@@ -312,7 +393,7 @@ The frontend dependencies are defined in the [package.json](ui/pms-ui/package.js
 
 1. **Prerequisites**:
 
-   - Install Node.js and npm.
+   - Install Node.js.
 
 2. **Setup**:
 
@@ -328,3 +409,54 @@ The frontend dependencies are defined in the [package.json](ui/pms-ui/package.js
      npm run dev
      ```
    - Open `http://localhost:5173/` in your browser to access the UI.
+
+### Project Versioning
+
+The project versioning is managed in the `package.json` file.
+
+```json
+{
+  "name": "pms-ui",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vite-plugin-mkcert": "^1.17.5"
+  }
+}
+```
+
+Here is an example:
+
+```ts
+import packageJson from "../../../package.json";
+
+const AuthorizedMenuLayout = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  return (
+    <Toolbar sx={{ justifyContent: "space-between", paddingX: "16px" }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+        <Typography variant="h6" component="div" sx={{ marginRight: 4 }}>
+          PrintingHouseManager v{packageJson.version}
+        </Typography>
+      </Box>
+    </Toolbar>
+  );
+};
+```
